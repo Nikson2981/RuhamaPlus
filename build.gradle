@@ -16,7 +16,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = 'b0.03'
+version = 'b0.04'
 group = 'gg.FyreHack'
 archivesBaseName = 'Fyre Hack'
 

@@ -7,4 +7,5 @@ public enum Category
     MISC,
     EXPLOITS,
     FYREHACK,
+    CHAT,
 }

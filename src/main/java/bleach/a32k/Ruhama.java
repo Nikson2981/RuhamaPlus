@@ -38,7 +38,7 @@ import java.util.Objects;
 @Mod(
         modid = "fyrehack",
         name = "Fyre Hack",
-        version = "0.1",
+        version = "0.2",
         acceptedMinecraftVersions = "[1.12.2]"
 )
 public class Ruhama
@@ -153,7 +153,7 @@ public class Ruhama
     }
 
     @SubscribeEvent
-    public void suckcuck(ClientChatEvent event)
+    public void fyreSuffix(ClientChatEvent event)
     {
         if (Objects.requireNonNull(ModuleManager.getModuleByName("ChatSuffix") ).isToggled() && !event.getMessage().contains("Fyre Hack") && !event.getMessage().startsWith("/"))
         {
@@ -163,6 +163,18 @@ public class Ruhama
             mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u0493\u028f\u0280\u1d07 \u029c\u1d00\u1d04\u1d0b");
         }
     }
+
+    public void impactminus(ClientChatEvent event)
+    {
+        if (Objects.requireNonNull(ModuleManager.getModuleByName("ImpactMinus") ).isToggled() && !event.getMessage().contains("Fyre Hack") && !event.getMessage().startsWith("/"))
+        {
+            event.setCanceled(true);
+
+            mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());
+            mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u0493\u028f\u0280\u1d07 \u029c\u1d00\u1d04\u1d0b");
+        }
+    }
+
 
     @SubscribeEvent
     public void fucksuck(ClientTickEvent event)

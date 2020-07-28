@@ -24,6 +24,7 @@ public class NewRuhamaGui extends GuiScreen
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.MISC), "Misc", 70, 180, 35));
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.EXPLOITS), "Exploits", 70, 255, 35));
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.FYREHACK), "Fyre Hack", 70, 330, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.CHAT), "Fyre Hack", 70, 405, 35));
 
         for (Module m : ModuleManager.getModules())
         {

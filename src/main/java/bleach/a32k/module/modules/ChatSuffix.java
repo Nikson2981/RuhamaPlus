@@ -9,6 +9,6 @@ public class ChatSuffix extends Module
 {
     public ChatSuffix()
     {
-        super("ChatSuffix", 0, Category.FYREHACK, "show off your fancy new client", null);
+        super("ChatSuffix", 0, Category.CHAT, "show off your fancy new client", null);
     }
 }

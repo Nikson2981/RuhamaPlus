@@ -23,7 +23,7 @@ public class OsirisBedAura extends Module{
     private static final List<SettingBase> settings = Arrays.asList(new SettingSlider(0.0D, 6.0D, 4.5D, 0, "Range: "), new SettingToggle(false, "Rotate"), new SettingToggle(true, "DimensionCheck"), new SettingToggle(true, "Refill Hotbar"),new SettingToggle(false, "Debug Messages"), new SettingToggle(true, "Toggle Messages"));
 
     public OsirisBedAura() {
-        super("OsirisBedAura", 0, Category.FYREHACK, "OsirisBedAura", settings);
+        super("HotbarBeds", 0, Category.FYREHACK, "OsirisBedAura", settings);
     }
 
     boolean moving = false;
@@ -63,39 +63,16 @@ public class OsirisBedAura extends Module{
                 }
             }
         }
-        this.mc.world.loadedTileEntityList.stream()
-                .filter(e -> e instanceof TileEntityBed)
-                .filter(e -> this.mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()) <=  this.getSettings().get(11).toSlider().getValue())
-                .sorted(Comparator.comparing(e -> this.mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ())))
-                .forEach(bed -> {
-
-
-
-                    if (this.getSettings().get(2).toToggle().state && this.mc.player.dimension == 0)  {
-
-                        if (this.getSettings().get(4).toToggle().state){
-                            RuhamaLogger.log("you are in the overworld");
-                        }
-
-                        return;
-                    }
-
-                    if (this.getSettings().get(4).toToggle().state){
-                        RuhamaLogger.log("trying to click bed");
-                    }
-                    this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(bed.getPos(), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
-
-        });
     }
     public void onEnable(){
         if (this.getSettings().get(5).toToggle().state){
-            RuhamaLogger.log("OsirisBedAura: ON");
+            RuhamaLogger.log("OsirisBedAura: ENABLED");
         }
     }
 
     public void onDisable(){
         if (this.getSettings().get(5).toToggle().state){
-            RuhamaLogger.log("OsirisBedAura:OFF");
+            RuhamaLogger.log("OsirisBedAura: DISABLED");
         }
     }
 }
