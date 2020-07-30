@@ -7,7 +7,7 @@ import bleach.a32k.settings.SettingMode;
 import bleach.a32k.settings.SettingSlider;
 import bleach.a32k.settings.SettingToggle;
 import bleach.a32k.utils.RenderUtils;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import bleach.a32k.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
@@ -64,7 +64,7 @@ public class TreeAura extends Module
 
         if (sapling == -1)
         {
-            RuhamaLogger.log("No sapling");
+            FyreLogger.log("No sapling");
 
             this.setToggled(false);
         } else
@@ -187,7 +187,7 @@ public class TreeAura extends Module
 
             if (this.getSettings().get(0).toMode().mode == 0)
             {
-                RuhamaLogger.log("Nowhere to place sapling");
+                FyreLogger.log("Nowhere to place sapling");
 
                 this.setToggled(false);
             } else
@@ -243,7 +243,7 @@ public class TreeAura extends Module
             if (sapling == -1)
             {
 
-                RuhamaLogger.log("No sapling");
+                FyreLogger.log("No sapling");
                 this.setToggled(false);
             } else
             {

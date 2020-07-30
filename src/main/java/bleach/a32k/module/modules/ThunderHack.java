@@ -4,7 +4,7 @@ import bleach.a32k.module.Category;
 import bleach.a32k.module.Module;
 import bleach.a32k.settings.SettingBase;
 import bleach.a32k.settings.SettingToggle;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketEffect;
 import net.minecraft.network.play.server.SPacketSoundEffect;
@@ -54,7 +54,7 @@ public class ThunderHack extends Module
 
         if (newPos != null)
         {
-            RuhamaLogger.log("Thunder struck at: " + TextFormatting.ITALIC + newPos.getX() + TextFormatting.WHITE + ", " + TextFormatting.ITALIC + newPos.getY() + TextFormatting.WHITE + ", " + TextFormatting.ITALIC + newPos.getZ());
+            FyreLogger.log("Thunder struck at: " + TextFormatting.ITALIC + newPos.getX() + TextFormatting.WHITE + ", " + TextFormatting.ITALIC + newPos.getY() + TextFormatting.WHITE + ", " + TextFormatting.ITALIC + newPos.getZ());
 
             if (this.getSettings().get(0).toToggle().state && this.mc.player.getPosition().getDistance(newPos.getX(), newPos.getY(), newPos.getZ()) > 100.0D)
             {

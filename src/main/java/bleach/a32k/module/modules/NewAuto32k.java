@@ -6,7 +6,7 @@ import bleach.a32k.settings.SettingBase;
 import bleach.a32k.settings.SettingMode;
 import bleach.a32k.settings.SettingSlider;
 import bleach.a32k.settings.SettingToggle;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import bleach.a32k.utils.WorldUtils;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.client.gui.GuiHopper;
@@ -90,19 +90,19 @@ public class NewAuto32k extends Module
 
         if (this.hopper == -1)
         {
-            RuhamaLogger.log("Missing Hopper");
+            FyreLogger.log("Missing Hopper");
         } else if (dispenser == -1)
         {
-            RuhamaLogger.log("Missing Dispenser");
+            FyreLogger.log("Missing Dispenser");
         } else if (this.redstone == -1)
         {
-            RuhamaLogger.log("Missing Redstone Block");
+            FyreLogger.log("Missing Redstone Block");
         } else if (this.shulker == -1)
         {
-            RuhamaLogger.log("Missing Shulker");
+            FyreLogger.log("Missing Shulker");
         } else if (block == -1)
         {
-            RuhamaLogger.log("Missing Generic Block");
+            FyreLogger.log("Missing Generic Block");
         }
 
         if (this.hopper != -1 && dispenser != -1 && this.redstone != -1 && this.shulker != -1 && block != -1)
@@ -127,7 +127,7 @@ public class NewAuto32k extends Module
                     WorldUtils.placeBlock(this.pos.add(0, 1, 0), dispenser, false, false);
                 } else
                 {
-                    RuhamaLogger.log("Unable to place 32k");
+                    FyreLogger.log("Unable to place 32k");
 
                     this.setToggled(false);
                 }
@@ -156,7 +156,7 @@ public class NewAuto32k extends Module
                     }
                 }
 
-                RuhamaLogger.log("Unable to place 32k");
+                FyreLogger.log("Unable to place 32k");
                 this.setToggled(false);
             }
         } else

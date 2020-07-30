@@ -9,7 +9,7 @@ import bleach.a32k.settings.SettingSlider;
 import bleach.a32k.settings.SettingToggle;
 import bleach.a32k.utils.FileMang;
 import bleach.a32k.utils.RenderUtils;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.AbstractChestHorse;
@@ -117,7 +117,7 @@ public class StashFinder extends Module
     {
         if (this.startChunk != null)
         {
-            RuhamaLogger.log("StashFinder: Starting from " + this.startChunk.getXStart() + ", " + this.startChunk.getZStart());
+            FyreLogger.log("StashFinder: Starting from " + this.startChunk.getXStart() + ", " + this.startChunk.getZStart());
 
             this.range = ((int) Math.max(Math.abs(this.mc.player.posX - (double) this.startChunk.getXStart()), Math.abs(this.mc.player.posZ - (double) this.startChunk.getZStart())) >> 4) - 1;
         } else if (this.getSettings().get(0).toMode().mode == 1)

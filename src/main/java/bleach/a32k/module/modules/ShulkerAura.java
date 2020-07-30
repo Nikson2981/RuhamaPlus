@@ -1,11 +1,10 @@
 package bleach.a32k.module.modules;
 
-import bleach.a32k.Ruhama;
+import bleach.a32k.FyreHack;
 import bleach.a32k.module.Category;
 import bleach.a32k.module.Module;
 import bleach.a32k.utils.WorldUtils;
 import net.minecraft.block.BlockShulkerBox;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiShulkerBox;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +12,6 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map.Entry;
 
 public class ShulkerAura extends Module
@@ -65,7 +63,7 @@ public class ShulkerAura extends Module
                         {
                             BlockPos pos = this.mc.player.getPosition().add(x, y, z);
 
-                            if (this.mc.world.getBlockState(pos).getBlock() instanceof BlockShulkerBox && !Ruhama.friendBlocks.containsKey(pos) && !this.openedShulkers.containsKey(pos) && this.mc.player.getPositionVector().distanceTo((new Vec3d(pos)).add(0.5D, 0.5D, 0.5D)) <= 5.25D)
+                            if (this.mc.world.getBlockState(pos).getBlock() instanceof BlockShulkerBox && !FyreHack.friendBlocks.containsKey(pos) && !this.openedShulkers.containsKey(pos) && this.mc.player.getPositionVector().distanceTo((new Vec3d(pos)).add(0.5D, 0.5D, 0.5D)) <= 5.25D)
                             {
                                 WorldUtils.openBlock(pos);
 

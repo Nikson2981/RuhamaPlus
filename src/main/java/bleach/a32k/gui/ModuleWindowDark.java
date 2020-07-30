@@ -189,20 +189,20 @@ public class ModuleWindowDark extends ModuleWindow
             if (this.mouseOver(x, y, x + this.len, y + 14))
             {
                 color = -1876885728;
-                color2 = "";
+                color2 = "\u00a72";
             } else
             {
                 color = 1881210656;
-                color2 = "";
+                color2 = "\u00a7a";
             }
         } else if (this.mouseOver(x, y, x + this.len, y + 14))
         {
             color = -1862328288;
-            color2 = "";
+            color2 = "\u00a74";
         } else
         {
             color = 1895768096;
-            color2 = "";
+            color2 = "\u00a7c";
         }
 
         GuiScreen.drawRect(x, y, x + this.len, y + 14, 1879048192);

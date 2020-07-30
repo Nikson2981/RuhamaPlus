@@ -6,7 +6,7 @@ import bleach.a32k.settings.SettingBase;
 import bleach.a32k.settings.SettingSlider;
 import bleach.a32k.settings.SettingToggle;
 import bleach.a32k.utils.RenderUtils;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.util.math.Vec3d;
@@ -69,7 +69,7 @@ public class PearlViewer extends Module
                         {
                             if (entityPlayer.getDistance(e) < 4.0F && ((Entity) entityPlayer).getName() != this.mc.player.getName())
                             {
-                                RuhamaLogger.log(((Entity) entityPlayer).getName() + " Threw a pearl");
+                                FyreLogger.log(((Entity) entityPlayer).getName() + " Threw a pearl");
 
                                 break;
                             }

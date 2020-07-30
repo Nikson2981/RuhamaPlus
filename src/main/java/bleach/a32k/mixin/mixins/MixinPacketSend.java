@@ -1,6 +1,6 @@
 package bleach.a32k.mixin.mixins;
 
-import bleach.a32k.Ruhama;
+import bleach.a32k.FyreHack;
 import bleach.a32k.module.ModuleManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -38,7 +38,7 @@ public class MixinPacketSend
             {
                 BlockPos pos = packet.getPos().offset(packet.getDirection());
                 System.out.println("Rightclicked at: " + System.currentTimeMillis());
-                Ruhama.friendBlocks.put(pos, 300);
+                FyreHack.friendBlocks.put(pos, 300);
             }
         }
     }

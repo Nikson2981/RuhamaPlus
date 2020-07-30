@@ -6,7 +6,7 @@ import bleach.a32k.settings.SettingBase;
 import bleach.a32k.settings.SettingSlider;
 import bleach.a32k.settings.SettingToggle;
 import bleach.a32k.utils.RenderUtils;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -479,7 +479,7 @@ public class RuhamaCrystalAura extends Module
     {
         if (this.getSettings().get(6).toToggle().state)
         {
-            RuhamaLogger.log("RuhamaCA: ON");
+            FyreLogger.log("RuhamaCA: ON");
         }
     }
 
@@ -487,7 +487,7 @@ public class RuhamaCrystalAura extends Module
     {
         if (this.getSettings().get(6).toToggle().state)
         {
-            RuhamaLogger.log("RuhamaCA: OFF");
+            FyreLogger.log("RuhamaCA: OFF");
         }
 
         this.render = null;

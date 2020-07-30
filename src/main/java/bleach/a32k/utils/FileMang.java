@@ -1,7 +1,7 @@
 package bleach.a32k.utils;
 
 import bleach.a32k.gui.ModuleWindow;
-import bleach.a32k.gui.NewRuhamaGui;
+import bleach.a32k.gui.NewFyreGui;
 import bleach.a32k.gui.TextWindow;
 import bleach.a32k.module.Module;
 import bleach.a32k.module.ModuleManager;
@@ -255,7 +255,7 @@ public class FileMang
 
         MutableTriple e;
 
-        for (Iterator textIter = NewRuhamaGui.textWins.iterator(); textIter.hasNext(); text2 = text2 + ((Module) e.left).getName() + ":" + e.middle + ":" + ((TextWindow) e.getRight()).posX + ":" + ((TextWindow) e.getRight()).posY + "\n")
+        for (Iterator textIter = NewFyreGui.textWins.iterator(); textIter.hasNext(); text2 = text2 + ((Module) e.left).getName() + ":" + e.middle + ":" + ((TextWindow) e.getRight()).posX + ":" + ((TextWindow) e.getRight()).posY + "\n")
         {
             e = (MutableTriple) textIter.next();
         }
@@ -284,7 +284,7 @@ public class FileMang
         {
             String[] split = s.split(":");
 
-            for (MutableTriple<Module, Integer, TextWindow> moduleIntegerTextWindowMutableTriple : NewRuhamaGui.textWins)
+            for (MutableTriple<Module, Integer, TextWindow> moduleIntegerTextWindowMutableTriple : NewFyreGui.textWins)
             {
                 try
                 {

@@ -1,22 +1,21 @@
 package bleach.a32k.module.modules;
 
-import bleach.a32k.Ruhama;
+
 import bleach.a32k.module.Category;
 import bleach.a32k.module.Module;
 import bleach.a32k.settings.SettingBase;
 import bleach.a32k.settings.SettingSlider;
 import bleach.a32k.settings.SettingToggle;
 import bleach.a32k.utils.RenderUtils;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import bleach.a32k.utils.WorldUtils;
 import net.minecraft.block.BlockBed;
-import net.minecraft.block.BlockHopper;
-import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
@@ -24,6 +23,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextFormatting;
 
 
 import java.util.Arrays;
@@ -32,7 +32,7 @@ import java.util.List;
 
 public class AutoBedCity extends Module
 {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Rotate (required)"),  new SettingSlider(0.0D, 20.0D, 20.0D, 0, "Delay: "), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlayerRange: "), new SettingToggle(false, "Debug Messages"), new SettingToggle(false, "AutoSwitch"),  new SettingSlider(0.0D, 7.0D, 5.0D, 0, "BedRange"));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Rotate (required)"),  new SettingSlider(0.0D, 20.0D, 20.0D, 0, "Delay: "), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlayerRange: "), new SettingToggle(false, "Debug Messages"), new SettingToggle(false, "Fill Hotbar"),  new SettingSlider(0.0D, 7.0D, 5.0D, 0, "BedRange"));
 // 0 = rotate, 1= delay, 2= range, 3 = debug, 4 = autoswitch, 5 = bedrange
 
     private BlockPos blockpos2;
@@ -47,15 +47,9 @@ public class AutoBedCity extends Module
 
     private BlockPos render;
 
-    private boolean isSpoofingAngles;
-
-    int bedSlot;
-
-    private boolean placed;
-
     private EntityPlayer target;
 
-    public AutoBedCity() { super("AutoBedCity", 0, Category.FYREHACK, "cities people with beds automatically", settings); }
+    public AutoBedCity() { super("BedAura", 0, Category.FYREHACK, "1.13 BedAura", settings); }
 
     public boolean isInBlockRange(Entity target)
     {
@@ -68,30 +62,46 @@ public class AutoBedCity extends Module
     }
 
 
-
+    boolean moving = false;
 
 
     public void onUpdate()
     {
 
         if (this.getSettings().get(4).toToggle().state) {
-            bedSlot = this.mc.player.getHeldItemMainhand().getItem() == Items.BED ? this.mc.player.inventory.currentItem : -1;
+            //search for empty hotbar slots
+            int slot = -1;
+            for (int i = 0; i < 9; i++) {
+                if (this.mc.player.inventory.getStackInSlot(i) == ItemStack.EMPTY) {
+                    slot = i;
+                    break;
+                }
+            }
+            if (moving && slot != -1) {
+                this.mc.playerController.windowClick(0, slot + 36, 0, ClickType.PICKUP, this.mc.player);
+                this.moving = false;
+                slot = -1;
+            }
 
-            if (bedSlot == -1) {
-                for (int l = 0; l < 9; ++l) {
-                    if (this.mc.player.inventory.getStackInSlot(l).getItem() == Items.BED) {
-                        bedSlot = l;
-                        if (this.getSettings().get(3).toToggle().state) {
-                            RuhamaLogger.log("set bedSlot");
-                        }
+            if (slot != -1 && !(this.mc.currentScreen instanceof GuiContainer) && this.mc.player.inventory.getItemStack().isEmpty()) {
+                //search for beds in inventory
+                int t = -1;
+                for (int i = 0; i < 45; i++) {
+                    if (this.mc.player.inventory.getStackInSlot(i).getItem() == Items.BED && i >= 9) {
+                        t = i;
                         break;
                     }
+                }
+
+                //click bed item
+                if (t != -1) {
+                    this.mc.playerController.windowClick(0, t, 0, ClickType.PICKUP, this.mc.player);
+                    this.moving = true;
                 }
             }
         }
 
         this.clickBed();
-        this.placed = false;
 
         if (!this.mc.player.isHandActive())
         {
@@ -112,10 +122,10 @@ public class AutoBedCity extends Module
                     {
                         if (this.getSettings().get(3).toToggle().state)
                         {
-                            RuhamaLogger.log("found valid target, trying to city");
+                            FyreLogger.log("found valid target, trying to city");
                         }
-                        this.trap(this.target);
                         this.render = null;
+                        this.trap(this.target);
                     }
 
                     return;
@@ -141,35 +151,22 @@ public class AutoBedCity extends Module
         this.blockpos10 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ - 1.0D); // -z bed
 
 
-        if (this.getSettings().get(3).toToggle().state) {
-            RuhamaLogger.log("set block positions");
-        }
 
 
-        if (this.getSettings().get(4).toToggle().state) {
-            this.mc.player.inventory.currentItem = bedSlot;
-            if (this.getSettings().get(3).toToggle().state) {
-                RuhamaLogger.log("switched to bed");
-            }
-        }
+
 
         // +x bed
 
             if (this.mc.world.getBlockState(this.blockpos7).getMaterial().isReplaceable()) {
                 if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
-                    this.lookAtPacket(this.mc.player.posX - 2.0D, this.mc.player.posY + 1.0D, this.mc.player.posZ, this.mc.player);
+                    WorldUtils.rotatePacket(this.mc.player.posX - 2.0D, this.mc.player.posY + 1.0D, this.mc.player.posZ);
 
                     if (this.getSettings().get(3).toToggle().state) {
-                        RuhamaLogger.log("attempting to place +x");
+                        FyreLogger.log("attempting to place +x");
                     }
                     this.render = blockpos3;
                     this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos7, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
-
-                    if (this.getSettings().get(0).toToggle().state) {
-                        this.resetRotation();
-                    }
-
 
             }
         }
@@ -178,18 +175,18 @@ public class AutoBedCity extends Module
 
             if (this.mc.world.getBlockState(this.blockpos8).getMaterial().isReplaceable()) {
                 if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
-                    this.lookAtPacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ - 2.0D, this.mc.player);
+
+                    WorldUtils.rotatePacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ - 2.0D);
+
 
                     if (this.getSettings().get(3).toToggle().state) {
-                        RuhamaLogger.log("attempting to place +z");
+                        FyreLogger.log("attempting to place +z");
                     }
+
                     this.render = blockpos4;
                     this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos8, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
 
 
-                    if (this.getSettings().get(0).toToggle().state) {
-                        this.resetRotation();
-                    }
 
 
             }
@@ -200,19 +197,13 @@ public class AutoBedCity extends Module
             if (this.mc.world.getBlockState(this.blockpos9).getMaterial().isReplaceable()) {
                 if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
-                    this.lookAtPacket(this.mc.player.posX + 2.0D, this.mc.player.posY + 1.0D, this.mc.player.posZ, this.mc.player);
+                    WorldUtils.rotatePacket(this.mc.player.posX + 2.0D, this.mc.player.posY + 1.0D, this.mc.player.posZ);
 
                     if (this.getSettings().get(3).toToggle().state) {
-                        RuhamaLogger.log("attempting to place -x");
+                        FyreLogger.log("attempting to place -x");
                     }
                     this.render = blockpos5;
                     this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos9, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
-
-
-                    if (this.getSettings().get(0).toToggle().state) {
-                        this.resetRotation();
-
-                }
             }
         }
 
@@ -220,18 +211,16 @@ public class AutoBedCity extends Module
             if (this.mc.world.getBlockState(this.blockpos10).getMaterial().isReplaceable()) {
                 if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
-                    this.lookAtPacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ + 2.0D, this.mc.player);
+                    WorldUtils.rotatePacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ + 2);
 
                     if (this.getSettings().get(3).toToggle().state) {
-                        RuhamaLogger.log("attempting to place -x");
+                        FyreLogger.log("attempting to place -x");
                     }
                     this.render = blockpos6;
                     this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos10, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
 
 
-                    if (this.getSettings().get(0).toToggle().state) {
-                        this.resetRotation();
-                    }
+
             }
         }
     }
@@ -239,10 +228,10 @@ public class AutoBedCity extends Module
 
 
     public void onEnable(){
-        RuhamaLogger.log("AutoBedCity: ENABLED");
+        FyreLogger.log("BedAura:" + TextFormatting.GREEN + " ENABLED!");
     }
     public void onDisable() {
-        RuhamaLogger.log("AutoBedCity: DISABLED");
+        FyreLogger.log("BedAura:" + TextFormatting.RED + " DISABLED!");
         this.target = null;
     }
 
@@ -254,48 +243,6 @@ public class AutoBedCity extends Module
             {
                 this.target = player;
             }
-        }
-    }
-
-    private void lookAtPacket(double px, double py, double pz, EntityPlayer me)
-    {
-        double[] v = this.calculateLookAt(px, py, pz, me);
-
-        this.setYawAndPitch((float) v[0], (float) v[1]);
-    }
-
-    private void setYawAndPitch(float yaw1, float pitch1)
-    {
-        this.isSpoofingAngles = true;
-    }
-
-    public double[] calculateLookAt(double px, double py, double pz, EntityPlayer me)
-    {
-        double dirx = me.posX - px;
-        double diry = me.posY - py;
-        double dirz = me.posZ - pz;
-
-        double len = Math.sqrt(dirx * dirx + diry * diry + dirz * dirz);
-
-        dirx /= len;
-        diry /= len;
-        dirz /= len;
-
-        double pitch = Math.asin(diry);
-        double yaw = Math.atan2(dirz, dirx);
-
-        pitch = pitch * 180.0D / 3.141592653589793D;
-        yaw = yaw * 180.0D / 3.141592653589793D;
-        yaw += 90.0D;
-
-        return new double[] {yaw, pitch};
-    }
-
-    private void resetRotation()
-    {
-        if (this.isSpoofingAngles)
-        {
-            this.isSpoofingAngles = false;
         }
     }
 
@@ -324,7 +271,6 @@ public class AutoBedCity extends Module
 
                     if (this.mc.world.getBlockState(pos).getBlock() instanceof BlockBed && this.mc.player.getPositionVector().distanceTo((new Vec3d(pos)).add(0.5D, 0.5D, 0.5D)) <= 5.25D)
                     {
-              
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock (pos, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
                     }
                 }

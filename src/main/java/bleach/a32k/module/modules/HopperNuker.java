@@ -1,6 +1,6 @@
 package bleach.a32k.module.modules;
 
-import bleach.a32k.Ruhama;
+import bleach.a32k.FyreHack;
 import bleach.a32k.module.Category;
 import bleach.a32k.module.Module;
 import net.minecraft.block.BlockHopper;
@@ -27,7 +27,7 @@ public class HopperNuker extends Module
     {
         if (!(this.mc.currentScreen instanceof GuiContainer))
         {
-            if (this.breakingBlock != null && !Ruhama.friendBlocks.containsKey(this.breakingBlock))
+            if (this.breakingBlock != null && !FyreHack.friendBlocks.containsKey(this.breakingBlock))
             {
                 if (this.mc.world.getBlockState(this.breakingBlock).getBlock() != Blocks.AIR && this.mc.player.getPositionVector().distanceTo((new Vec3d(this.breakingBlock)).add(0.5D, 0.5D, 0.5D)) <= 4.5D)
                 {
@@ -60,7 +60,7 @@ public class HopperNuker extends Module
                         {
                             BlockPos pos = this.mc.player.getPosition().add(x, y, z);
 
-                            if (this.mc.world.getBlockState(pos).getBlock() instanceof BlockHopper && this.mc.world.getBlockState(pos.up()).getBlock() instanceof BlockShulkerBox && !Ruhama.friendBlocks.containsKey(pos) && this.mc.player.getPositionVector().distanceTo((new Vec3d(pos)).add(0.5D, 0.5D, 0.5D)) <= 5.25D)
+                            if (this.mc.world.getBlockState(pos).getBlock() instanceof BlockHopper && this.mc.world.getBlockState(pos.up()).getBlock() instanceof BlockShulkerBox && !FyreHack.friendBlocks.containsKey(pos) && this.mc.player.getPositionVector().distanceTo((new Vec3d(pos)).add(0.5D, 0.5D, 0.5D)) <= 5.25D)
                             {
                                 this.mc.player.inventory.currentItem = pickaxeSlot;
                                 this.mc.playerController.onPlayerDamageBlock(pos, EnumFacing.UP);

@@ -1,7 +1,7 @@
 package bleach.a32k.command;
 
 import bleach.a32k.utils.FileMang;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -39,7 +39,7 @@ public class InvSorterCmd extends CommandBase implements IClientCommand
         FileMang.createEmptyFile("invsorter.txt");
         FileMang.appendFile(s, "invsorter.txt");
 
-        RuhamaLogger.log("Saved Inventory");
+        FyreLogger.log("Saved Inventory");
     }
 
     public boolean checkPermission(MinecraftServer server, ICommandSender sender)

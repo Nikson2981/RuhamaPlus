@@ -1,6 +1,6 @@
 package bleach.a32k.command;
 
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -52,7 +52,7 @@ public class EntityDesyncCmd extends CommandBase implements IClientCommand
             {
                 if (this.mc.player.getRidingEntity() == null)
                 {
-                    RuhamaLogger.log("No entity to dismount");
+                    FyreLogger.log("No entity to dismount");
                     return;
                 }
 
@@ -62,12 +62,12 @@ public class EntityDesyncCmd extends CommandBase implements IClientCommand
                 this.mc.world.removeEntity(this.entity);
 
                 MinecraftForge.EVENT_BUS.register(this);
-                RuhamaLogger.log("Dismounted");
+                FyreLogger.log("Dismounted");
             } else
             {
                 if (this.entity == null)
                 {
-                    RuhamaLogger.log("No entity to remount");
+                    FyreLogger.log("No entity to remount");
                     return;
                 }
 
@@ -78,11 +78,11 @@ public class EntityDesyncCmd extends CommandBase implements IClientCommand
                 this.entity = null;
 
                 MinecraftForge.EVENT_BUS.unregister(this);
-                RuhamaLogger.log("Remounted");
+                FyreLogger.log("Remounted");
             }
         } else
         {
-            RuhamaLogger.log("Invalid syntax, /entitydesync (dismount/remount)");
+            FyreLogger.log("Invalid syntax, /entitydesync (dismount/remount)");
         }
     }
 

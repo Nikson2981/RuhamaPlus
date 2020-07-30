@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class NewRuhamaGui extends GuiScreen
+public class NewFyreGui extends GuiScreen
 {
     public static List<MutableTriple<Module, Integer, TextWindow>> textWins = new ArrayList<>();
     public List<ModuleWindow> tabs = new ArrayList<>();
@@ -24,7 +24,7 @@ public class NewRuhamaGui extends GuiScreen
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.MISC), "Misc", 70, 180, 35));
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.EXPLOITS), "Exploits", 70, 255, 35));
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.FYREHACK), "Fyre Hack", 70, 330, 35));
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.CHAT), "Fyre Hack", 70, 405, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.CHAT), "Chat", 70, 405, 35));
 
         for (Module m : ModuleManager.getModules())
         {

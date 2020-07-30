@@ -6,6 +6,7 @@ import bleach.a32k.settings.SettingBase;
 import bleach.a32k.settings.SettingMode;
 import bleach.a32k.settings.SettingSlider;
 import bleach.a32k.settings.SettingToggle;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.Blocks;
@@ -26,6 +27,7 @@ public class ElytraFly extends Module
 
     public void onDisable()
     {
+        FyreLogger.log("Elytrafly Disabled");
         this.mc.player.capabilities.isFlying = false;
         this.mc.player.capabilities.setFlySpeed(0.05F);
 
@@ -33,6 +35,10 @@ public class ElytraFly extends Module
         {
             this.mc.player.capabilities.allowFlying = false;
         }
+    }
+
+    public void onEnable() {
+        FyreLogger.log("Elytrafly Enabled");
     }
 
     public void onUpdate()

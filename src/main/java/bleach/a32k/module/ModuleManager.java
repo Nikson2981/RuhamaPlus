@@ -14,7 +14,6 @@ public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
             new AutoBedCity(),
-            new OsirisBedAura(),
             new AntiChunkBan(),
             new Auto32k(),
             new AutoLog(),
@@ -46,7 +45,9 @@ public class ModuleManager
             new ThunderHack(),
             new TreeAura(),
             new TunnelESP(),
-            new Welcomer());
+            new Welcomer(),
+            new FyreCrystalAura(),
+            new ImpactMinus());
 
    public static List<Module> getModules()
     {

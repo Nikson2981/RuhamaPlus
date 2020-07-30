@@ -3,7 +3,7 @@ package bleach.a32k.module.modules;
 import bleach.a32k.module.Category;
 import bleach.a32k.module.Module;
 import bleach.a32k.utils.FileMang;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 
@@ -27,7 +27,7 @@ public class InvSorter extends Module
 
         if (this.items.size() < 9)
         {
-            RuhamaLogger.log("No Inventory Saved, Use /invsorter to save your hotbar");
+            FyreLogger.log("No Inventory Saved, Use /invsorter to save your hotbar");
 
             this.setToggled(false);
         }

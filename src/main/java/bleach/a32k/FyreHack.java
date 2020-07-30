@@ -2,7 +2,7 @@ package bleach.a32k;
 
 import bleach.a32k.command.*;
 import bleach.a32k.gui.AdvancedText;
-import bleach.a32k.gui.NewRuhamaGui;
+import bleach.a32k.gui.NewFyreGui;
 import bleach.a32k.gui.TextWindow;
 import bleach.a32k.module.Module;
 import bleach.a32k.module.ModuleManager;
@@ -41,7 +41,7 @@ import java.util.Objects;
         version = "0.2",
         acceptedMinecraftVersions = "[1.12.2]"
 )
-public class Ruhama
+public class FyreHack
 {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static HashMap<BlockPos, Integer> friendBlocks = new HashMap<>();
@@ -109,9 +109,9 @@ public class Ruhama
     {
         if (event.getType().equals(ElementType.TEXT))
         {
-            if (!(mc.currentScreen instanceof NewRuhamaGui))
+            if (!(mc.currentScreen instanceof NewFyreGui))
             {
-                Iterator textIter = NewRuhamaGui.textWins.iterator();
+                Iterator textIter = NewFyreGui.textWins.iterator();
 
                 label41:
 
@@ -164,14 +164,15 @@ public class Ruhama
         }
     }
 
+    @SubscribeEvent
     public void impactminus(ClientChatEvent event)
     {
-        if (Objects.requireNonNull(ModuleManager.getModuleByName("ImpactMinus") ).isToggled() && !event.getMessage().contains("Fyre Hack") && !event.getMessage().startsWith("/"))
+        if (Objects.requireNonNull(ModuleManager.getModuleByName("ImpactMinus") ).isToggled() && !event.getMessage().contains("impactminus") && !event.getMessage().startsWith("/"))
         {
             event.setCanceled(true);
 
             mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());
-            mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u0493\u028f\u0280\u1d07 \u029c\u1d00\u1d04\u1d0b");
+            mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u04C0\u043C\u0440\u1d00\u1d04\u0442 \u043C\u0456\u043F\u045F\u0455");
         }
     }
 

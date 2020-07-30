@@ -2,7 +2,7 @@ package bleach.a32k.command;
 
 import bleach.a32k.module.ModuleManager;
 import bleach.a32k.module.modules.StashFinder;
-import bleach.a32k.utils.RuhamaLogger;
+import bleach.a32k.utils.FyreLogger;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -32,16 +32,16 @@ public class StashFinderCmd extends CommandBase implements IClientCommand
     {
         if (args.length != 2)
         {
-            RuhamaLogger.log("Invalid number of arguments, use /stashfinder x z");
+            FyreLogger.log("Invalid number of arguments, use /stashfinder x z");
         } else
         {
             try
             {
                 ((StashFinder) Objects.requireNonNull(ModuleManager.getModuleByName("StashFinder"))).startChunk = new ChunkPos(Integer.parseInt(args[0]) >> 4, Integer.parseInt(args[1]) >> 4);
-                RuhamaLogger.log("Set stashfinder start to: " + args[0] + ", " + args[1]);
+                FyreLogger.log("Set stashfinder start to: " + args[0] + ", " + args[1]);
             } catch (Exception e)
             {
-                RuhamaLogger.log("wrong, /stashfinder x z");
+                FyreLogger.log("wrong, /stashfinder x z");
             }
         }
     }

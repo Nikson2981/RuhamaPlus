@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-public class RuhamaLogger
+public class FyreLogger
 {
     public static void log(String text)
     {
