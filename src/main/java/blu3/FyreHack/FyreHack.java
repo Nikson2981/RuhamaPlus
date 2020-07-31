@@ -1,6 +1,6 @@
 package blu3.FyreHack;
 
-import bleach.a32k.command.*;
+import blu3.FyreHack.command.*;
 import blu3.FyreHack.command.EntityDesyncCmd;
 import blu3.FyreHack.command.InvSorterCmd;
 import blu3.FyreHack.command.PeekCmd;

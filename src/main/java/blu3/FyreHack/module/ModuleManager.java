@@ -1,11 +1,9 @@
 package blu3.FyreHack.module;
 
-import bleach.a32k.module.modules.*;
 import blu3.FyreHack.module.modules.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import org.lwjgl.input.Keyboard;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -14,6 +12,7 @@ import java.util.List;
 public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
+            new Aura(),
             new AutoBedCity(),
             new AntiChunkBan(),
             new Auto32k(),

@@ -48,7 +48,7 @@ public class CrystalAuraECME extends Module
 
     public CrystalAuraECME()
     {
-        super("CrystalAuraECME", 0, Category.COMBAT, "Crystal Aura 2: electric boogaloo", settings);
+        super("CrystalAuraECME", 0, Category.FYREHACK, "1 block CA for endcrystal.me", settings);
     }
 
     public void onUpdate()

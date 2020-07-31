@@ -25,6 +25,7 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
 
 import java.util.*;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 
 public class FyreCrystalAura extends Module
 {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "AutoSwitch"), new SettingToggle(true, "Players"), new SettingToggle(false, "Mobs"), new SettingToggle(false, "Animals"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"), new SettingToggle(true, "Chat Alert"), new SettingToggle(false, "Anti Weakness"), new SettingToggle(false, "Slow"), new SettingToggle(false, "Rotate"), new SettingToggle(false, "RayTrace"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "Range: "), new SettingSlider(0.0D, 20.0D, 1.0D, 0, "Hit Delay"));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "AutoSwitch"), new SettingToggle(true, "Players"), new SettingToggle(false, "Mobs"), new SettingToggle(false, "Animals"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"), new SettingToggle(true, "Chat Alert"), new SettingToggle(false, "Anti Weakness"), new SettingToggle(false, "Slow"), new SettingToggle(false, "Rotate"), new SettingToggle(false, "RayTrace"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "HitRange: "), new SettingSlider(0.0D, 20.0D, 1.0D, 0, "Hit Delay"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "PlaceRange: "));
 
     /*
 
@@ -47,8 +48,9 @@ public class FyreCrystalAura extends Module
     8 = slow
     9 = rotate
     10 = raytrace
-    11 = range
+    11 = hitrange
     12 = hit delay
+    13 = placerange
 
     */
 
@@ -60,6 +62,7 @@ public class FyreCrystalAura extends Module
 
     private int oldSlot = -1;
     private int breaks;
+    private double delay;
 
     private boolean isSpoofingAngles;
 
@@ -114,8 +117,15 @@ public class FyreCrystalAura extends Module
 
             this.lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, this.mc.player);
 
-            this.mc.playerController.attackEntity(this.mc.player, crystal);
-            this.mc.player.swingArm(EnumHand.MAIN_HAND);
+            this.delay++;
+
+            if (this.delay >= this.getSettings().get(12).toSlider().getValue()) {
+
+                this.mc.playerController.attackEntity(this.mc.player, crystal);
+                this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                this.delay = 0;
+
+            }
 
             ++this.breaks;
 
@@ -225,6 +235,7 @@ public class FyreCrystalAura extends Module
                         {
                             if (!offhand && this.mc.player.inventory.currentItem != crystalSlot)
                             {
+
                                 if (this.getSettings().get(0).toToggle().state)
                                 {
                                     this.mc.player.inventory.currentItem = crystalSlot;
@@ -337,7 +348,7 @@ public class FyreCrystalAura extends Module
     {
         if (this.render != null)
         {
-            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(this.render), 1.0F, 1.0F, 1.0F, 0.3F);
+            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(this.render), 252.0F, 186.0F, 3.0F, 0.6F);
         }
     }
 
@@ -386,7 +397,7 @@ public class FyreCrystalAura extends Module
     private List<BlockPos> findCrystalBlocks()
     {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(this.getSphere(this.getPlayerPos(), (float) this.getSettings().get(11).toSlider().getValue(), (int) this.getSettings().get(11).toSlider().getValue(), false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
+        positions.addAll(this.getSphere(this.getPlayerPos(), (float) this.getSettings().get(13).toSlider().getValue(), (int) this.getSettings().get(13).toSlider().getValue(), false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
 
         return positions;
     }
@@ -497,7 +508,7 @@ public class FyreCrystalAura extends Module
     {
         if (this.getSettings().get(6).toToggle().state)
         {
-            FyreLogger.log("RuhamaCA: ON");
+            FyreLogger.log("FyreCrystalAura: " + TextFormatting.GREEN + "ON!");
         }
     }
 
@@ -505,7 +516,7 @@ public class FyreCrystalAura extends Module
     {
         if (this.getSettings().get(6).toToggle().state)
         {
-            FyreLogger.log("RuhamaCA: OFF");
+            FyreLogger.log("FyreCrystalAura: " + TextFormatting.RED + "OFF!");
         }
 
         this.render = null;
