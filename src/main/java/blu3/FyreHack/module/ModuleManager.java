@@ -1,6 +1,17 @@
 package blu3.FyreHack.module;
 
-import blu3.FyreHack.module.modules.*;
+import blu3.FyreHack.module.modules.chat.ChatSuffix;
+import blu3.FyreHack.module.modules.chat.ImpactMinus;
+import blu3.FyreHack.module.modules.combat.*;
+import blu3.FyreHack.module.modules.exploits.AntiChunkBan;
+import blu3.FyreHack.module.modules.exploits.Crasher;
+import blu3.FyreHack.module.modules.exploits.ThunderHack;
+import blu3.FyreHack.module.modules.fyrehack.BedAuraECME;
+import blu3.FyreHack.module.modules.fyrehack.CrystalAuraECME;
+import blu3.FyreHack.module.modules.fyrehack.FyreCrystalAura;
+import blu3.FyreHack.module.modules.fyrehack.RuhamaCrystalAura;
+import blu3.FyreHack.module.modules.misc.*;
+import blu3.FyreHack.module.modules.render.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import org.lwjgl.input.Keyboard;
@@ -12,8 +23,9 @@ import java.util.List;
 public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
+            new CrystalAuraECME(),
             new Aura(),
-            new AutoBedCity(),
+            new BedAuraECME(),
             new AntiChunkBan(),
             new Auto32k(),
             new AutoLog(),

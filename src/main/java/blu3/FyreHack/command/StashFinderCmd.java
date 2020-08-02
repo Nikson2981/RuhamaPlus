@@ -1,7 +1,7 @@
 package blu3.FyreHack.command;
 
 import blu3.FyreHack.module.ModuleManager;
-import blu3.FyreHack.module.modules.StashFinder;
+import blu3.FyreHack.module.modules.misc.StashFinder;
 import blu3.FyreHack.utils.FyreLogger;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

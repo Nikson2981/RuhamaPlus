@@ -1,6 +1,5 @@
 package blu3.FyreHack;
 
-import blu3.FyreHack.command.*;
 import blu3.FyreHack.command.EntityDesyncCmd;
 import blu3.FyreHack.command.InvSorterCmd;
 import blu3.FyreHack.command.PeekCmd;
@@ -10,7 +9,7 @@ import blu3.FyreHack.gui.NewFyreGui;
 import blu3.FyreHack.gui.TextWindow;
 import blu3.FyreHack.module.Module;
 import blu3.FyreHack.module.ModuleManager;
-import blu3.FyreHack.module.modules.ClickGui;
+import blu3.FyreHack.module.modules.render.ClickGui;
 import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingMode;
 import blu3.FyreHack.settings.SettingSlider;
