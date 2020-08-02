@@ -79,6 +79,8 @@ public class BedAuraECME extends Module
         //click any nearby beds
         this.clickBed();
 
+
+
         if (!this.mc.player.isHandActive()) {
             if (!this.isValid(this.target) || this.target == null) {
                 this.updateTarget();
@@ -98,32 +100,7 @@ public class BedAuraECME extends Module
                         if (this.delay >= this.getSettings().get(1).toSlider().getValue()) {
                             this.trap(this.target);
                             this.delay = 0;
-                            if (this.getSettings().get(4).toToggle().state) {
 
-                                if (mc.currentScreen instanceof GuiContainer) return;
-
-                                int slot = -1;
-
-                                for (int i = 0; i <= 9; i++)
-                                    if (mc.player.inventory.getStackInSlot(i).isEmpty() && slot == -1) {
-                                        slot = i;
-                                        break;
-                                    }
-
-                                if (slot != -1 && this.mc.player.inventory.getItemStack().isEmpty()) {
-                                    int t = -1;
-                                    for (int i = 0; i <= 46; i++)
-                                        if (this.mc.player.inventory.getStackInSlot(i).getItem() == Items.BED && i > 9) {
-                                            t = i;
-                                            break;
-                                        }
-
-                                    if (t != 1) {
-                                        if (mc.player.inventory.getStackInSlot(slot).isEmpty())
-                                            mc.playerController.windowClick(0, t, 0, ClickType.QUICK_MOVE, mc.player);
-                                    }
-                                }
-                            }
                         }
                     }
                     return;
@@ -326,6 +303,33 @@ public class BedAuraECME extends Module
     }
 
     public void clickBed(){
+
+        if (this.getSettings().get(4).toToggle().state) {
+
+            if (mc.currentScreen instanceof GuiContainer) return;
+
+            int slot = -1;
+
+            for (int i = 0; i <= 9; i++)
+                if (mc.player.inventory.getStackInSlot(i).isEmpty() && slot == -1) {
+                    slot = i;
+                    break;
+                }
+
+            if (slot != -1 && this.mc.player.inventory.getItemStack().isEmpty()) {
+                int t = -1;
+                for (int i = 0; i <= 46; i++)
+                    if (this.mc.player.inventory.getStackInSlot(i).getItem() == Items.BED && i > 9) {
+                        t = i;
+                        break;
+                    }
+
+                if (t != 1) {
+                    if (mc.player.inventory.getStackInSlot(slot).isEmpty())
+                        mc.playerController.windowClick(0, t, 0, ClickType.QUICK_MOVE, mc.player);
+                }
+            }
+        }
 
         int x;
 
