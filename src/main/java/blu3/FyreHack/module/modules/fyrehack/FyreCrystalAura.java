@@ -514,6 +514,7 @@ public class FyreCrystalAura extends Module
 
     public void onEnable()
     {
+        this.delay = 0;
         if (this.getSettings().get(6).toToggle().state)
         {
             FyreLogger.log("FyreCrystalAura: " + TextFormatting.GREEN + "ON!");
