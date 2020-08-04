@@ -36,6 +36,7 @@ public class Auto32k extends Module
     private boolean active;
     private boolean tickPassed;
 
+
     private int timer = 0;
 
     public Auto32k()

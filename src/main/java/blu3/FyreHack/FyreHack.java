@@ -1,9 +1,6 @@
 package blu3.FyreHack;
 
-import blu3.FyreHack.command.EntityDesyncCmd;
-import blu3.FyreHack.command.InvSorterCmd;
-import blu3.FyreHack.command.PeekCmd;
-import blu3.FyreHack.command.StashFinderCmd;
+import blu3.FyreHack.command.*;
 import blu3.FyreHack.gui.AdvancedText;
 import blu3.FyreHack.gui.NewFyreGui;
 import blu3.FyreHack.gui.TextWindow;
@@ -14,6 +11,7 @@ import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingMode;
 import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.utils.FileMang;
+import blu3.FyreHack.utils.Rainbow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.BlockPos;
@@ -53,9 +51,10 @@ public class FyreHack
     private boolean timerStart = false;
 
     @EventHandler
-    public void cuckfuck(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new Rainbow());
 
         ClickGui.clickGui.initWindows();
 
@@ -85,18 +84,18 @@ public class FyreHack
     }
 
     @EventHandler
-    public void cuckfucksuck(FMLPostInitializationEvent event)
+    public void postinit(FMLPostInitializationEvent event)
     {
         ClientCommandHandler.instance.registerCommand(new PeekCmd.PeekCommand());
         ClientCommandHandler.instance.registerCommand(new InvSorterCmd());
         ClientCommandHandler.instance.registerCommand(new StashFinderCmd());
         ClientCommandHandler.instance.registerCommand(new EntityDesyncCmd());
-
+        ClientCommandHandler.instance.registerCommand(new AutoWaspCmd());
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
     }
 
     @SubscribeEvent
-    public void suckfuck(RenderWorldLastEvent event)
+    public void onWorldRender(RenderWorldLastEvent event)
     {
         if (mc.player != null && mc.world != null)
         {
@@ -108,7 +107,7 @@ public class FyreHack
     }
 
     @SubscribeEvent
-    public void fuckcuck(Text event)
+    public void onText(Text event)
     {
         if (event.getType().equals(ElementType.TEXT))
         {
@@ -181,7 +180,7 @@ public class FyreHack
 
 
     @SubscribeEvent
-    public void fucksuck(ClientTickEvent event)
+    public void onTick(ClientTickEvent event)
     {
         if (System.currentTimeMillis() - 5000L > this.timer && this.timerStart)
         {

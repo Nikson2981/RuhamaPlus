@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import blu3.FyreHack.utils.Rainbow;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -118,7 +119,7 @@ public class TextWindow
             }
         }
 
-        this.font.drawStringWithShadow(this.title, (float) (this.posX + this.len / 2 - this.font.getStringWidth(this.title) / 2), (float) (this.posY - 9), 7384992);
+        this.font.drawStringWithShadow(this.title, (float) (this.posX + this.len / 2 - this.font.getStringWidth(this.title) / 2), (float) (this.posY - 9), Rainbow.getInt());
 
         if (this.mouseOver(this.posX, this.posY - 10, this.posX + this.len, this.posY + height) && this.lmDown)
         {

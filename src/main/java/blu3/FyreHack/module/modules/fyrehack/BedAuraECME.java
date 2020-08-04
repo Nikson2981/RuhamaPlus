@@ -127,7 +127,6 @@ public class BedAuraECME extends Module
         this.blockpos8 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ + 1.0D); // +z bed
         this.blockpos9 = new BlockPos(player.posX - 1.0D, player.posY + 1.0D, player.posZ); // -x bed
         this.blockpos10 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ - 1.0D); // -z bed
-
         this.blockpos11 = new BlockPos(player.posX + 1.0D, player.posY + 2.0D, player.posZ); // +x upper bed
         this.blockpos12 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ + 1.0D); // +z upper bed
         this.blockpos13 = new BlockPos(player.posX - 1.0D, player.posY + 2.0D, player.posZ); // -x upper bed

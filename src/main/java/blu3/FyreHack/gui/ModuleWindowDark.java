@@ -1,10 +1,12 @@
 package blu3.FyreHack.gui;
 
+import blu3.FyreHack.utils.Rainbow;
 import blu3.FyreHack.module.Module;
 import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingMode;
 import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.settings.SettingToggle;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.math.MathHelper;
@@ -20,6 +22,8 @@ import java.util.regex.Pattern;
 
 public class ModuleWindowDark extends ModuleWindow
 {
+
+
     public ModuleWindowDark(List<Module> mods, String name, int len, int posX, int posY)
     {
         super(mods, name, len, posX, posY);
@@ -33,8 +37,8 @@ public class ModuleWindowDark extends ModuleWindow
         this.len = leng;
         this.font = Minecraft.getMinecraft().fontRenderer;
 
-        GuiScreen.drawRect(this.posX, this.posY - 10, this.posX + this.len, this.posY, this.mouseOver(this.posX, this.posY - 10, this.posX + this.len, this.posY) ? -1877995504 : -1875890128);
-        this.font.drawStringWithShadow(this.name, (float) (this.posX + this.len / 2 - this.font.getStringWidth(this.name) / 2), (float) (this.posY - 9), 7384992);
+        //GuiScreen.drawRect(this.posX, this.posY - 10, this.posX + this.len, this.posY, this.mouseOver(this.posX, this.posY - 10, this.posX + this.len, this.posY) ? -1877995504 : -1875890128);
+        this.font.drawStringWithShadow(this.name, (float) (this.posX + this.len / 2 - this.font.getStringWidth(this.name) / 2), (float) (this.posY - 9), Rainbow.getInt());
 
         if (this.mouseOver(this.posX, this.posY - 10, this.posX + this.len, this.posY) && this.lmDown)
         {
@@ -64,9 +68,9 @@ public class ModuleWindowDark extends ModuleWindow
 
             try
             {
-                GuiScreen.drawRect(this.posX, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14, this.mouseOver(this.posX, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14) ? 1882206320 : 1879048192);
+                //GuiScreen.drawRect(this.posX, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14, this.mouseOver(this.posX, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14) ? 1882206320 : 1879048192);
                 this.font.drawStringWithShadow(this.cutText(((Module) m.getKey()).getName(), this.len), (float) (this.posX + 2), (float) (this.posY + 3 + count * 14), ((Module) m.getKey()).isToggled() ? 7401440 : 12632256);
-                GuiScreen.drawRect((Boolean) m.getValue() ? this.posX + this.len - 2 : this.posX + this.len - 1, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14, (Boolean) m.getValue() ? -1619984400 : 1601241072);
+                //GuiScreen.drawRect((Boolean) m.getValue() ? this.posX + this.len - 2 : this.posX + this.len - 1, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14, (Boolean) m.getValue() ? -1619984400 : 1601241072);
 
                 if (this.mouseOver(this.posX, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14))
                 {
@@ -80,7 +84,7 @@ public class ModuleWindowDark extends ModuleWindow
 
                     while (mat.find())
                     {
-                        GuiScreen.drawRect(this.posX + this.len + 3, this.posY - 1 + count * 14 - c2 * 10 + c3 * 10, this.posX + this.len + 6 + this.font.getStringWidth(mat.group().trim()), this.posY + count * 14 - c2 * 10 + c3 * 10 + 9, -1879048144);
+                        //GuiScreen.drawRect(this.posX + this.len + 3, this.posY - 1 + count * 14 - c2 * 10 + c3 * 10, this.posX + this.len + 6 + this.font.getStringWidth(mat.group().trim()), this.posY + count * 14 - c2 * 10 + c3 * 10 + 9, -1879048144);
                         this.font.drawStringWithShadow(mat.group(), (float) (this.posX + this.len + 5), (float) (this.posY + count * 14 - c2 * 10 + c3 * 10), -1);
 
                         ++c3;
@@ -101,7 +105,7 @@ public class ModuleWindowDark extends ModuleWindow
 
                 if ((Boolean) m.getValue())
                 {
-                    for (Iterator i = ((Module) m.getKey()).getSettings().iterator(); i.hasNext(); GuiScreen.drawRect(this.posX + this.len - 1, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14, -1619984400))
+                    for (Iterator i = ((Module) m.getKey()).getSettings().listIterator(); i.hasNext();)
                     {
                         SettingBase s = (SettingBase) i.next();
 
@@ -126,7 +130,7 @@ public class ModuleWindowDark extends ModuleWindow
                     ++count;
 
                     this.drawBindSetting((Module) m.getKey(), this.keyDown, this.posX, this.posY + count * 14);
-                    GuiScreen.drawRect(this.posX + this.len - 1, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14, -1619984400);
+                    //GuiScreen.drawRect(this.posX + this.len - 1, this.posY + count * 14, this.posX + this.len, this.posY + 14 + count * 14, -1619984400);
                 }
 
                 ++count;
@@ -141,6 +145,13 @@ public class ModuleWindowDark extends ModuleWindow
                 }
             }
         }
+        int x2 = this.posX + this.len;
+        int y2 = this.posY + count * 14;
+        GuiScreen.drawRect(this.posX, this.posY - 10, this.posX + 1, y2, Rainbow.getInt());
+        GuiScreen.drawRect(this.posX, y2, x2, y2 + 1, Rainbow.getInt());
+        GuiScreen.drawRect(x2, this.posY - 10, this.posX, this.posY - 11, Rainbow.getInt());
+        GuiScreen.drawRect(x2, y2, x2 + 1, this.posY - 11, Rainbow.getInt());
+
 
         this.lmDown = false;
         this.rmDown = false;
@@ -183,26 +194,26 @@ public class ModuleWindowDark extends ModuleWindow
     public void drawToggleSetting(SettingToggle s, int x, int y)
     {
         int color;
-        String color2;
+        ChatFormatting color2;
         if (s.state)
         {
             if (this.mouseOver(x, y, x + this.len, y + 14))
             {
                 color = -1876885728;
-                color2 = "\u00a72";
+                color2 = ChatFormatting.DARK_GREEN;
             } else
             {
                 color = 1881210656;
-                color2 = "\u00a7a";
+                color2 = ChatFormatting.GREEN;
             }
         } else if (this.mouseOver(x, y, x + this.len, y + 14))
         {
             color = -1862328288;
-            color2 = "\u00a74";
+            color2 = ChatFormatting.DARK_RED;
         } else
         {
             color = 1895768096;
-            color2 = "\u00a7c";
+            color2 = ChatFormatting.RED;
         }
 
         GuiScreen.drawRect(x, y, x + this.len, y + 14, 1879048192);

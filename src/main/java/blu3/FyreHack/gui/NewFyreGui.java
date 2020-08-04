@@ -42,7 +42,7 @@ public class NewFyreGui extends GuiScreen
     {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        this.fontRenderer.drawStringWithShadow("Fyre Hack", 2.0F, 2.0F, 3166352);
+        this.fontRenderer.drawStringWithShadow("Fyre Hack 0.2", 2.0F, 2.0F, 3166352);
 
         Iterator tabsIter = this.tabs.iterator();
 
