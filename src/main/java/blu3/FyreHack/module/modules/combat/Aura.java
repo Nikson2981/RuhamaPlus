@@ -5,12 +5,14 @@ import blu3.FyreHack.module.Module;
 import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.settings.SettingToggle;
+import blu3.FyreHack.utils.FyreLogger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -90,5 +92,13 @@ public class Aura extends Module
                 this.delay = 0;
             }
         }
+    }
+    public void onEnable(){
+        this.delay = 0;
+        FyreLogger.log("Aura was " + TextFormatting.GREEN + "enabled");
+    }
+
+    public void onDisable(){
+        FyreLogger.log("Aura was " + TextFormatting.RED + "disabled");
     }
 }

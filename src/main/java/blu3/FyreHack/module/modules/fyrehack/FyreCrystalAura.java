@@ -7,6 +7,7 @@ import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.settings.SettingToggle;
 import blu3.FyreHack.utils.FyreLogger;
 import blu3.FyreHack.utils.RenderUtils;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class FyreCrystalAura extends Module
 {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "AutoSwitch"), new SettingToggle(true, "Players"), new SettingToggle(false, "Mobs"), new SettingToggle(false, "Animals"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"), new SettingToggle(true, "Chat Alert"), new SettingToggle(false, "Anti Weakness"), new SettingToggle(false, "Slow"), new SettingToggle(false, "Rotate"), new SettingToggle(false, "RayTrace"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "HitRange: "), new SettingSlider(0.0D, 20.0D, 1.0D, 0, "Hit Delay"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "PlaceRange: "), new SettingSlider(0.0D, 20.0D, 0.5D, 5, "MinDamage: "));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "AutoSwitch"), new SettingToggle(true, "Players"), new SettingToggle(false, "Mobs"), new SettingToggle(false, "Animals"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"), new SettingToggle(true, "Chat Alert"), new SettingToggle(false, "Anti Weakness"), new SettingToggle(false, "Slow"), new SettingToggle(false, "Rotate"), new SettingToggle(false, "RayTrace"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "HitRange: "), new SettingSlider(0.0D, 20.0D, 1.0D, 0, "Hit Delay"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "PlaceRange: "), new SettingSlider(0.0D, 20.0D, 0.5D, 5, "MinDamage: "), new SettingToggle(false, "DisableIfEating"));
 
     /*
 
@@ -52,6 +53,7 @@ public class FyreCrystalAura extends Module
     12 = hit delay
     13 = placerange
     14 = mindamage
+    14 = disableifeating
 
     */
 
@@ -74,10 +76,10 @@ public class FyreCrystalAura extends Module
 
     public void onUpdate()
     {
-        if (this.getSettings().get(0).toToggle().state) {
-            if (this.mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE || this.mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_PICKAXE) {
+        if (this.getSettings().get(15).toToggle().state) {
+            if (this.mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE) {
                 this.setToggled(false);
-                FyreLogger.log("Found gapple or pickaxe in mainhand. Disabling");
+                FyreLogger.log("Found gapple in mainhand." + ChatFormatting.RED + " Disabling...");
             }
         }
 
@@ -226,7 +228,7 @@ public class FyreCrystalAura extends Module
                 {
                     if (!entityIter.hasNext())
                     {
-                        if (damage <= this.getSettings().get(14).toSlider().getValue())
+                        if (damage >= this.getSettings().get(14).toSlider().getValue())
                         {
                             this.render = null;
                             if (this.getSettings().get(9).toToggle().state)

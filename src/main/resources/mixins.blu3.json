@@ -1,12 +1,13 @@
 {
   "required": true,
   "compatibilityLevel": "JAVA_8",
-  "package": "bleach.a32k.mixin.mixins",
-  "refmap": "mixins.a32k.refmap.json",
+  "package": "blu3.FyreHack.mixin.mixins",
+  "refmap": "mixins.FyreHack.refmap.json",
   "mixins": [
   	"MixinContainerGui",
   	"MixinNettyDecoder",
   	"MixinPacketRead",
-  	"MixinPacketSend"
+  	"MixinPacketSend",
+    "MixinGuiMainMenu"
    ]
 }

@@ -69,17 +69,11 @@ public class BedAuraECME extends Module
         return entity != null && this.isInBlockRange(entity) && entity.getHealth() > 0.0F && !entity.isDead;
     }
 
-
-    boolean moving = false;
-
     double delay;
     public void onUpdate() {
 
-
         //click any nearby beds
         this.clickBed();
-
-
 
         if (!this.mc.player.isHandActive()) {
             if (!this.isValid(this.target) || this.target == null) {

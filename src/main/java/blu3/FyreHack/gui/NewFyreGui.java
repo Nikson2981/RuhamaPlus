@@ -25,6 +25,7 @@ public class NewFyreGui extends GuiScreen
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.EXPLOITS), "Exploits", 70, 255, 35));
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.FYREHACK), "Fyre Hack", 70, 330, 35));
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.CHAT), "Chat", 70, 405, 35));
+        //this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.PLAYER), "Player", 70, 485, 35));
 
         for (Module m : ModuleManager.getModules())
         {

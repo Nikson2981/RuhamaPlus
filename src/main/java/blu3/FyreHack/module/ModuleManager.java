@@ -1,15 +1,11 @@
 package blu3.FyreHack.module;
 
 import blu3.FyreHack.module.modules.chat.ChatSuffix;
-import blu3.FyreHack.module.modules.chat.ImpactMinus;
 import blu3.FyreHack.module.modules.combat.*;
 import blu3.FyreHack.module.modules.exploits.AntiChunkBan;
 import blu3.FyreHack.module.modules.exploits.Crasher;
 import blu3.FyreHack.module.modules.exploits.ThunderHack;
-import blu3.FyreHack.module.modules.fyrehack.BedAuraECME;
-import blu3.FyreHack.module.modules.fyrehack.CrystalAuraECME;
-import blu3.FyreHack.module.modules.fyrehack.FyreCrystalAura;
-import blu3.FyreHack.module.modules.fyrehack.RuhamaCrystalAura;
+import blu3.FyreHack.module.modules.fyrehack.*;
 import blu3.FyreHack.module.modules.misc.*;
 import blu3.FyreHack.module.modules.render.*;
 import net.minecraft.client.Minecraft;
@@ -24,6 +20,8 @@ public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
             new CrystalAuraECME(),
+            new Hud(),
+            new AutoWasp(),
             new Aura(),
             new BedAuraECME(),
             new AntiChunkBan(),
@@ -58,8 +56,7 @@ public class ModuleManager
             new TreeAura(),
             new TunnelESP(),
             new Welcomer(),
-            new FyreCrystalAura(),
-            new ImpactMinus());
+            new FyreCrystalAura());
 
    public static List<Module> getModules()
     {

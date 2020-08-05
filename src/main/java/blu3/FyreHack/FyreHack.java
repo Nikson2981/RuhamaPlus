@@ -90,7 +90,6 @@ public class FyreHack
         ClientCommandHandler.instance.registerCommand(new InvSorterCmd());
         ClientCommandHandler.instance.registerCommand(new StashFinderCmd());
         ClientCommandHandler.instance.registerCommand(new EntityDesyncCmd());
-        ClientCommandHandler.instance.registerCommand(new AutoWaspCmd());
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
     }
 
@@ -163,18 +162,6 @@ public class FyreHack
 
             mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());
             mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u0493\u028f\u0280\u1d07 \u029c\u1d00\u1d04\u1d0b");
-        }
-    }
-
-    @SubscribeEvent
-    public void impactminus(ClientChatEvent event)
-    {
-        if (Objects.requireNonNull(ModuleManager.getModuleByName("ImpactMinus") ).isToggled() && !event.getMessage().contains("impactminus") && !event.getMessage().startsWith("/"))
-        {
-            event.setCanceled(true);
-
-            mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());
-            mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u04C0\u043C\u0440\u1d00\u1d04\u0442 \u043C\u0456\u043F\u045F\u0455");
         }
     }
 

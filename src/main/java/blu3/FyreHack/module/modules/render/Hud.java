@@ -37,7 +37,7 @@ public class Hud extends Module {
         int height = 2;
 
         if (this.getSettings().get(0).toToggle().state) {
-            mc.fontRenderer.drawString("Fern b1", 2, height, Rainbow.getInt());
+            mc.fontRenderer.drawString("Fyre Hack 0.2", 2, height, Rainbow.getInt());
             height+=10;
         }
 

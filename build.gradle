@@ -28,14 +28,14 @@ compileJava {
 minecraft {
     version = '1.12.2-14.23.5.2847'
     runDir = 'run'
-    coreMod = 'bleach.a32k.mixin.MixinLoader'
+    coreMod = 'blu3.FyreHack.mixin.MixinLoader'
 
     mappings = 'stable_39'
 }
 
 jar.manifest.attributes(
         'FMLCorePluginContainsFMLMod': true,
-        'FMLCorePlugin': 'bleach.a32k.mixin.MixinLoader',
+        'FMLCorePlugin': 'blu3.FyreHack.mixin.MixinLoader',
         'ForceLoadAsMod': true,
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
 )
@@ -50,7 +50,7 @@ dependencies {
 }
 
 mixin {
-    add sourceSets.main, 'mixins.a32k.refmap.json'
+    add sourceSets.main, 'mixins.FyreHack.refmap.json'
 }
 
 shadowJar {
