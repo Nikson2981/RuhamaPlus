@@ -22,6 +22,7 @@ public class ModuleManager
             new CrystalAuraECME(),
             new Hud(),
             new AutoWasp(),
+            new AirBedPlace(),
             new Aura(),
             new BedAuraECME(),
             new AntiChunkBan(),
