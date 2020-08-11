@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AutoWasp extends Module {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingSlider(0.1D, 4.0D, 1.35D, 2, "Range: "));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingSlider(0.1D, 50.0D, 25.0D, 2, "Range: "));
 
     public AutoWasp() {
         super("WaspAim", 0, Category.FYREHACK, "Automatically aims at either the closest player or whoever you chose", settings);

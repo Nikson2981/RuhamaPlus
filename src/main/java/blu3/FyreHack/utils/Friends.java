@@ -1,30 +1,30 @@
 package blu3.FyreHack.utils;
 
-import blu3.FyreHack.settings.Setting;
-import blu3.FyreHack.settings.SettingBase;
-
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.List;
 
 public class Friends {
-    public static final Friends INSTANCE = new Friends();
+    List<String> names = new ArrayList<>();
+    public Friends() {
+        try {
+            List<String> friends = FileMang.readFileLines("friends.txt");
+            BufferedReader in = new BufferedReader(new InputStreamReader((InputStream) friends.stream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                names.add(inputLine);
+                FyreLogger.log(inputLine);
+            }
+        } catch (Exception e) {}
+    }
 
-    public static Setting<ArrayList<Friend>> friends;
-
-    public static boolean isFriend(String name) {
-        return friends.getValue().stream().anyMatch(friend -> friend.username.equalsIgnoreCase(name));
+    public boolean isFriend(String name){
+        return names.contains(name);
     }
 
 
-    public static class Friend {
-        String username;
 
-        public Friend(String username) {
-            this.username = username;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-    }
+    // how 2 friends: FyreHack.getInstance().friends.isFriend(username)
 }

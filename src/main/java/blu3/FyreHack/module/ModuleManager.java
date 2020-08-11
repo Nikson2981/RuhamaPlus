@@ -20,6 +20,7 @@ public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
             new CrystalAuraECME(),
+            new AutoBedCrafter(),
             new Hud(),
             new AutoWasp(),
             new AirBedPlace(),

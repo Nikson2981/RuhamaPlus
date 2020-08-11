@@ -11,6 +11,7 @@ import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingMode;
 import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.utils.FileMang;
+import blu3.FyreHack.utils.Friends;
 import blu3.FyreHack.utils.Rainbow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -49,6 +50,18 @@ public class FyreHack
 
     private long timer = 0L;
     private boolean timerStart = false;
+    public Friends friends;
+
+
+@Mod.Instance private static FyreHack INSTANCE;
+
+public FyreHack() { INSTANCE = this;}
+
+    public static FyreHack getInstance(){
+        return INSTANCE;
+    }
+
+
 
     @EventHandler
     public void init(FMLInitializationEvent event)
@@ -65,6 +78,7 @@ public class FyreHack
         FileMang.readClickGui();
         FileMang.readBinds();
         FileMang.createFile("friends.txt");
+        FileMang.readFriends();
 
         for (Module m : ModuleManager.getModules())
         {
@@ -91,6 +105,7 @@ public class FyreHack
         ClientCommandHandler.instance.registerCommand(new StashFinderCmd());
         ClientCommandHandler.instance.registerCommand(new EntityDesyncCmd());
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
+        friends = new Friends();
     }
 
     @SubscribeEvent

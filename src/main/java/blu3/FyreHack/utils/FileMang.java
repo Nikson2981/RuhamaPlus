@@ -384,4 +384,8 @@ public class FileMang
             }
         }
     }
+    public static List<String> readFriends(){
+        List<String> friends = readFileLines("friends.txt");
+        return friends;
+    }
 }

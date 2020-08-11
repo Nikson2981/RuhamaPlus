@@ -33,7 +33,20 @@ import java.util.stream.Collectors;
 
 public class CrystalAuraECME extends Module
 {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "AutoSwitch"), new SettingToggle(true, "Players"), new SettingToggle(false, "Mobs"), new SettingToggle(false, "Animals"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"), new SettingToggle(false, "Chat Alert"), new SettingToggle(false, "Anti Weakness"), new SettingToggle(false, "Slow"), new SettingToggle(false, "Rotate"), new SettingToggle(false, "RayTrace"), new SettingSlider(0.0D, 6.0D, 4.25D, 2, "Range: "));
+    private static final List<SettingBase> settings = Arrays.asList(
+            new SettingToggle(true, "AutoSwitch"), // 0
+            new SettingToggle(true, "Players"), // 1
+            new SettingToggle(false, "Mobs"), // 2
+            new SettingToggle(false, "Animals"), // 3
+            new SettingToggle(true, "Place"), // 4
+            new SettingToggle(true, "Explode"), // 5
+            new SettingToggle(false, "Chat Alert"), // 6
+            new SettingToggle(false, "Anti Weakness"), // 7
+            new SettingToggle(false, "Slow"), // 8
+            new SettingToggle(false, "Rotate"), // 9
+            new SettingToggle(false, "RayTrace"), // 10
+            new SettingSlider(0.0D, 6.0D, 4.25D, 2, "Range: ") // 11
+    );
 
     private BlockPos render;
 
@@ -99,6 +112,7 @@ public class CrystalAuraECME extends Module
 
             this.mc.playerController.attackEntity(this.mc.player, crystal);
             this.mc.player.swingArm(EnumHand.MAIN_HAND);
+
 
             ++this.breaks;
 

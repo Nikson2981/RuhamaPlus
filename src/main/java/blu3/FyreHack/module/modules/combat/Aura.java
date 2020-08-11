@@ -6,6 +6,7 @@ import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.settings.SettingToggle;
 import blu3.FyreHack.utils.FyreLogger;
+import blu3.FyreHack.utils.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSword;
@@ -13,6 +14,7 @@ import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -21,7 +23,7 @@ import java.util.Random;
 
 public class Aura extends Module
 {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "WeaponFilter"), new SettingToggle(true, "1.9 Delay"), new SettingToggle(true, "Thru Walls"), new SettingToggle(true, "Crits"), new SettingSlider(0.0D, 6.0D, 4.5D, 2, "Range: "), new SettingSlider(0.0D, 20.0D, 8.0D, 0, "CPS: "));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "WeaponFilter"), new SettingToggle(true, "1.9 Delay"), new SettingToggle(true, "Thru Walls"), new SettingToggle(true, "Crits"), new SettingSlider(0.0D, 6.0D, 4.5D, 2, "Range: "), new SettingSlider(0.0D, 20.0D, 8.0D, 0, "CPS: "), new SettingToggle(false, "Aimbot"));
     private int delay = 0;
 
     public Aura()
@@ -85,6 +87,9 @@ public class Aura extends Module
                     }
                 }
 
+                if (this.getSettings().get(6).toToggle().state){
+                    WorldUtils.rotateClient(e.posX, e.posY, e.posZ);
+                }
                 this.mc.player.connection.sendPacket(new CPacketUseEntity(e, EnumHand.MAIN_HAND));
                 this.mc.playerController.attackEntity(this.mc.player, e);
                 this.mc.player.swingArm(EnumHand.MAIN_HAND);

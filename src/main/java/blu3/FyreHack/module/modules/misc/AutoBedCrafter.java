@@ -6,6 +6,7 @@ import blu3.FyreHack.utils.FyreLogger;
 import blu3.FyreHack.utils.WorldUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -17,6 +18,8 @@ public class AutoBedCrafter extends Module {
         super("AutoBedCrafter", 0, Category.MISC, "Automatically places a crafting table, and crafts beds", null);
     }
 
+    private int stage;
+
     @Override
     public void onUpdate() {
         if (mc.currentScreen instanceof GuiContainer) return;
@@ -25,31 +28,46 @@ public class AutoBedCrafter extends Module {
         int woodSlot = -1;
         int woolSlot = -1;
 
-        if (this.mc.player.inventory.getItemStack().isEmpty()) {
-            for (int i = 0; i < 9; i++) if (this.mc.player.inventory.getStackInSlot(i).getItem() == Item.getItemFromBlock(Blocks.CRAFTING_TABLE)) {
-                tableSlot = i;
-                break;
+        if (this.stage == 0) {
+
+            if (this.mc.player.inventory.getItemStack().isEmpty()) {
+                for (int i = 0; i < 9; i++)
+                    if (this.mc.player.inventory.getStackInSlot(i).getItem() == Item.getItemFromBlock(Blocks.CRAFTING_TABLE)) {
+                        tableSlot = i;
+                        break;
+                    }
+                for (int i = 0; i < 9; i++)
+                    if (this.mc.player.inventory.getStackInSlot(i).getItem() == Item.getItemFromBlock(Blocks.PLANKS)) {
+                        if (mc.player.inventory.getStackInSlot(i).getCount() >= 3) woodSlot = i;
+                        break;
+                    }
+                for (int i = 0; i < 9; i++)
+                    if (this.mc.player.inventory.getStackInSlot(i).getItem() == Item.getItemFromBlock(Blocks.WOOL)) {
+                        if (mc.player.inventory.getStackInSlot(i).getCount() >= 3) woolSlot = i;
+                        break;
+                    }
             }
-            for (int i = 0; i < 9; i++) if (this.mc.player.inventory.getStackInSlot(i).getItem() == Item.getItemFromBlock(Blocks.PLANKS)) {
-                if (mc.player.inventory.getStackInSlot(i).getCount() >= 3) woodSlot = i;
-                break;
-            }
-            for (int i = 0; i < 9; i++) if (this.mc.player.inventory.getStackInSlot(i).getItem() == Item.getItemFromBlock(Blocks.WOOL)) {
-                if (mc.player.inventory.getStackInSlot(i).getCount() >= 3) woolSlot = i;
-                break;
-            }
+
+            if (tableSlot != -1) FyreLogger.log("Crafting table slot: " + tableSlot);
+            if (woodSlot != -1) FyreLogger.log("Wooden planks slot: " + woodSlot);
+            if (woolSlot != -1) FyreLogger.log("Wool slot: " + woolSlot);
+
+            RayTraceResult ray = this.mc.player.rayTrace(5.0D, this.mc.getRenderPartialTicks());
+            BlockPos pos = Objects.requireNonNull(ray).getBlockPos().up();
+
+            WorldUtils.placeBlock(pos, tableSlot, true, false);
+            WorldUtils.openBlock(pos);
+            this.stage = 1;
         }
 
-        if (tableSlot != -1) FyreLogger.log("Crafting table slot: " + tableSlot);
-        if (woodSlot != -1) FyreLogger.log("Wooden planks slot: " + woodSlot);
-        if (woolSlot != -1) FyreLogger.log("Wool slot: " + woolSlot);
-
-        RayTraceResult ray = this.mc.player.rayTrace(5.0D, this.mc.getRenderPartialTicks());
-        BlockPos pos = Objects.requireNonNull(ray).getBlockPos().up();
-
-        WorldUtils.placeBlock(pos, tableSlot, true, false);
-        WorldUtils.openBlock(pos);
+        if (this.stage == 1) {
+            this.mc.playerController.windowClick(mc.player.openContainer.windowId, 4, woodSlot, ClickType.SWAP, mc.player);
+        }
 
         setToggled(false);
+    }
+
+    public void onEnable() {
+        this.stage = 0;
     }
 }

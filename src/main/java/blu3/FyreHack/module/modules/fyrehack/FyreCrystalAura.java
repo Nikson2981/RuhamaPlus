@@ -7,6 +7,7 @@ import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.settings.SettingToggle;
 import blu3.FyreHack.utils.FyreLogger;
 import blu3.FyreHack.utils.RenderUtils;
+import blu3.FyreHack.utils.WorldUtils;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class FyreCrystalAura extends Module
 {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "AutoSwitch"), new SettingToggle(true, "Players"), new SettingToggle(false, "Mobs"), new SettingToggle(false, "Animals"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"), new SettingToggle(true, "Chat Alert"), new SettingToggle(false, "Anti Weakness"), new SettingToggle(false, "Slow"), new SettingToggle(false, "Rotate"), new SettingToggle(false, "RayTrace"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "HitRange: "), new SettingSlider(0.0D, 20.0D, 1.0D, 0, "Hit Delay"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "PlaceRange: "), new SettingSlider(0.0D, 20.0D, 0.5D, 5, "MinDamage: "), new SettingToggle(false, "DisableIfEating"));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "AutoSwitch"), new SettingToggle(true, "Players"), new SettingToggle(false, "Mobs"), new SettingToggle(false, "Animals"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"), new SettingToggle(true, "Chat Alert"), new SettingToggle(false, "Anti Weakness"), new SettingToggle(false, "Slow"), new SettingToggle(false, "Rotate"), new SettingToggle(false, "RayTrace"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "HitRange: "), new SettingSlider(0.0D, 20.0D, 1.0D, 0, "Hit Delay"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "PlaceRange: "), new SettingSlider(0.0D, 20.0D, 0.5D, 5, "MinDamage (useless): "), new SettingToggle(false, "DisableIfEating"), new SettingToggle(false, "Rotate Client"));
 
     /*
 
@@ -53,7 +54,9 @@ public class FyreCrystalAura extends Module
     12 = hit delay
     13 = placerange
     14 = mindamage
-    14 = disableifeating
+    15 = disableifeating
+    16 = rotate client
+
 
     */
 
@@ -127,14 +130,19 @@ public class FyreCrystalAura extends Module
 
             this.lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, this.mc.player);
 
+            if(this.getSettings().get(16).toToggle().state) {
+                WorldUtils.rotateClient(crystal.posX, crystal.posY + 1.0D, crystal.posZ);
+            }
+
             this.delay++;
 
             if (this.delay >= this.getSettings().get(12).toSlider().getValue()) {
 
-                this.mc.playerController.attackEntity(this.mc.player, crystal);
-                this.mc.player.swingArm(EnumHand.MAIN_HAND);
-                this.delay = 0;
 
+                    this.mc.playerController.attackEntity(this.mc.player, crystal);
+                    this.mc.player.swingArm(EnumHand.MAIN_HAND);
+
+                this.delay = 0;
             }
 
             ++this.breaks;
@@ -228,7 +236,7 @@ public class FyreCrystalAura extends Module
                 {
                     if (!entityIter.hasNext())
                     {
-                        if (damage >= this.getSettings().get(14).toSlider().getValue())
+                        if (damage == 0.5D)
                         {
                             this.render = null;
                             if (this.getSettings().get(9).toToggle().state)
@@ -263,6 +271,9 @@ public class FyreCrystalAura extends Module
 
                             this.lookAtPacket((double) q.getX() + 0.5D, (double) q.getY() - 0.5D, (double) q.getZ() + 0.5D, this.mc.player);
                             EnumFacing f;
+                            if(this.getSettings().get(16).toToggle().state) {
+                                WorldUtils.rotateClient((double) q.getX() + 0.5D, (double) q.getY() - 0.5D, (double) q.getZ() + 0.5D);
+                            }
 
                             if (!this.getSettings().get(10).toToggle().state)
                             {
@@ -286,6 +297,7 @@ public class FyreCrystalAura extends Module
                                     return;
                                 }
                             }
+
 
                             this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(q, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0F, 0.0F, 0.0F));
                         }
@@ -395,7 +407,6 @@ public class FyreCrystalAura extends Module
     {
         BlockPos boost = blockPos.add(0, 1, 0);
         BlockPos boost2 = blockPos.add(0, 2, 0);
-
         return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
     }
 
@@ -516,7 +527,7 @@ public class FyreCrystalAura extends Module
 
     public void onEnable()
     {
-        this.delay = 0;
+        this.delay = this.getSettings().get(12).toSlider().getValue();
         if (this.getSettings().get(6).toToggle().state)
         {
             FyreLogger.log("FyreCrystalAura: " + TextFormatting.GREEN + "ON!");

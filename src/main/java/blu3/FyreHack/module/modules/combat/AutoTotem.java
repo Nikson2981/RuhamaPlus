@@ -14,12 +14,12 @@ import java.util.List;
 
 public class AutoTotem extends Module
 {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(false, "Offhand"), new SettingToggle(true, "Hotbar"), new SettingToggle(true, "Delay"), new SettingSlider(0.0D, 2.0D, 0.25D, 3, "Delay: "));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Offhand"), new SettingToggle(false, "Hotbar"), new SettingToggle(true, "Delay"), new SettingSlider(0.0D, 2.0D, 0.25D, 3, "Delay: "));
     private long time = 0L;
 
     public AutoTotem()
     {
-        super("AutoTotem", 0, Category.COMBAT, "Automatically places totems in yout first slot", settings);
+        super("AutoTotem", 0, Category.COMBAT, "Automatically places totems in your offhand", settings);
     }
 
     public void onUpdate()
