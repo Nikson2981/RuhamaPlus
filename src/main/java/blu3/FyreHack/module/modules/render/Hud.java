@@ -9,6 +9,7 @@ import blu3.FyreHack.utils.Rainbow;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Arrays;
@@ -20,6 +21,8 @@ public class Hud extends Module {
 
     public Hud() {super("Hud", Keyboard.KEY_NONE, Category.RENDER, "Shows stuff onscreen.", settings);}
 
+    public int height = 2;
+
     @Override
     public void onEnable() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -30,11 +33,18 @@ public class Hud extends Module {
         MinecraftForge.EVENT_BUS.unregister(this);
     }
 
+    public static int rgb;
+
+    @SubscribeEvent
+    public void onTick(TickEvent event) {
+        rgb+=1;
+    }
+
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent event) {
         if (event.getType() != RenderGameOverlayEvent.ElementType.TEXT) return;
 
-        int height = 2;
+        height = 2;
 
         if (this.getSettings().get(0).toToggle().state) {
             mc.fontRenderer.drawString("Fyre Hack 0.2", 2, height, Rainbow.getInt());

@@ -221,7 +221,7 @@ public class FyreCrystalAura extends Module
         entities.addAll(this.mc.world.loadedEntityList.stream().filter((entityx) -> entityx instanceof EntityAnimal ? this.getSettings().get(3).toToggle().state : this.getSettings().get(2).toToggle().state).collect(Collectors.toList()));
         BlockPos q = null;
 
-        double damage = 0.5;
+        double damage = 0.5D;
 
         Iterator<Entity> entityIter = entities.iterator();
 

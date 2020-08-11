@@ -13,6 +13,6 @@ public class MixinGuiMainMenu extends GuiScreen {
 
     @Inject(method = "drawScreen", at = @At("TAIL"), cancellable = true)
     public void drawText(int mouseX, int mouseY, float partialTicks, CallbackInfo ci){
-        this.drawString(this.fontRenderer, "Fern b1", 2, 2, Rainbow.getInt());
+        this.drawString(this.fontRenderer, "Fyre Hack 0.2", 2, 2, Rainbow.getInt());
     }
 }

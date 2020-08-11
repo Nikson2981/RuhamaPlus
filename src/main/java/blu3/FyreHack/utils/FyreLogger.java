@@ -8,6 +8,6 @@ public class FyreLogger
 {
     public static void log(String text)
     {
-        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.AQUA + "Fyre Hack: " + TextFormatting.RESET + text));
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.AQUA + "[Fyre Hack]: " + TextFormatting.RESET + text));
     }
 }
