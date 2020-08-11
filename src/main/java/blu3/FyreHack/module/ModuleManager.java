@@ -58,6 +58,7 @@ public class ModuleManager
             new TreeAura(),
             new TunnelESP(),
             new Welcomer(),
+            new FogColour(),
             new FyreCrystalAura());
 
    public static List<Module> getModules()
