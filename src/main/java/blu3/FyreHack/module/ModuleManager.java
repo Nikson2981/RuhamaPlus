@@ -26,6 +26,7 @@ public class ModuleManager
             new AutoWasp(),
             new AirBedPlace(),
             new Aura(),
+            new Coords(),
             new BedAuraECME(),
             new AntiChunkBan(),
             new Auto32k(),
