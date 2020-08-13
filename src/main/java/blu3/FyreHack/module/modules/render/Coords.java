@@ -1,5 +1,6 @@
 package blu3.FyreHack.module.modules.render;
 
+
 import blu3.FyreHack.gui.AdvancedText;
 import blu3.FyreHack.gui.TextWindow;
 import blu3.FyreHack.module.Category;
