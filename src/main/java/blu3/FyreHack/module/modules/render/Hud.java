@@ -1,11 +1,13 @@
 package blu3.FyreHack.module.modules.render;
 
+import blu3.FyreHack.FyreHack;
 import blu3.FyreHack.module.Category;
 import blu3.FyreHack.module.Module;
 import blu3.FyreHack.module.ModuleManager;
 import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingToggle;
 import blu3.FyreHack.utils.Rainbow;
+import com.mojang.realmsclient.client.Ping;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,9 +19,23 @@ import java.util.List;
 
 public class Hud extends Module {
 
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Watermark"), new SettingToggle(true, "ArrayList"), new SettingToggle(true, "ServerIP"));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Watermark"),
+            new SettingToggle(true, "ArrayList"),
+            new SettingToggle(true, "ServerIP"),
+            new SettingToggle(true, "Ping"));
 
     public Hud() {super("Hud", Keyboard.KEY_NONE, Category.RENDER, "Shows stuff onscreen.", settings);}
+
+    public int getPing() {
+        int p = -1;
+        if (this.mc.player == null || this.mc.getConnection() == null || this.mc.getConnection().getPlayerInfo(this.mc.player.getName()) == null) {
+            p = -1;
+        }
+        else {
+            p = this.mc.getConnection().getPlayerInfo(this.mc.player.getName()).getResponseTime();
+        }
+        return p;
+    }
 
     public int height = 2;
 
@@ -61,10 +77,17 @@ public class Hud extends Module {
 
             height+=10;
         }
+
+        if (this.getSettings().get(2).toToggle().state) {
+            mc.fontRenderer.drawString("Ping: " + this.getPing() + "ms", 2, height, Rainbow.getInt());
+            height+=10;
+        }
+
         for (Module m: ModuleManager.getModules()) if (m.isToggled() && this.getSettings().get(1).toToggle().state) {
             if (m.getName() == "Hud") return;
             mc.fontRenderer.drawString(m.getName(), 2, height, Rainbow.getInt());
             height+=10;
         }
     }
+
 }

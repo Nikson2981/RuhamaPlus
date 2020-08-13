@@ -59,12 +59,11 @@ public class BedAuraECME extends Module {
 
     public BedAuraECME() {
         super("BedAura", 0, Category.FYREHACK, "1.13 BedAura", settings);
-        //bruh
         this.timerDelay = new Timer();
     }
 
     public boolean isInBlockRange(Entity target) {
-        return target.getDistance(this.mc.player) <= (float) this.getSettings().get(2).toSlider().getValue();
+        return target.getDistance(this.mc.player) <= 10.0F;
     }
 
     public boolean isValid(EntityPlayer entity) {
@@ -288,7 +287,7 @@ public class BedAuraECME extends Module {
         FyreLogger.log("BedAura:" + TextFormatting.RED + " DISABLED!");
         this.target = null;
         this.beds.clear();
-
+        this.timerDelay.reset();
     }
 
     public void updateTarget() {

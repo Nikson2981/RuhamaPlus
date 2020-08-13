@@ -62,10 +62,6 @@ public FyreHack() { INSTANCE = this;}
         return INSTANCE;
     }
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        DiscordPresence.start();
-    }
 
     @EventHandler
     public void init(FMLInitializationEvent event)
@@ -109,6 +105,7 @@ public FyreHack() { INSTANCE = this;}
         ClientCommandHandler.instance.registerCommand(new InvSorterCmd());
         ClientCommandHandler.instance.registerCommand(new StashFinderCmd());
         ClientCommandHandler.instance.registerCommand(new EntityDesyncCmd());
+        ClientCommandHandler.instance.registerCommand(new LoginCmd());
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
         friends = new Friends();
     }

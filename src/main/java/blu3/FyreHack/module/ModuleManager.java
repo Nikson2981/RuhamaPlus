@@ -22,6 +22,7 @@ public class ModuleManager
             new CrystalAuraECME(),
             new AutoBedCrafter(),
             new Hud(),
+            new Coords(),
             new AutoWasp(),
             new AirBedPlace(),
             new Aura(),

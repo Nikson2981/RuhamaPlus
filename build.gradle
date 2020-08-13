@@ -47,8 +47,7 @@ repositories {
 
 dependencies {
     compile 'org.spongepowered:mixin:0.8.1-SNAPSHOT'
-    compile "com.github.ZeroMemes:Alpine:1.5"
-    compile 'com.github.MrPowerGamerBR:TemmieWebhook:-SNAPSHOT'
+
 }
 
 mixin {
@@ -56,10 +55,7 @@ mixin {
 }
 
 shadowJar {
-    dependencies {
-        include(dependency('com.github.ZeroMemes:Alpine'))
-        include(dependency('com.github.MrPowerGamerBR:TemmieWebhook'))
-    }
+
     exclude 'dummyThing'
     exclude 'LICENSE.txt'
 

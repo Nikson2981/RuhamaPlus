@@ -8,3 +8,4 @@ public class ChatSuffix extends Module {
         super("ChatSuffix", 0, Category.CHAT, "show off your fancy new client", null);
     }
 }
+
