@@ -8,5 +8,5 @@ public enum Category
     EXPLOITS,
     FYREHACK,
     CHAT,
-    PLAYER,
+    GUI,
 }

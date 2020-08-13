@@ -1,4 +1,4 @@
-package blu3.FyreHack.module.modules.render;
+package blu3.FyreHack.module.modules.gui;
 
 
 import blu3.FyreHack.gui.AdvancedText;
@@ -13,16 +13,17 @@ public class Coords extends Module {
 
     public Coords()
     {
-        super("Coords", 0, Category.RENDER, "Shows the closest player to you", null);
+        super("Coords", 0, Category.GUI, "Shows the closest player to you", null);
 
         this.getWindows().add(new TextWindow(2, 150, "Coordinates"));
     }
 
-    public int x = (int) this.mc.player.posX;
-    public int y = (int) this.mc.player.posY;
-    public int z = (int) this.mc.player.posZ;
+
 
     public void onOverlay(){
+        int x = (int) this.mc.player.posX;
+        int y = (int) this.mc.player.posY;
+        int z = (int) this.mc.player.posZ;
         this.getWindows().get(0).clearText();
 
 

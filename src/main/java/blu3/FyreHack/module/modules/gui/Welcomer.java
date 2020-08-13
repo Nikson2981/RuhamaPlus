@@ -1,4 +1,4 @@
-package blu3.FyreHack.module.modules.render;
+package blu3.FyreHack.module.modules.gui;
 
 import blu3.FyreHack.gui.AdvancedText;
 import blu3.FyreHack.gui.TextWindow;
@@ -18,7 +18,7 @@ public class Welcomer extends Module
 
     public Welcomer()
     {
-        super("Welcomer", 0, Category.RENDER, "Welcomes you", settings);
+        super("Welcomer", 0, Category.GUI, "Welcomes you", settings);
 
         this.getWindows().add(new TextWindow(50, 12, "Welcomer"));
     }

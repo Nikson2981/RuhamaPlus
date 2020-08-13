@@ -1,4 +1,4 @@
-package blu3.FyreHack.module.modules.render;
+package blu3.FyreHack.module.modules.gui;
 
 import blu3.FyreHack.gui.AdvancedText;
 import blu3.FyreHack.gui.TextWindow;
@@ -21,7 +21,7 @@ public class Gui extends Module
 
     public Gui()
     {
-        super("Gui", 0, Category.RENDER, "The Ingame ruhama gui", settings);
+        super("ArrayList", 0, Category.GUI, "Pretty much... zero.", settings);
 
         this.getWindows().add(new TextWindow(2, 150, "Arraylist"));
     }

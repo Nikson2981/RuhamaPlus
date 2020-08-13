@@ -1,4 +1,4 @@
-package blu3.FyreHack.module.modules.render;
+package blu3.FyreHack.module.modules.gui;
 
 import blu3.FyreHack.FyreHack;
 import blu3.FyreHack.module.Category;
@@ -19,12 +19,13 @@ import java.util.List;
 
 public class Hud extends Module {
 
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Watermark"),
-            new SettingToggle(true, "ArrayList"),
+    private static final List<SettingBase> settings = Arrays.asList(
+            new SettingToggle(true, "Watermark"),
             new SettingToggle(true, "ServerIP"),
-            new SettingToggle(true, "Ping"));
+            new SettingToggle(true, "Ping"),
+            new SettingToggle(true, "Username"));
 
-    public Hud() {super("Hud", Keyboard.KEY_NONE, Category.RENDER, "Shows stuff onscreen.", settings);}
+    public Hud() {super("Hud", Keyboard.KEY_NONE, Category.GUI, "Shows stuff onscreen.", settings);}
 
     public int getPing() {
         int p = -1;
@@ -67,7 +68,7 @@ public class Hud extends Module {
             height+=10;
         }
 
-        if(this.getSettings().get(2).toToggle().state) {
+        if(this.getSettings().get(1).toToggle().state) {
             if (mc.getCurrentServerData() != null && !this.mc.getCurrentServerData().serverIP.equals("")) {
                 mc.fontRenderer.drawString("IP: " + this.mc.getCurrentServerData().serverIP, 2, height, Rainbow.getInt());
             }
@@ -83,11 +84,12 @@ public class Hud extends Module {
             height+=10;
         }
 
-        for (Module m: ModuleManager.getModules()) if (m.isToggled() && this.getSettings().get(1).toToggle().state) {
-            if (m.getName() == "Hud") return;
-            mc.fontRenderer.drawString(m.getName(), 2, height, Rainbow.getInt());
+        if (this.getSettings().get(3).toToggle().state) {
+            mc.fontRenderer.drawString("Logged in as " + this.mc.player.getName(), 2, height, Rainbow.getInt());
             height+=10;
         }
+
+
     }
 
 }

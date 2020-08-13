@@ -1,4 +1,4 @@
-package blu3.FyreHack.module.modules.render;
+package blu3.FyreHack.module.modules.gui;
 
 import blu3.FyreHack.gui.NewFyreGui;
 import blu3.FyreHack.module.Category;
@@ -10,7 +10,7 @@ public class ClickGui extends Module
 
     public ClickGui()
     {
-        super("ClickGui", 0, Category.RENDER, "Clickgui", null);
+        super("ClickGui", 0, Category.GUI, "Clickgui", null);
     }
 
     public void onEnable()

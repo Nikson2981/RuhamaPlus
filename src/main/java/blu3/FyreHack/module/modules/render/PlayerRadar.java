@@ -4,7 +4,7 @@ import blu3.FyreHack.gui.AdvancedText;
 import blu3.FyreHack.gui.TextWindow;
 import blu3.FyreHack.module.Category;
 import blu3.FyreHack.module.Module;
-import blu3.FyreHack.module.modules.render.Gui;
+import blu3.FyreHack.module.modules.gui.Gui;
 import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingToggle;
 import net.minecraft.entity.player.EntityPlayer;

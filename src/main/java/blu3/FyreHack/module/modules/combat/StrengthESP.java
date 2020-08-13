@@ -2,7 +2,7 @@ package blu3.FyreHack.module.modules.combat;
 
 import blu3.FyreHack.module.Category;
 import blu3.FyreHack.module.Module;
-import blu3.FyreHack.module.modules.render.Gui;
+import blu3.FyreHack.module.modules.gui.Gui;
 import blu3.FyreHack.utils.ReflectUtils;
 import blu3.FyreHack.utils.RenderUtils;
 import net.minecraft.client.particle.Particle;

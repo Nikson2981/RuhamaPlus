@@ -6,6 +6,7 @@ import blu3.FyreHack.module.modules.exploits.AntiChunkBan;
 import blu3.FyreHack.module.modules.exploits.Crasher;
 import blu3.FyreHack.module.modules.exploits.ThunderHack;
 import blu3.FyreHack.module.modules.fyrehack.*;
+import blu3.FyreHack.module.modules.gui.*;
 import blu3.FyreHack.module.modules.misc.*;
 import blu3.FyreHack.module.modules.render.*;
 import net.minecraft.client.Minecraft;
@@ -22,11 +23,10 @@ public class ModuleManager
             new CrystalAuraECME(),
             new AutoBedCrafter(),
             new Hud(),
+            new Aura(),
             new Coords(),
             new AutoWasp(),
             new AirBedPlace(),
-            new Aura(),
-            new Coords(),
             new BedAuraECME(),
             new AntiChunkBan(),
             new Auto32k(),

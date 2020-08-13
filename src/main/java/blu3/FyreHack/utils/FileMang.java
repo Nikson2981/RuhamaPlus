@@ -5,7 +5,7 @@ import blu3.FyreHack.gui.NewFyreGui;
 import blu3.FyreHack.gui.TextWindow;
 import blu3.FyreHack.module.Module;
 import blu3.FyreHack.module.ModuleManager;
-import blu3.FyreHack.module.modules.render.ClickGui;
+import blu3.FyreHack.module.modules.gui.ClickGui;
 import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingMode;
 import blu3.FyreHack.settings.SettingSlider;

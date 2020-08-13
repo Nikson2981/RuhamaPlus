@@ -24,7 +24,7 @@ public class LoginCmd extends CommandBase implements IClientCommand
 
     public String getName()
     {
-        return "fyrelogin";
+        return "login";
     }
 
     public String getUsage(ICommandSender sender)
