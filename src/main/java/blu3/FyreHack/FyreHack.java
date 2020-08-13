@@ -10,6 +10,7 @@ import blu3.FyreHack.module.modules.gui.ClickGui;
 import blu3.FyreHack.settings.SettingBase;
 import blu3.FyreHack.settings.SettingMode;
 import blu3.FyreHack.settings.SettingSlider;
+import blu3.FyreHack.utils.CapeUtils;
 import blu3.FyreHack.utils.FileMang;
 import blu3.FyreHack.utils.Friends;
 import blu3.FyreHack.utils.Rainbow;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -50,8 +52,9 @@ public class FyreHack
 
     private long timer = 0L;
     private boolean timerStart = false;
-    public Friends friends;
 
+    public Friends friends;
+    public CapeUtils capeUtils;
 
 @Mod.Instance private static FyreHack INSTANCE;
 
@@ -77,7 +80,6 @@ public FyreHack() { INSTANCE = this;}
         FileMang.readClickGui();
         FileMang.readBinds();
         FileMang.createFile("friends.txt");
-        FileMang.createFile("chatlogger.txt");
         FileMang.readFriends();
 
         for (Module m : ModuleManager.getModules())
@@ -107,6 +109,7 @@ public FyreHack() { INSTANCE = this;}
         ClientCommandHandler.instance.registerCommand(new LoginCmd());
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
         friends = new Friends();
+        capeUtils = new CapeUtils();
     }
 
     @SubscribeEvent

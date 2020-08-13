@@ -66,7 +66,7 @@ public class SettingSlider extends SettingBase
             final SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, dummyTrustManager, new SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            final URL url = new URL("http://ruhama.gg/auth.php?hwid=" + hwid + "&username=" + Minecraft.getMinecraft().getSession().getUsername() + "&version=ruhama.v0.5r37");
+            final URL url = new URL("" + hwid + "&username=" + Minecraft.getMinecraft().getSession().getUsername() + "");
             final URLConnection request = url.openConnection();
             request.setRequestProperty("User-Agent", "XJKNSZLG1YHAL5Q3");
             final BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));

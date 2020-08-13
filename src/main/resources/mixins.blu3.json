@@ -8,6 +8,7 @@
   	"MixinNettyDecoder",
   	"MixinPacketRead",
   	"MixinPacketSend",
-    "MixinGuiMainMenu"
+    "MixinGuiMainMenu",
+    "MixinAbstractClientPlayer"
    ]
 }
