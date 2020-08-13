@@ -1,4 +1,4 @@
-package blu3.FyreHack.module.modules.combat;
+package blu3.FyreHack.module.modules.fyrehack;
 
 import blu3.FyreHack.module.Category;
 import blu3.FyreHack.module.Module;
@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Surround extends Module
+public class SelfTrap extends Module
 {
-    public Surround()
+    public SelfTrap()
     {
-        super("Surround", 0, Category.COMBAT, "Build obsidian around you to protect you from beds", Arrays.asList(new SettingMode("Mode: ", "1x1", "2x2", "Smart"), new SettingToggle(true, "Switch Back"), new SettingToggle(false, "2 High"), new SettingToggle(true, "2b Bypass")));
+        super("SelfTrap", 0, Category.COMBAT, "Build obsidian around you to protect you from crystals", Arrays.asList(new SettingMode("Mode: ", "1x1", "2x2", "Smart"), new SettingToggle(true, "Switch Back")));
     }
 
     public void onUpdate()
@@ -43,7 +43,7 @@ public class Surround extends Module
 
         if (this.getSettings().get(0).toMode().mode == 0)
         {
-            poses.addAll(Arrays.asList((new BlockPos(this.mc.player.getPositionVector())).add(0, 0, 1), (new BlockPos(this.mc.player.getPositionVector())).add(1, 0, 0), (new BlockPos(this.mc.player.getPositionVector())).add(0, 0, -1), (new BlockPos(this.mc.player.getPositionVector())).add(-1, 0, 0)));
+            poses.addAll(Arrays.asList((new BlockPos(this.mc.player.getPositionVector())).add(0, 0, 1), (new BlockPos(this.mc.player.getPositionVector())).add(1, 0, 0), (new BlockPos(this.mc.player.getPositionVector())).add(0, 0, -1), (new BlockPos(this.mc.player.getPositionVector())).add(-1, 0, 0), (new BlockPos(this.mc.player.getPositionVector())).add(0, 1, 0)));
         } else if (this.getSettings().get(0).toMode().mode == 1)
         {
             poses.addAll(Arrays.asList((new BlockPos(this.mc.player.getPositionVector())).add(0, 0, 2), (new BlockPos(this.mc.player.getPositionVector())).add(2, 0, 0), (new BlockPos(this.mc.player.getPositionVector())).add(0, 0, -2), (new BlockPos(this.mc.player.getPositionVector())).add(-2, 0, 0)));
@@ -57,11 +57,9 @@ public class Surround extends Module
             BlockPos b = (BlockPos) o;
             poses.add(0, b.down());
 
-            if (this.getSettings().get(2).toToggle().state)
-            {
-                poses.add(0, b.up());
-            }
+            poses.add(0, b.up());
         }
+
 
         if (obsidian != -1)
         {

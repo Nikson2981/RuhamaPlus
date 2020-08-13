@@ -25,6 +25,7 @@ public class ModuleManager
             new AutoBedCrafter(),
             new Capes(),
             new Hud(),
+            new BedObsidianTrap(),
             new Aura(),
             new VisualRange(),
             new Coords(),

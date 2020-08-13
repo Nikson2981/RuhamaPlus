@@ -55,9 +55,13 @@ mixin {
 }
 
 shadowJar {
-
+    //dependencies {
+       // include(dependency('com.mrpowergamerbr.temmiewebhook'))
+   // }
     exclude 'dummyThing'
     exclude 'LICENSE.txt'
+
+    //compile 'com.github.MrPowerGamerBR:TemmieWebhook:-SNAPSHOT'
 
     classifier = 'all'
 }
