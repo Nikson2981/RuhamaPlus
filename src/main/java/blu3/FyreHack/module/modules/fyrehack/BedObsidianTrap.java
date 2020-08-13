@@ -65,7 +65,6 @@ public class BedObsidianTrap extends Module
         return false;
     }
 
-    public String tagret = this.target.getName();
 
     public void onUpdate()
     {

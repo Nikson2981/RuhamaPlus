@@ -9,6 +9,7 @@
   	"MixinPacketRead",
   	"MixinPacketSend",
     "MixinGuiMainMenu",
+    "MixinGuiPlayerTabOverlay",
     "MixinAbstractClientPlayer"
    ]
 }

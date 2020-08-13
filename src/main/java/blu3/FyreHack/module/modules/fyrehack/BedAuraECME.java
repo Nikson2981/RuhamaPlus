@@ -37,7 +37,7 @@ import java.util.List;
 //
 
 public class BedAuraECME extends Module {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Rotate (required)"), new SettingSlider(0.0D, 50.0D, 10.0D, 0, "Delay: "), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlayerRange: "), new SettingToggle(false, "Debug Messages"), new SettingToggle(false, "Fill Hotbar"), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "BedRange"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Rotate (required)"), new SettingSlider(0.0D, 50.0D, 10.0D, 0, "Delay: "), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlayerRange: "), new SettingToggle(false, "Debug Messages"), new SettingToggle(false, "Fill Hotbar"), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlaceRange"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"));
 // 0 = rotate, 1= delay, 2= range, 3 = debug, 4 = hotbar, 5 = bedrange, 6 = place, 7 = explode
 
     private BlockPos blockpos1;
@@ -63,7 +63,7 @@ public class BedAuraECME extends Module {
     }
 
     public boolean isInBlockRange(Entity target) {
-        return target.getDistance(this.mc.player) <= 10.0F;
+        return target.getDistance(this.mc.player) <= 8.0F;
     }
 
     public boolean isValid(EntityPlayer entity) {
@@ -118,6 +118,18 @@ public class BedAuraECME extends Module {
         }
     }
 
+
+    public void onEnable() {
+        FyreLogger.log("BedAura:" + TextFormatting.GREEN + " ENABLED!");
+        this.timerDelay.reset();
+    }
+
+    public void onDisable() {
+        FyreLogger.log("BedAura:" + TextFormatting.RED + " DISABLED!");
+        this.target = null;
+        this.beds.clear();
+        this.timerDelay.reset();
+    }
 
     private void trap(EntityPlayer player) {
 
@@ -277,18 +289,6 @@ public class BedAuraECME extends Module {
             }
 
 
-
-    public void onEnable() {
-        FyreLogger.log("BedAura:" + TextFormatting.GREEN + " ENABLED!");
-        this.timerDelay.reset();
-    }
-
-    public void onDisable() {
-        FyreLogger.log("BedAura:" + TextFormatting.RED + " DISABLED!");
-        this.target = null;
-        this.beds.clear();
-        this.timerDelay.reset();
-    }
 
     public void updateTarget() {
         for (EntityPlayer player : this.mc.world.playerEntities) {
