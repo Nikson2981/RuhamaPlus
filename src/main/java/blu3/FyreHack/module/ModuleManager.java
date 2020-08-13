@@ -1,6 +1,7 @@
 package blu3.FyreHack.module;
 
 import blu3.FyreHack.module.modules.chat.ChatSuffix;
+import blu3.FyreHack.module.modules.chat.VisualRange;
 import blu3.FyreHack.module.modules.combat.*;
 import blu3.FyreHack.module.modules.exploits.AntiChunkBan;
 import blu3.FyreHack.module.modules.exploits.Crasher;
@@ -24,6 +25,7 @@ public class ModuleManager
             new AutoBedCrafter(),
             new Hud(),
             new Aura(),
+            new VisualRange(),
             new Coords(),
             new AutoWasp(),
             new AirBedPlace(),

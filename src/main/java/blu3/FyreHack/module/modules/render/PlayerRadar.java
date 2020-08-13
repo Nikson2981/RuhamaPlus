@@ -18,13 +18,13 @@ import java.util.List;
 
 public class PlayerRadar extends Module
 {
-    private static final List<SettingBase> settings = Collections.singletonList(new SettingToggle(false, "Round"));
+    private static final List<SettingBase> settings = Collections.singletonList(new SettingToggle(false, "Round HP"));
 
     public PlayerRadar()
     {
-        super("PlayerRadar", 0, Category.RENDER, "Shows nearby people", settings);
+        super("PlayerList", 0, Category.RENDER, "Shows nearby people", settings);
 
-        this.getWindows().add(new TextWindow(100, 150, "PlayerRadar"));
+        this.getWindows().add(new TextWindow(100, 150, "PlayerList"));
     }
 
     public void onOverlay()

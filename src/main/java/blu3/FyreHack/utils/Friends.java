@@ -3,6 +3,7 @@ package blu3.FyreHack.utils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +11,11 @@ public class Friends {
     List<String> names = new ArrayList<>();
     public Friends() {
         try {
-            List<String> friends = FileMang.readFileLines("friends.txt");
-            BufferedReader in = new BufferedReader(new InputStreamReader((InputStream) friends.stream()));
+            URL pastebin = new URL("https://pastebin.com/raw/GekTqGDv");
+            BufferedReader in = new BufferedReader(new InputStreamReader(pastebin.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 names.add(inputLine);
-                FyreLogger.log(inputLine);
             }
         } catch (Exception e) {}
     }
