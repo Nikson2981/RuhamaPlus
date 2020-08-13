@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -61,7 +62,10 @@ public FyreHack() { INSTANCE = this;}
         return INSTANCE;
     }
 
-
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        DiscordPresence.start();
+    }
 
     @EventHandler
     public void init(FMLInitializationEvent event)
@@ -78,6 +82,7 @@ public FyreHack() { INSTANCE = this;}
         FileMang.readClickGui();
         FileMang.readBinds();
         FileMang.createFile("friends.txt");
+        FileMang.createFile("chatlogger.txt");
         FileMang.readFriends();
 
         for (Module m : ModuleManager.getModules())

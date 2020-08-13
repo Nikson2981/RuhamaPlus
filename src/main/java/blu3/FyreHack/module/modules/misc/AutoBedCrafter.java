@@ -5,6 +5,7 @@ import blu3.FyreHack.module.Module;
 import blu3.FyreHack.utils.FyreLogger;
 import blu3.FyreHack.utils.WorldUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
@@ -58,13 +59,17 @@ public class AutoBedCrafter extends Module {
             WorldUtils.placeBlock(pos, tableSlot, true, false);
             WorldUtils.openBlock(pos);
             this.stage = 1;
+            return;
         }
 
         if (this.stage == 1) {
-            this.mc.playerController.windowClick(mc.player.openContainer.windowId, 4, woodSlot, ClickType.SWAP, mc.player);
+            if (!(mc.currentScreen instanceof GuiContainer)) {
+                return;
+            }
+            this.mc.playerController.windowClick(mc.player.openContainer.windowId, woodSlot, 0, ClickType.SWAP, mc.player);
+            setToggled(false);
         }
 
-        setToggled(false);
     }
 
     public void onEnable() {

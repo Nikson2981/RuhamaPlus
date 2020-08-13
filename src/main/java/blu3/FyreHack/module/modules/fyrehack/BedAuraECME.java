@@ -9,6 +9,7 @@ import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.settings.SettingToggle;
 import blu3.FyreHack.utils.FyreLogger;
 import blu3.FyreHack.utils.RenderUtils;
+import blu3.FyreHack.utils.Timer;
 import blu3.FyreHack.utils.WorldUtils;
 import net.minecraft.block.BlockBed;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -25,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -35,7 +37,7 @@ import java.util.List;
 //
 
 public class BedAuraECME extends Module {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Rotate (required)"), new SettingSlider(0.0D, 20.0D, 20.0D, 0, "Delay: "), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlayerRange: "), new SettingToggle(false, "Debug Messages"), new SettingToggle(false, "Fill Hotbar"), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "BedRange"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Rotate (required)"), new SettingSlider(0.0D, 50.0D, 10.0D, 0, "Delay: "), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlayerRange: "), new SettingToggle(false, "Debug Messages"), new SettingToggle(false, "Fill Hotbar"), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "BedRange"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"));
 // 0 = rotate, 1= delay, 2= range, 3 = debug, 4 = hotbar, 5 = bedrange, 6 = place, 7 = explode
 
     private BlockPos blockpos1;
@@ -49,28 +51,35 @@ public class BedAuraECME extends Module {
     private BlockPos blockpos13;
     private BlockPos blockpos14;
 
+    private final Timer timerDelay;
+
     private final List<BlockPos> beds = new ArrayList<>();
 
     private EntityPlayer target;
 
     public BedAuraECME() {
         super("BedAura", 0, Category.FYREHACK, "1.13 BedAura", settings);
+        //bruh
+        this.timerDelay = new Timer();
     }
 
     public boolean isInBlockRange(Entity target) {
-        return target.getDistance(this.mc.player) <= 4.0F;
+        return target.getDistance(this.mc.player) <= (float) this.getSettings().get(2).toSlider().getValue();
     }
 
     public boolean isValid(EntityPlayer entity) {
         return entity != null && this.isInBlockRange(entity) && entity.getHealth() > 0.0F && !entity.isDead;
     }
 
-    double delay;
-    int moveDelay;
+
 
     public void onUpdate() {
 
-        if (this.getSettings().get(7).toToggle().state) this.clickBed();
+        long placeDelay = (long) this.getSettings().get(1).toSlider().getValue() * 100;
+
+        if (this.timerDelay.passedMs(placeDelay)) {
+            if (this.getSettings().get(7).toToggle().state) this.clickBed();
+        }
 
         if (!this.mc.player.isHandActive()) {
             if (!this.isValid(this.target) || this.target == null) {
@@ -85,13 +94,15 @@ public class BedAuraECME extends Module {
                 if (!playerIter.hasNext()) {
                     if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < this.getSettings().get(2).toSlider().getValue()) {
 
-                        this.delay++;
 
-                        if (this.delay >= this.getSettings().get(1).toSlider().getValue()) {
+
+                        if (this.timerDelay.passedMs(placeDelay)) {
                             if (this.mc.player.getHeldItemMainhand().getItem() == Items.BED) {
+
                                 if (this.getSettings().get(6).toToggle().state) this.trap(this.target);
+
                             }
-                            this.delay = 0;
+
 
                         }
                     }
@@ -103,7 +114,9 @@ public class BedAuraECME extends Module {
 
             this.target = player;
         }
-
+        if (this.timerDelay.passedMs(placeDelay)) {
+            this.timerDelay.reset();
+        }
     }
 
 
@@ -260,17 +273,22 @@ public class BedAuraECME extends Module {
                     }
                 }
             }
-        }
+
+
+            }
+
 
 
     public void onEnable() {
         FyreLogger.log("BedAura:" + TextFormatting.GREEN + " ENABLED!");
+        this.timerDelay.reset();
     }
 
     public void onDisable() {
         FyreLogger.log("BedAura:" + TextFormatting.RED + " DISABLED!");
         this.target = null;
         this.beds.clear();
+
     }
 
     public void updateTarget() {
@@ -305,9 +323,6 @@ public class BedAuraECME extends Module {
 
     public void clickBed() {
 
-
-        this.moveDelay++;
-        if (this.moveDelay >= 15) {
             if (this.getSettings().get(4).toToggle().state) {
 
                 if (mc.currentScreen instanceof GuiContainer) return;
@@ -334,9 +349,9 @@ public class BedAuraECME extends Module {
                         }
                     }
                 }
-            }
+
             this.beds.clear();
-            this.moveDelay = 0;
+
         }
 
         int x;

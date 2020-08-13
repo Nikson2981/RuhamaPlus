@@ -45,6 +45,7 @@ public class Aura extends Module
             {
                 EntityPlayer e;
 
+
                 // holy shit
                 do
                 {
@@ -87,9 +88,8 @@ public class Aura extends Module
                     }
                 }
 
-                if (this.getSettings().get(6).toToggle().state){
-                    WorldUtils.rotateClient(e.posX, e.posY, e.posZ);
-                }
+
+
                 this.mc.player.connection.sendPacket(new CPacketUseEntity(e, EnumHand.MAIN_HAND));
                 this.mc.playerController.attackEntity(this.mc.player, e);
                 this.mc.player.swingArm(EnumHand.MAIN_HAND);

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Hud extends Module {
 
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Watermark"), new SettingToggle(true, "ArrayList"));
+    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "Watermark"), new SettingToggle(true, "ArrayList"), new SettingToggle(true, "ServerIP"));
 
     public Hud() {super("Hud", Keyboard.KEY_NONE, Category.RENDER, "Shows stuff onscreen.", settings);}
 
@@ -51,6 +51,16 @@ public class Hud extends Module {
             height+=10;
         }
 
+        if(this.getSettings().get(2).toToggle().state) {
+            if (mc.getCurrentServerData() != null && !this.mc.getCurrentServerData().serverIP.equals("")) {
+                mc.fontRenderer.drawString("IP: " + this.mc.getCurrentServerData().serverIP, 2, height, Rainbow.getInt());
+            }
+            if (this.mc.isIntegratedServerRunning()) {
+                mc.fontRenderer.drawString("IP: Singleplayer", 2, height, Rainbow.getInt());
+            }
+
+            height+=10;
+        }
         for (Module m: ModuleManager.getModules()) if (m.isToggled() && this.getSettings().get(1).toToggle().state) {
             if (m.getName() == "Hud") return;
             mc.fontRenderer.drawString(m.getName(), 2, height, Rainbow.getInt());
