@@ -5,6 +5,7 @@ import blu3.FyreHack.module.Category;
 import blu3.FyreHack.module.Module;
 import blu3.FyreHack.module.ModuleManager;
 import blu3.FyreHack.settings.SettingBase;
+import blu3.FyreHack.settings.SettingSlider;
 import blu3.FyreHack.settings.SettingToggle;
 import blu3.FyreHack.utils.Rainbow;
 import com.mojang.realmsclient.client.Ping;
@@ -23,7 +24,8 @@ public class Hud extends Module {
             new SettingToggle(true, "Watermark"),
             new SettingToggle(true, "ServerIP"),
             new SettingToggle(true, "Ping"),
-            new SettingToggle(true, "Username"));
+            new SettingToggle(true, "Username"),
+            new SettingToggle(true, "Dimension"));
 
     public Hud() {super("Hud", Keyboard.KEY_NONE, Category.GUI, "Shows stuff onscreen.", settings);}
 
@@ -75,7 +77,9 @@ public class Hud extends Module {
             if (this.mc.isIntegratedServerRunning()) {
                 mc.fontRenderer.drawString("IP: Singleplayer", 2, height, Rainbow.getInt());
             }
-
+            if (this.mc.getCurrentServerData() == null) {
+                mc.fontRenderer.drawString("IP: ERROR", 2, height, Rainbow.getInt());
+            }
             height+=10;
         }
 
@@ -88,7 +92,23 @@ public class Hud extends Module {
             mc.fontRenderer.drawString("Logged in as " + this.mc.player.getName(), 2, height, Rainbow.getInt());
             height+=10;
         }
+        if (this.getSettings().get(4).toToggle().state) {
 
+            final int s = this.mc.player.dimension;
+            String biom = "";
+
+            if (s == 0) {
+                biom = "Dimension: Overworld";
+            }
+            else if (s == -1) {
+                biom = "Dimension: Nether";
+            }
+            else if (s == 1) {
+                biom = "Dimension: End";
+            }
+            mc.fontRenderer.drawString(biom, 2, height, Rainbow.getInt());
+            height+=10;
+        }
 
     }
 

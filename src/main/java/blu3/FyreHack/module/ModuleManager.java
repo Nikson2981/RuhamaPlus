@@ -24,6 +24,8 @@ public class ModuleManager
             new CrystalAuraECME(),
             new AutoBedCrafter(),
             new Capes(),
+            new ChestSwap(),
+            new Friends(),
             new Hud(),
             new BedObsidianTrap(),
             new Aura(),

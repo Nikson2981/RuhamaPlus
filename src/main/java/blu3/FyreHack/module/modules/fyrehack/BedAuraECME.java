@@ -70,15 +70,12 @@ public class BedAuraECME extends Module {
         return entity != null && this.isInBlockRange(entity) && entity.getHealth() > 0.0F && !entity.isDead;
     }
 
-
+    private long placeDelay = (long) this.getSettings().get(1).toSlider().getValue() * 500L;
 
     public void onUpdate() {
 
-        long placeDelay = (long) this.getSettings().get(1).toSlider().getValue() * 100;
 
-        if (this.timerDelay.passedMs(placeDelay)) {
-            if (this.getSettings().get(7).toToggle().state) this.clickBed();
-        }
+
 
         if (!this.mc.player.isHandActive()) {
             if (!this.isValid(this.target) || this.target == null) {
@@ -89,52 +86,42 @@ public class BedAuraECME extends Module {
 
             EntityPlayer player;
 
-            do {
-                if (!playerIter.hasNext()) {
-                    if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < this.getSettings().get(2).toSlider().getValue()) {
+            if (this.timerDelay.passedMs(placeDelay)) {
+                if (this.getSettings().get(7).toToggle().state) this.clickBed();
+                do {
+                    if (!playerIter.hasNext()) {
+                        if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < this.getSettings().get(2).toSlider().getValue() && !FyreHack.getInstance().friends.isFriend(this.target.getName())) {
+                                if (this.mc.player.getHeldItemMainhand().getItem() == Items.BED) {
 
-
-
-                        if (this.timerDelay.passedMs(placeDelay)) {
-                            if (this.mc.player.getHeldItemMainhand().getItem() == Items.BED) {
-
-                                if (this.getSettings().get(6).toToggle().state) this.trap(this.target);
-
-                            }
-
-
+                                    if (this.getSettings().get(6).toToggle().state) this.bomb(this.target);
+                                    this.timerDelay.reset();
+                                }
                         }
+                        return;
                     }
-                    return;
-                }
+                    player = playerIter.next();
+                } while (player instanceof EntityPlayerSP || !this.isValid(player) || player.getDistance(this.mc.player) >= this.target.getDistance(this.mc.player));
 
-                player = playerIter.next();
-            } while (player instanceof EntityPlayerSP || !this.isValid(player) || player.getDistance(this.mc.player) >= this.target.getDistance(this.mc.player) || !FyreHack.getInstance().friends.isFriend(player.getName()));
-
-            this.target = player;
-        }
-        if (this.timerDelay.passedMs(placeDelay)) {
-            this.timerDelay.reset();
+                this.target = player;
+                this.timerDelay.reset();
+            }
         }
     }
 
-
     public void onEnable() {
         FyreLogger.log("BedAura:" + TextFormatting.GREEN + " ENABLED!");
-        this.timerDelay.reset();
     }
 
     public void onDisable() {
         FyreLogger.log("BedAura:" + TextFormatting.RED + " DISABLED!");
         this.target = null;
         this.beds.clear();
-        this.timerDelay.reset();
     }
 
-    private void trap(EntityPlayer player) {
-
-
-
+    private void bomb(EntityPlayer player) {
+    //
+    // ew
+    //
             this.blockpos1 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ); // above player head
             this.blockpos2 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ); // player head
             this.blockpos7 = new BlockPos(player.posX + 1.0D, player.posY + 1.0D, player.posZ); // +x bed
@@ -145,7 +132,6 @@ public class BedAuraECME extends Module {
             this.blockpos12 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ + 1.0D); // +z upper bed
             this.blockpos13 = new BlockPos(player.posX - 1.0D, player.posY + 2.0D, player.posZ); // -x upper bed
             this.blockpos14 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ - 1.0D); // -z upper bed
-
 
             // +x bed
 
@@ -158,9 +144,7 @@ public class BedAuraECME extends Module {
                         if (this.getSettings().get(3).toToggle().state) {
                             FyreLogger.log("attempting to place +x");
                         }
-
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos7, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
-
                     }
                 }
             }
@@ -172,14 +156,10 @@ public class BedAuraECME extends Module {
 
                         WorldUtils.rotatePacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ - 2.0D);
 
-
                         if (this.getSettings().get(3).toToggle().state) {
                             FyreLogger.log("attempting to place +z");
                         }
-
-
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos8, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
-
                     }
                 }
             }
@@ -195,7 +175,6 @@ public class BedAuraECME extends Module {
                         if (this.getSettings().get(3).toToggle().state) {
                             FyreLogger.log("attempting to place -x");
                         }
-
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos9, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
                     }
                 }
@@ -211,7 +190,6 @@ public class BedAuraECME extends Module {
                         if (this.getSettings().get(3).toToggle().state) {
                             FyreLogger.log("attempting to place -x");
                         }
-
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos10, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
                     }
                 }
@@ -228,9 +206,7 @@ public class BedAuraECME extends Module {
                         if (this.getSettings().get(3).toToggle().state) {
                             FyreLogger.log("attempting to place +x");
                         }
-
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos11, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
-
                     }
                 }
             }
@@ -242,14 +218,10 @@ public class BedAuraECME extends Module {
 
                         WorldUtils.rotatePacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ - 2.0D);
 
-
                         if (this.getSettings().get(3).toToggle().state) {
                             FyreLogger.log("attempting to place +z");
                         }
-
-
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos12, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
-
                     }
                 }
             }
@@ -264,7 +236,6 @@ public class BedAuraECME extends Module {
                         if (this.getSettings().get(3).toToggle().state) {
                             FyreLogger.log("attempting to place -x");
                         }
-
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos13, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
                     }
                 }
@@ -279,14 +250,11 @@ public class BedAuraECME extends Module {
                         if (this.getSettings().get(3).toToggle().state) {
                             FyreLogger.log("attempting to place -x");
                         }
-
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos14, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
                     }
                 }
             }
-
-
-            }
+        }
 
 
 

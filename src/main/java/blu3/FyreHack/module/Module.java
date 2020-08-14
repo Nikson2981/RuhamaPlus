@@ -27,16 +27,16 @@ public class Module
     private boolean toggled;
     private List<SettingBase> settings = new ArrayList<>();
 
-    public Module(String nm, int k, Category c, String d, List<SettingBase> s)
+    public Module(String modname, int bind, Category cat, String desc, List<SettingBase> settings)
     {
-        this.name = nm;
-        this.registerBind(nm, k);
-        this.category = c;
-        this.desc = d;
+        this.name = modname;
+        this.registerBind(modname, bind);
+        this.category = cat;
+        this.desc = desc;
         
-        if (s != null)
+        if (settings != null)
         {
-            this.settings = s;
+            this.settings = settings;
         }
 
         this.toggled = false;

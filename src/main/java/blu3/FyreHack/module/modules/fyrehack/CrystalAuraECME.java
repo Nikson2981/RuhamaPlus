@@ -264,6 +264,7 @@ public class CrystalAuraECME extends Module
                             }
 
                             this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(q, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0F, 0.0F, 0.0F));
+                            this.mc.player.swingArm(offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
                         }
 
                         if (this.isSpoofingAngles)
