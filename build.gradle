@@ -1,14 +1,18 @@
 buildscript {
+    ext.kotlin_version = '1.4.10'
     repositories {
         jcenter()
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url = 'https://repo.spongepowered.org/maven' }
         maven { url = 'https://plugins.gradle.org/m2' }
+        maven { url = 'https://jitpack.io' }
+
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
+
     }
 }
 
@@ -16,9 +20,9 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = 'b0.02'
-group = 'gg.FyreHack'
-archivesBaseName = 'Fyre Hack'
+version = '0.9.1'
+group = 'gg.ruhamaplus'
+archivesBaseName = 'RuhamaPlus'
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
@@ -28,40 +32,42 @@ compileJava {
 minecraft {
     version = '1.12.2-14.23.5.2847'
     runDir = 'run'
-    coreMod = 'blu3.FyreHack.mixin.MixinLoader'
+    coreMod = 'bleach.a32k.mixin.MixinLoader'
 
     mappings = 'stable_39'
 }
 
 jar.manifest.attributes(
         'FMLCorePluginContainsFMLMod': true,
-        'FMLCorePlugin': 'blu3.FyreHack.mixin.MixinLoader',
+        'FMLCorePlugin': 'bleach.a32k.mixin.MixinLoader',
         'ForceLoadAsMod': true,
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
+
 )
 
 repositories {
     mavenCentral()
     maven { url = 'https://repo.spongepowered.org/maven' }
+    jcenter()
+    maven { url = 'https://jitpack.io' }
 }
 
 dependencies {
     compile 'org.spongepowered:mixin:0.8.1-SNAPSHOT'
+    compile 'com.github.ZeroMemes:Alpine:1.5'
+    compile 'club.minnced:java-discord-rpc:2.0.2'
+    compile 'com.github.MrPowerGamerBR:TemmieWebhook:-SNAPSHOT'
 
 }
 
 mixin {
-    add sourceSets.main, 'mixins.FyreHack.refmap.json'
+    add sourceSets.main, 'mixins.ruhamaplus.refmap.json'
 }
 
 shadowJar {
-    //dependencies {
-       // include(dependency('com.mrpowergamerbr.temmiewebhook'))
-   // }
+
     exclude 'dummyThing'
     exclude 'LICENSE.txt'
-
-    //compile 'com.github.MrPowerGamerBR:TemmieWebhook:-SNAPSHOT'
 
     classifier = 'all'
 }
@@ -89,3 +95,6 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+
+

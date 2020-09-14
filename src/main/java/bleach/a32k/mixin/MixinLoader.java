@@ -11,7 +11,7 @@ public class MixinLoader implements IFMLLoadingPlugin
 {
     public MixinLoader()
     {
-        System.out.println("mixin loading \n\n\n\n\n\n\n\n\n\n");
+        System.out.println("mixin loading \n\n\n\n\n\n\n\n");
 
         MixinBootstrap.init();
         Mixins.addConfiguration("mixins.blu3.json");

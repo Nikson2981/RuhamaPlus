@@ -1,8 +1,8 @@
 {
   "required": true,
   "compatibilityLevel": "JAVA_8",
-  "package": "blu3.FyreHack.mixin.mixins",
-  "refmap": "mixins.FyreHack.refmap.json",
+  "package": "blu3.ruhamaplus.mixin.mixins",
+  "refmap": "mixins.ruhamaplus.refmap.json",
   "mixins": [
   	"MixinContainerGui",
   	"MixinNettyDecoder",
@@ -10,6 +10,7 @@
   	"MixinPacketSend",
     "MixinGuiMainMenu",
     "MixinGuiPlayerTabOverlay",
+    "MixinEventBus",
     "MixinAbstractClientPlayer"
    ]
 }
