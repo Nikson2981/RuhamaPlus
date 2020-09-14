@@ -67,9 +67,9 @@ public class TotemPopCounter extends Module {
     {
         if (!(this.mc.player == null) && !(this.mc.world == null)){
             if (packet instanceof SPacketEntityStatus){
-                SPacketEntityStatus racket = (SPacketEntityStatus) packet; // had to change the name LMAO
-                if (racket.getOpCode() == 35) {
-                    Entity entity = racket.getEntity(mc.world);
+                SPacketEntityStatus theOneAndOnlyPacket = (SPacketEntityStatus) packet; // had to change the name LMAO
+                if (theOneAndOnlyPacket.getOpCode() == 35) {
+                    Entity entity = theOneAndOnlyPacket.getEntity(mc.world);
                     this.newPoppedTotem(entity);
                     return false;
                 }
