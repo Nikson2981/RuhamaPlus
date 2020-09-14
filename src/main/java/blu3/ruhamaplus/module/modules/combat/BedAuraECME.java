@@ -107,7 +107,6 @@ public class BedAuraECME extends Module {
             }
 
             if (mc.player.ticksExisted % this.getSettings().get(1).toSlider().getValue() == 0) {
-                if (this.getSettings().get(7).toToggle().state) this.clickBed();
                 this.moveBed();
 
                 do {
