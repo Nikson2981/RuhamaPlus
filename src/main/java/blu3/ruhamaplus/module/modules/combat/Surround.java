@@ -28,7 +28,7 @@ public class Surround extends Module
     public void onEnable() {
         Center = GetCenter(this.mc.player.posX, this.mc.player.posY, this.mc.player.posZ);
 
-        if (this.getSettings().get(4).toToggle().state)
+        if (this.getSettings().get(4).asToggle().state)
         {
             mc.player.motionX = 0;
             mc.player.motionZ = 0;
@@ -56,15 +56,15 @@ public class Surround extends Module
         cap = 0;
         List<BlockPos> poses = new ArrayList<>();
 
-        boolean rotate = this.getSettings().get(3).toToggle().state;
+        boolean rotate = this.getSettings().get(3).asToggle().state;
 
-        if (this.getSettings().get(0).toMode().mode == 0)
+        if (this.getSettings().get(0).asMode().mode == 0)
         {
             poses.addAll(Arrays.asList((new BlockPos(this.mc.player.getPositionVector())).add(0, 0, 1), (new BlockPos(this.mc.player.getPositionVector())).add(1, 0, 0), (new BlockPos(this.mc.player.getPositionVector())).add(0, 0, -1), (new BlockPos(this.mc.player.getPositionVector())).add(-1, 0, 0)));
-        } else if (this.getSettings().get(0).toMode().mode == 1)
+        } else if (this.getSettings().get(0).asMode().mode == 1)
         {
             poses.addAll(Arrays.asList((new BlockPos(this.mc.player.getPositionVector())).add(0, 0, 2), (new BlockPos(this.mc.player.getPositionVector())).add(2, 0, 0), (new BlockPos(this.mc.player.getPositionVector())).add(0, 0, -2), (new BlockPos(this.mc.player.getPositionVector())).add(-2, 0, 0)));
-        } else if (this.getSettings().get(0).toMode().mode == 2)
+        } else if (this.getSettings().get(0).asMode().mode == 2)
         {
             poses.addAll(Arrays.asList((new BlockPos(this.mc.player.getPositionVector().add(0.0D, 0.0D, -this.mc.player.width))).add(0, 0, -1), (new BlockPos(this.mc.player.getPositionVector().add(-this.mc.player.width, 0.0D, 0.0D))).add(-1, 0, 0), (new BlockPos(this.mc.player.getPositionVector().add(0.0D, 0.0D, this.mc.player.width))).add(0, 0, 1), (new BlockPos(this.mc.player.getPositionVector().add(this.mc.player.width, 0.0D, 0.0D))).add(1, 0, 0)));
         }
@@ -74,7 +74,7 @@ public class Surround extends Module
             BlockPos b = (BlockPos) o;
             poses.add(0, b.down());
 
-            if (this.getSettings().get(2).toToggle().state)
+            if (this.getSettings().get(2).asToggle().state)
             {
                 poses.add(0, b.up());
             }
@@ -97,7 +97,7 @@ public class Surround extends Module
                 }
             }
 
-            if (this.getSettings().get(1).toToggle().state)
+            if (this.getSettings().get(1).asToggle().state)
             {
                 this.mc.player.inventory.currentItem = hand;
             }

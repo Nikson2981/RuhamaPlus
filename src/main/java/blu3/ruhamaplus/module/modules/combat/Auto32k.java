@@ -77,7 +77,7 @@ public class Auto32k extends Module
             int y;
             int x;
 
-            if (this.getSettings().get(0).toMode().mode == 1)
+            if (this.getSettings().get(0).asMode().mode == 1)
             {
                 RayTraceResult ray = this.mc.player.rayTrace(4.25D, this.mc.getRenderPartialTicks());
                 if (WorldUtils.isBlockEmpty(Objects.requireNonNull(ray).getBlockPos()))
@@ -85,8 +85,8 @@ public class Auto32k extends Module
                     return;
                 }
 
-                WorldUtils.placeBlock(ray.getBlockPos().up(), hopper, this.getSettings().get(7).toToggle().state, false);
-                WorldUtils.placeBlock(ray.getBlockPos().up(2), shulker, this.getSettings().get(7).toToggle().state, false);
+                WorldUtils.placeBlock(ray.getBlockPos().up(), hopper, this.getSettings().get(7).asToggle().state, false);
+                WorldUtils.placeBlock(ray.getBlockPos().up(2), shulker, this.getSettings().get(7).asToggle().state, false);
                 WorldUtils.openBlock(ray.getBlockPos().up());
 
                 this.placedHopperPos = ray.getBlockPos().up();
@@ -103,7 +103,7 @@ public class Auto32k extends Module
                         {
                             if ((cap2 != 0 || y != 0 || x != 0) && (cap2 != 0 || y != 1 || x != 0) && WorldUtils.isBlockEmpty(this.mc.player.getPosition().add(cap2, y, x)) && this.mc.player.getPositionEyes(this.mc.getRenderPartialTicks()).distanceTo(this.mc.player.getPositionVector().add((double) cap2 + 0.5D, (double) y + 0.5D, (double) x + 0.5D)) < 4.5D && WorldUtils.isBlockEmpty(this.mc.player.getPosition().add(cap2, y + 1, x)) && this.mc.player.getPositionEyes(this.mc.getRenderPartialTicks()).distanceTo(this.mc.player.getPositionVector().add((double) cap2 + 0.5D, (double) y + 1.5D, (double) x + 0.5D)) < 4.5D)
                             {
-                                boolean r = this.getSettings().get(7).toToggle().state;
+                                boolean r = this.getSettings().get(7).asToggle().state;
 
                                 WorldUtils.placeBlock(this.mc.player.getPosition().add(cap2, y, x), hopper, r, false);
                                 WorldUtils.placeBlock(this.mc.player.getPosition().add(cap2, y + 1, x), shulker, r, false);
@@ -120,13 +120,13 @@ public class Auto32k extends Module
                 }
             }
 
-            if (this.getSettings().get(1).toMode().mode != 2 || obsidian != -1)
+            if (this.getSettings().get(1).asMode().mode != 2 || obsidian != -1)
             {
-                if (this.getSettings().get(1).toMode().mode != 0)
+                if (this.getSettings().get(1).asMode().mode != 0)
                 {
                     cap2 = 0;
 
-                    this.mc.player.inventory.currentItem = this.getSettings().get(1).toMode().mode == 1 ? hopper : obsidian;
+                    this.mc.player.inventory.currentItem = this.getSettings().get(1).asMode().mode == 1 ? hopper : obsidian;
 
                     for (y = -1; y <= 1; ++y)
                     {
@@ -134,11 +134,11 @@ public class Auto32k extends Module
                         {
                             for (int z = -1; z <= 1; ++z)
                             {
-                                if ((x != 0 || z != 0) && (x == 0 || z == 0) && WorldUtils.placeBlock(this.placedHopperPos.add(x, y, z), this.mc.player.inventory.currentItem, this.getSettings().get(7).toToggle().state, false))
+                                if ((x != 0 || z != 0) && (x == 0 || z == 0) && WorldUtils.placeBlock(this.placedHopperPos.add(x, y, z), this.mc.player.inventory.currentItem, this.getSettings().get(7).asToggle().state, false))
                                 {
                                     ++cap2;
 
-                                    if (cap2 > (this.getSettings().get(1).toMode().mode == 1 ? 1 : 2))
+                                    if (cap2 > (this.getSettings().get(1).asMode().mode == 1 ? 1 : 2))
                                     {
                                         return;
                                     }
@@ -159,12 +159,12 @@ public class Auto32k extends Module
             this.setToggled(false);
         }
 
-        if (this.active && this.getSettings().get(2).toToggle().state)
+        if (this.active && this.getSettings().get(2).asToggle().state)
         {
             this.killAura();
         }
 
-        if (this.active && this.getSettings().get(6).toToggle().state)
+        if (this.active && this.getSettings().get(6).asToggle().state)
         {
             this.mc.player.connection.sendPacket(new Rotation(this.mc.player.rotationYaw, 90.0F, this.mc.player.onGround));
         }
@@ -179,9 +179,9 @@ public class Auto32k extends Module
             }
         }
 
-        if (this.tickPassed && this.getSettings().get(5).toToggle().state && obsidian != -1)
+        if (this.tickPassed && this.getSettings().get(5).asToggle().state && obsidian != -1)
         {
-            WorldUtils.placeBlock(this.placedHopperPos.add(0, 2, 0), obsidian, this.getSettings().get(7).toToggle().state, false);
+            WorldUtils.placeBlock(this.placedHopperPos.add(0, 2, 0), obsidian, this.getSettings().get(7).asToggle().state, false);
         }
 
         this.tickPassed = true;
@@ -209,15 +209,15 @@ public class Auto32k extends Module
 
             if (this.active)
             {
-                if (this.getSettings().get(4).toMode().mode == 0)
+                if (this.getSettings().get(4).asMode().mode == 0)
                 {
-                    this.timer = (long) this.timer >= Math.round(20.0D / this.getSettings().get(3).toSlider().getValue()) ? 0 : this.timer + 1;
-                } else if (this.getSettings().get(4).toMode().mode == 1)
+                    this.timer = (long) this.timer >= Math.round(20.0D / this.getSettings().get(3).asSlider().getValue()) ? 0 : this.timer + 1;
+                } else if (this.getSettings().get(4).asMode().mode == 1)
                 {
                     this.timer = 0;
-                } else if (this.getSettings().get(4).toMode().mode == 2)
+                } else if (this.getSettings().get(4).asMode().mode == 2)
                 {
-                    this.timer = (double) this.timer >= this.getSettings().get(3).toSlider().getValue() ? 0 : this.timer + 1;
+                    this.timer = (double) this.timer >= this.getSettings().get(3).asSlider().getValue() ? 0 : this.timer + 1;
                 }
             }
 
@@ -254,7 +254,7 @@ public class Auto32k extends Module
 
     public void killAura()
     {
-        for (int i = 0; (double) i < (this.getSettings().get(4).toMode().mode == 1 ? this.getSettings().get(4).toSlider().getValue() : 1.0D); ++i)
+        for (int i = 0; (double) i < (this.getSettings().get(4).asMode().mode == 1 ? this.getSettings().get(4).asSlider().getValue() : 1.0D); ++i)
         {
             Entity target = null;
 

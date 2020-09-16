@@ -31,17 +31,17 @@ public class Gui extends Module
     {
         this.getWindows().get(0).clearText();
 
-        int color = (new Color((int) this.getSettings().get(0).toSlider().getValue(), (int) this.getSettings().get(1).toSlider().getValue(), (int) this.getSettings().get(2).toSlider().getValue())).getRGB();
+        int color = (new Color((int) this.getSettings().get(0).asSlider().getValue(), (int) this.getSettings().get(1).asSlider().getValue(), (int) this.getSettings().get(2).asSlider().getValue())).getRGB();
         String s = "Ruhama+ " + RuhamaPlus.version;
-        if (this.getSettings().get(7).toToggle().state) this.getWindows().get(0).addText(new AdvancedText(s, true, color));
+        if (this.getSettings().get(7).asToggle().state) this.getWindows().get(0).addText(new AdvancedText(s, true, color));
 
-        if (this.getSettings().get(3).toToggle().state)
+        if (this.getSettings().get(3).asToggle().state)
         {
             int age = (int) (System.currentTimeMillis() / 20L % 510L);
             color = (new Color(255, MathHelper.clamp(age > 255 ? 510 - age : age, 0, 255), MathHelper.clamp(255 - (age > 255 ? 510 - age : age), 0, 255))).getRGB();
         } else
         {
-            color = (new Color((int) this.getSettings().get(4).toSlider().getValue(), (int) this.getSettings().get(5).toSlider().getValue(), (int) this.getSettings().get(6).toSlider().getValue())).getRGB();
+            color = (new Color((int) this.getSettings().get(4).asSlider().getValue(), (int) this.getSettings().get(5).asSlider().getValue(), (int) this.getSettings().get(6).asSlider().getValue())).getRGB();
         }
 
         List<Module> arrayList = ModuleManager.getModules();

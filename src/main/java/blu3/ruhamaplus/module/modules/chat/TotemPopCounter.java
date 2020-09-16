@@ -29,7 +29,7 @@ public class TotemPopCounter extends Module {
         if(popList.get(e.getName()) == null) {
             popList.put(e.getName(), 1);
 
-            if (this.getSettings().get(0).toMode().mode == 0){
+            if (this.getSettings().get(0).asMode().mode == 0){
                 ClientChat.log(e.getName() + " popped " + 1 + " totem");
             } else {
                 this.mc.player.sendChatMessage(e.getName() + " popped " + 1 + " totem");
@@ -38,7 +38,7 @@ public class TotemPopCounter extends Module {
             int popCounter = popList.get(e.getName());
             int newPopCounter = popCounter += 1;
             popList.put(e.getName(), newPopCounter);
-            if (this.getSettings().get(0).toMode().mode == 0) {
+            if (this.getSettings().get(0).asMode().mode == 0) {
                 ClientChat.log(e.getName() + " popped " + newPopCounter + " totems");
             } else {
                 this.mc.player.sendChatMessage(e.getName() + " popped " + newPopCounter + " totems");
@@ -51,7 +51,7 @@ public class TotemPopCounter extends Module {
             for (EntityPlayer player : mc.world.playerEntities) {
                 if (player.getHealth() <= 0) {
                     if (popList.containsKey(player.getName())) {
-                        if (this.getSettings().get(0).toMode().mode == 0) {
+                        if (this.getSettings().get(0).asMode().mode == 0) {
                             ClientChat.log(player.getName() + " died after popping " + popList.get(player.getName()) + " totems");
                         } else {
                             this.mc.player.sendChatMessage(player.getName() + " died after popping " + popList.get(player.getName()) + " totems");

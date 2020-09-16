@@ -2,7 +2,7 @@ package blu3.ruhamaplus.settings;
 
 public class SettingBase
 {
-    public SettingMode toMode()
+    public SettingMode asMode()
     {
         try
         {
@@ -15,7 +15,7 @@ public class SettingBase
         }
     }
 
-    public SettingToggle toToggle()
+    public SettingToggle asToggle()
     {
         try
         {
@@ -28,7 +28,7 @@ public class SettingBase
         }
     }
 
-    public SettingSlider toSlider()
+    public SettingSlider asSlider()
     {
         try
         {

@@ -27,9 +27,9 @@ public class HopperRadius extends Module
     public void onRender()
     {
         RenderUtils.glSetup();
-        double red = this.getSettings().get(0).toSlider().getValue() / 255.0D;
-        double green = this.getSettings().get(1).toSlider().getValue() / 255.0D;
-        double blue = this.getSettings().get(2).toSlider().getValue() / 255.0D;
+        double red = this.getSettings().get(0).asSlider().getValue() / 255.0D;
+        double green = this.getSettings().get(1).asSlider().getValue() / 255.0D;
+        double blue = this.getSettings().get(2).asSlider().getValue() / 255.0D;
         Iterator<TileEntity> teIter = this.mc.world.loadedTileEntityList.iterator();
 
         while (true)
@@ -54,7 +54,7 @@ public class HopperRadius extends Module
 
                 pos = new Vec3d((double) t.getPos().getX() + 0.5D - RenderUtils.rPos()[0], (double) t.getPos().getY() - RenderUtils.rPos()[1], (double) t.getPos().getZ() + 0.5D - RenderUtils.rPos()[2]);
                 
-                if (this.getSettings().get(3).toToggle().state)
+                if (this.getSettings().get(3).asToggle().state)
                 {
                     GL11.glBegin(9);
                     GL11.glColor4d(red, green, blue, 0.25D);
@@ -66,7 +66,7 @@ public class HopperRadius extends Module
 
                     GL11.glEnd();
                 }
-            } while (!this.getSettings().get(4).toToggle().state);
+            } while (!this.getSettings().get(4).asToggle().state);
 
             GL11.glBegin(1);
             GL11.glColor4d(red, green, blue, 0.7D);

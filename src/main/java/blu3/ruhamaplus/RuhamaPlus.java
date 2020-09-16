@@ -106,10 +106,10 @@ public RuhamaPlus() { INSTANCE = this;}
             {
                 if (s instanceof SettingMode)
                 {
-                    s.toMode().mode = MathHelper.clamp(s.toMode().mode, 0, s.toMode().modes.length - 1);
+                    s.asMode().mode = MathHelper.clamp(s.asMode().mode, 0, s.asMode().modes.length - 1);
                 } else if (s instanceof SettingSlider)
                 {
-                    s.toSlider().value = MathHelper.clamp(s.toSlider().value, s.toSlider().min, s.toSlider().max);
+                    s.asSlider().value = MathHelper.clamp(s.asSlider().value, s.asSlider().min, s.asSlider().max);
                 }
             }
         }

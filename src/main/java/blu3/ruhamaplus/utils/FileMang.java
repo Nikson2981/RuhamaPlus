@@ -163,17 +163,17 @@ public class FileMang
                 SettingBase set = (SettingBase) settingsIter.next();
                 if (set instanceof SettingSlider)
                 {
-                    line.append(":").append(m.getSettings().get(count).toSlider().getValue());
+                    line.append(":").append(m.getSettings().get(count).asSlider().getValue());
                 }
 
                 if (set instanceof SettingMode)
                 {
-                    line.append(":").append(m.getSettings().get(count).toMode().mode);
+                    line.append(":").append(m.getSettings().get(count).asMode().mode);
                 }
 
                 if (set instanceof SettingToggle)
                 {
-                    line.append(":").append(m.getSettings().get(count).toToggle().state);
+                    line.append(":").append(m.getSettings().get(count).asToggle().state);
                 }
             }
         }
@@ -217,17 +217,17 @@ public class FileMang
                     {
                         if (set instanceof SettingSlider)
                         {
-                            m.getSettings().get(count).toSlider().value = Double.parseDouble(line[count + 1]);
+                            m.getSettings().get(count).asSlider().value = Double.parseDouble(line[count + 1]);
                         }
 
                         if (set instanceof SettingMode)
                         {
-                            m.getSettings().get(count).toMode().mode = Integer.parseInt(line[count + 1]);
+                            m.getSettings().get(count).asMode().mode = Integer.parseInt(line[count + 1]);
                         }
 
                         if (set instanceof SettingToggle)
                         {
-                            m.getSettings().get(count).toToggle().state = Boolean.parseBoolean(line[count + 1]);
+                            m.getSettings().get(count).asToggle().state = Boolean.parseBoolean(line[count + 1]);
                         }
                     } catch (Exception ignored)
                     {

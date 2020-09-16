@@ -126,6 +126,8 @@ public class Module
         return this.settings;
     }
 
+    public SettingBase getSetting(int s) { return this.getSettings().get(s); }
+
     public List<TextWindow> getWindows()
     {
         return this.windows;

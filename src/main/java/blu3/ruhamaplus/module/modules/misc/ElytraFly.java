@@ -43,13 +43,13 @@ public class ElytraFly extends Module
 
     public void onUpdate()
     {
-        if (this.getSettings().get(0).toMode().mode == 0)
+        if (this.getSettings().get(0).asMode().mode == 0)
         {
             if (this.mc.player.capabilities.isFlying)
             {
                 this.mc.player.setVelocity(0.0D, 0.0D, 0.0D);
-                this.mc.player.setPosition(this.mc.player.posX, this.mc.player.posY - this.getSettings().get(3).toSlider().getValue(), this.mc.player.posZ);
-                this.mc.player.capabilities.setFlySpeed((float) this.getSettings().get(4).toSlider().getValue());
+                this.mc.player.setPosition(this.mc.player.posX, this.mc.player.posY - this.getSettings().get(3).asSlider().getValue(), this.mc.player.posZ);
+                this.mc.player.capabilities.setFlySpeed((float) this.getSettings().get(4).asSlider().getValue());
                 this.mc.player.setSprinting(false);
             }
 
@@ -68,7 +68,7 @@ public class ElytraFly extends Module
                     this.mc.player.capabilities.allowFlying = true;
                 }
             }
-        } else if (this.getSettings().get(0).toMode().mode == 1)
+        } else if (this.getSettings().get(0).asMode().mode == 1)
         {
             if (this.mc.player.isElytraFlying() && this.mc.world.getBlockState(this.mc.player.getPosition().add(0.0D, -0.1D, 0.0D)).getMaterial() instanceof MaterialLiquid && this.mc.world.getBlockState(this.mc.player.getPosition().add(0, 1, 0)).getBlock() == Blocks.AIR && this.mc.player.motionY > 0.0D)
             {
@@ -83,7 +83,7 @@ public class ElytraFly extends Module
             double speed;
 
             // hmmmmmm
-            for (speed = Math.abs(this.mc.player.motionX) + Math.abs(this.mc.player.motionY) + Math.abs(this.mc.player.motionZ); speed > this.getSettings().get(1).toSlider().getValue(); speed = Math.abs(this.mc.player.motionX) + Math.abs(this.mc.player.motionY) + Math.abs(this.mc.player.motionZ))
+            for (speed = Math.abs(this.mc.player.motionX) + Math.abs(this.mc.player.motionY) + Math.abs(this.mc.player.motionZ); speed > this.getSettings().get(1).asSlider().getValue(); speed = Math.abs(this.mc.player.motionX) + Math.abs(this.mc.player.motionY) + Math.abs(this.mc.player.motionZ))
             {
                 EntityPlayerSP player = this.mc.player;
 
@@ -96,7 +96,7 @@ public class ElytraFly extends Module
 
             Vec3d vec3d = (new Vec3d(0.0D, 0.0D, 0.23D)).rotatePitch(-((float) Math.toRadians(this.mc.player.rotationPitch))).rotateYaw(-((float) Math.toRadians(this.mc.player.rotationYaw)));
 
-            if (this.getSettings().get(2).toToggle().state && MathHelper.clamp(speed / 2.0D, 0.0D, this.getSettings().get(1).toSlider().getValue() - 0.25D) < 0.23D)
+            if (this.getSettings().get(2).asToggle().state && MathHelper.clamp(speed / 2.0D, 0.0D, this.getSettings().get(1).asSlider().getValue() - 0.25D) < 0.23D)
             {
                 vec3d = vec3d.scale(0.2D);
             }

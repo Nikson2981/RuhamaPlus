@@ -28,7 +28,7 @@ public class LongRangeAim extends Module {
 
     public void onEnable() {
 
-        if (this.getSettings().get(1).toMode().mode == 1) {
+        if (this.getSettings().get(1).asMode().mode == 1) {
             if (this.cmdTarget == null) {
                 ClientChat.warn("No Target Set");
                 return;
@@ -39,7 +39,7 @@ public class LongRangeAim extends Module {
     }
 
     public void onUpdate() {
-        if (this.getSettings().get(1).toMode().mode == 0) {
+        if (this.getSettings().get(1).asMode().mode == 0) {
 
             //pasted auto32k killaura without the attacking, just finds the closest EntityPlayer
 
@@ -50,7 +50,7 @@ public class LongRangeAim extends Module {
                 players.remove(this.mc.player);
                 players.sort((a, b) -> Float.compare(a.getDistance(this.mc.player), b.getDistance(this.mc.player)));
 
-                if (players.get(0).getDistance(this.mc.player) < this.getSettings().get(0).toSlider().getValue()) {
+                if (players.get(0).getDistance(this.mc.player) < this.getSettings().get(0).asSlider().getValue()) {
                     target = players.get(0);
                 }
 
@@ -61,7 +61,7 @@ public class LongRangeAim extends Module {
             WorldUtils.rotateClient(target.posX, target.posY + 1.0D, target.posZ);
         }
 
-        if (this.getSettings().get(1).toMode().mode == 1) {
+        if (this.getSettings().get(1).asMode().mode == 1) {
 
 
             if (this.cmdTarget == null) {
@@ -76,7 +76,7 @@ public class LongRangeAim extends Module {
                 if (target == mc.player) {
                     continue;
                 }
-                if (mc.player.getDistance(target) > this.getSettings().get(0).toSlider().getValue()) {
+                if (mc.player.getDistance(target) > this.getSettings().get(0).asSlider().getValue()) {
                     continue;
                 }
                 if (target.getName().equalsIgnoreCase(this.cmdTarget)) {

@@ -43,7 +43,7 @@ public class DispenserAura extends Module
 
             for (TileEntity t : this.mc.world.loadedTileEntityList)
             {
-                if (t instanceof TileEntityDispenser && this.mc.player.getDistance((double) t.getPos().getX() + 0.5D, (double) t.getPos().getY() + 0.5D, (double) t.getPos().getZ() + 0.5D) <= (this.getSettings().get(0).toMode().mode == 0 ? 4.5D : 5.5D))
+                if (t instanceof TileEntityDispenser && this.mc.player.getDistance((double) t.getPos().getX() + 0.5D, (double) t.getPos().getY() + 0.5D, (double) t.getPos().getZ() + 0.5D) <= (this.getSettings().get(0).asMode().mode == 0 ? 4.5D : 5.5D))
                 {
                     dispenser = (TileEntityDispenser) t;
 
@@ -55,7 +55,7 @@ public class DispenserAura extends Module
             {
                 int i;
 
-                if (this.getSettings().get(0).toMode().mode == 0)
+                if (this.getSettings().get(0).asMode().mode == 0)
                 {
                     BlockPos jamPos = dispenser.getPos().offset(this.mc.world.getBlockState(dispenser.getPos()).getValue(PropertyDirection.create("facing")));
 
@@ -74,8 +74,8 @@ public class DispenserAura extends Module
                         }
                     }
 
-                    WorldUtils.placeBlock(jamPos, i, this.getSettings().get(1).toToggle().state, false);
-                } else if (this.getSettings().get(0).toMode().mode == 1)
+                    WorldUtils.placeBlock(jamPos, i, this.getSettings().get(1).asToggle().state, false);
+                } else if (this.getSettings().get(0).asMode().mode == 1)
                 {
                     int pickaxeSlot = this.mc.player.inventory.currentItem;
 

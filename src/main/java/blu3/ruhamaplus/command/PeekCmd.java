@@ -69,7 +69,7 @@ public class PeekCmd
     @SubscribeEvent
     public void onTick(ClientTickEvent event)
     {
-        if (Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).getSettings().get(2).toToggle().state)
+        if (Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).getSettings().get(2).asToggle().state)
         {
             if (event.phase == Phase.END)
             {
@@ -121,7 +121,7 @@ public class PeekCmd
 
         public void execute(MinecraftServer server, ICommandSender sender, String[] args)
         {
-            if (ModuleManager.getModuleByName("Peek").isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).getSettings().get(2).toToggle().state)
+            if (ModuleManager.getModuleByName("Peek").isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).getSettings().get(2).asToggle().state)
             {
                 if (!PeekCmd.shulker.isEmpty())
                 {

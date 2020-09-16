@@ -21,8 +21,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemShulkerBox;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -109,7 +107,7 @@ public class NewAuto32k extends Module
 
         if (this.hopper != -1 && dispenser != -1 && this.redstone != -1 && this.shulker != -1 && block != -1)
         {
-            if (this.getSettings().get(5).toMode().mode == 1)
+            if (this.getSettings().get(5).asMode().mode == 1)
             {
                 RayTraceResult ray = this.mc.player.rayTrace(5.0D, this.mc.getRenderPartialTicks());
 
@@ -122,7 +120,7 @@ public class NewAuto32k extends Module
 
                 if (WorldUtils.canPlaceBlock(this.pos) && WorldUtils.isBlockEmpty(this.pos) && WorldUtils.isBlockEmpty(this.pos.add(this.rot[0], 0, this.rot[1])) && WorldUtils.isBlockEmpty(this.pos.add(0, 1, 0)) && WorldUtils.isBlockEmpty(this.pos.add(0, 2, 0)) && WorldUtils.isBlockEmpty(this.pos.add(this.rot[0], 1, this.rot[1])))
                 {
-                    boolean rotate = this.getSettings().get(0).toToggle().state;
+                    boolean rotate = this.getSettings().get(0).asToggle().state;
 
                     WorldUtils.placeBlock(this.pos, block, rotate, false);
                     WorldUtils.rotatePacket((double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getX() + 0.5D, this.pos.getY() + 1, (double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getZ() + 0.5D);
@@ -146,7 +144,7 @@ public class NewAuto32k extends Module
 
                             if (this.mc.player.getPositionEyes(this.mc.getRenderPartialTicks()).distanceTo(this.mc.player.getPositionVector().add(x - this.rot[0] / 2, (double) y + 0.5D, z + this.rot[1] / 2)) <= 4.5D && this.mc.player.getPositionEyes(this.mc.getRenderPartialTicks()).distanceTo(this.mc.player.getPositionVector().add((double) x + 0.5D, (double) y + 2.5D, (double) z + 0.5D)) <= 4.5D && WorldUtils.canPlaceBlock(this.pos) && WorldUtils.isBlockEmpty(this.pos) && WorldUtils.isBlockEmpty(this.pos.add(this.rot[0], 0, this.rot[1])) && WorldUtils.isBlockEmpty(this.pos.add(0, 1, 0)) && WorldUtils.isBlockEmpty(this.pos.add(0, 2, 0)) && WorldUtils.isBlockEmpty(this.pos.add(this.rot[0], 1, this.rot[1])))
                             {
-                                boolean rotate = this.getSettings().get(0).toToggle().state;
+                                boolean rotate = this.getSettings().get(0).asToggle().state;
 
                                 WorldUtils.placeBlock(this.pos, block, rotate, false);
                                 WorldUtils.rotatePacket((double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getX() + 0.5D, this.pos.getY() + 1, (double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getZ() + 0.5D);
@@ -169,9 +167,9 @@ public class NewAuto32k extends Module
 
     public void onUpdate()
     {
-        if ((!this.getSettings().get(4).toToggle().state || this.active || this.ticksPassed <= 25) && (!this.active || this.mc.currentScreen instanceof GuiHopper))
+        if ((!this.getSettings().get(4).asToggle().state || this.active || this.ticksPassed <= 25) && (!this.active || this.mc.currentScreen instanceof GuiHopper))
         {
-            if (this.active && this.getSettings().get(1).toToggle().state && this.timer == 0)
+            if (this.active && this.getSettings().get(1).asToggle().state && this.timer == 0)
             {
                 this.killAura();
             }
@@ -197,15 +195,15 @@ public class NewAuto32k extends Module
 
                 this.active = true;
 
-                if (this.getSettings().get(3).toMode().mode == 0)
+                if (this.getSettings().get(3).asMode().mode == 0)
                 {
-                    this.timer = (long) this.timer >= Math.round(20.0D / this.getSettings().get(2).toSlider().getValue()) ? 0 : this.timer + 1;
-                } else if (this.getSettings().get(3).toMode().mode == 1)
+                    this.timer = (long) this.timer >= Math.round(20.0D / this.getSettings().get(2).asSlider().getValue()) ? 0 : this.timer + 1;
+                } else if (this.getSettings().get(3).asMode().mode == 1)
                 {
                     this.timer = 0;
-                } else if (this.getSettings().get(3).toMode().mode == 2)
+                } else if (this.getSettings().get(3).asMode().mode == 2)
                 {
-                    this.timer = (double) this.timer >= this.getSettings().get(2).toSlider().getValue() ? 0 : this.timer + 1;
+                    this.timer = (double) this.timer >= this.getSettings().get(2).asSlider().getValue() ? 0 : this.timer + 1;
                 }
 
                 if (!(gui.inventorySlots.inventorySlots.get(0).getStack().getItem() instanceof ItemAir) && this.active)
@@ -244,13 +242,13 @@ public class NewAuto32k extends Module
             if (this.dispenserTicks == 1)
             {
                 this.mc.displayGuiScreen(null);
-               WorldUtils.placeBlock(this.pos.add(0, 2, 0), this.redstone, this.getSettings().get(0).toToggle().state, false);
+               WorldUtils.placeBlock(this.pos.add(0, 2, 0), this.redstone, this.getSettings().get(0).asToggle().state, false);
                 //WorldUtils.placeBlock(this.pos.add(this.rot[1], 1, this.rot[0]), this.redstone, this.getSettings().get(0).toToggle().state, false);
             }
 
             if (this.mc.world.getBlockState(this.pos.add(this.rot[0], 1, this.rot[1])).getBlock() instanceof BlockShulkerBox && this.mc.world.getBlockState(this.pos.add(this.rot[0], 0, this.rot[1])).getBlock() != Blocks.HOPPER)
             {
-                WorldUtils.placeBlock(this.pos.add(this.rot[0], 0, this.rot[1]), this.hopper, this.getSettings().get(0).toToggle().state, false);
+                WorldUtils.placeBlock(this.pos.add(this.rot[0], 0, this.rot[1]), this.hopper, this.getSettings().get(0).asToggle().state, false);
                 WorldUtils.openBlock(this.pos.add(this.rot[0], 0, this.rot[1]));
             }
 
@@ -268,7 +266,7 @@ public class NewAuto32k extends Module
 
     public void killAura()
     {
-        for (int i = 0; (double) i < (this.getSettings().get(3).toMode().mode == 1 ? this.getSettings().get(2).toSlider().getValue() : 1.0D); ++i)
+        for (int i = 0; (double) i < (this.getSettings().get(3).asMode().mode == 1 ? this.getSettings().get(2).asSlider().getValue() : 1.0D); ++i)
         {
             Entity target = null;
 

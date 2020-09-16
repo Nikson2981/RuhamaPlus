@@ -34,7 +34,7 @@ public class MixinNettyDecoder
     {
         Module m = ModuleManager.getModuleByName("AntiChunkBan");
 
-        if (Objects.requireNonNull(m).isToggled() && m.getSettings().get(0).toMode().mode == 0)
+        if (Objects.requireNonNull(m).isToggled() && m.getSettings().get(0).asMode().mode == 0)
         {
             info.cancel();
 

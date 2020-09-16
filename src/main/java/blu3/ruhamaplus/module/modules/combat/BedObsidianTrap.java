@@ -126,38 +126,38 @@ public class BedObsidianTrap extends Module
 
                         if (this.mc.world.getBlockState(this.blockpos3).getMaterial().isReplaceable())
                         {
-                            WorldUtils.placeBlock(this.blockpos3, this.mc.player.inventory.currentItem, this.getSettings().get(0).toToggle().state, false);
+                            WorldUtils.placeBlock(this.blockpos3, this.mc.player.inventory.currentItem, this.getSettings().get(0).asToggle().state, false);
                         }
 
                         if (this.mc.world.getBlockState(this.blockpos4).getMaterial().isReplaceable())
                         {
-                            WorldUtils.placeBlock(this.blockpos4, this.mc.player.inventory.currentItem, this.getSettings().get(0).toToggle().state, false);
+                            WorldUtils.placeBlock(this.blockpos4, this.mc.player.inventory.currentItem, this.getSettings().get(0).asToggle().state, false);
                         }
 
                         if (this.mc.world.getBlockState(this.blockpos5).getMaterial().isReplaceable())
                         {
-                            WorldUtils.placeBlock(this.blockpos5, this.mc.player.inventory.currentItem, this.getSettings().get(0).toToggle().state, false);
+                            WorldUtils.placeBlock(this.blockpos5, this.mc.player.inventory.currentItem, this.getSettings().get(0).asToggle().state, false);
                         }
 
                         if (this.mc.world.getBlockState(this.blockpos6).getMaterial().isReplaceable())
                         {
-                            WorldUtils.placeBlock(this.blockpos6, this.mc.player.inventory.currentItem, this.getSettings().get(0).toToggle().state, false);
+                            WorldUtils.placeBlock(this.blockpos6, this.mc.player.inventory.currentItem, this.getSettings().get(0).asToggle().state, false);
                         }
 
                         if (this.mc.world.getBlockState(this.blockpos7).getMaterial().isReplaceable())
                         {
-                            WorldUtils.placeBlock(this.blockpos7, this.mc.player.inventory.currentItem, this.getSettings().get(0).toToggle().state, false);
+                            WorldUtils.placeBlock(this.blockpos7, this.mc.player.inventory.currentItem, this.getSettings().get(0).asToggle().state, false);
                         }
 
 
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable())
                         {
-                            WorldUtils.placeBlock(this.blockpos2, this.mc.player.inventory.currentItem, this.getSettings().get(0).toToggle().state, false);
+                            WorldUtils.placeBlock(this.blockpos2, this.mc.player.inventory.currentItem, this.getSettings().get(0).asToggle().state, false);
                         }
 
                         if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable())
                         {
-                            WorldUtils.placeBlock(this.blockpos1, this.mc.player.inventory.currentItem, this.getSettings().get(0).toToggle().state, this.getSettings().get(0).toToggle().state);
+                            WorldUtils.placeBlock(this.blockpos1, this.mc.player.inventory.currentItem, this.getSettings().get(0).asToggle().state, this.getSettings().get(0).asToggle().state);
                         }
 
                         this.mc.player.inventory.currentItem = oldSlot;

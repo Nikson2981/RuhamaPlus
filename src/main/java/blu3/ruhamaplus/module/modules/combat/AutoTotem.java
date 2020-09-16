@@ -24,7 +24,7 @@ public class AutoTotem extends Module
 
     public void onUpdate()
     {
-        if (!this.getSettings().get(2).toToggle().state || (double) (System.currentTimeMillis() - this.time) >= this.getSettings().get(3).toSlider().getValue() * 1000.0D)
+        if (!this.getSettings().get(2).asToggle().state || (double) (System.currentTimeMillis() - this.time) >= this.getSettings().get(3).asSlider().getValue() * 1000.0D)
         {
             this.time = System.currentTimeMillis();
 
@@ -32,7 +32,7 @@ public class AutoTotem extends Module
             {
                 int i;
 
-                if (this.getSettings().get(0).toToggle().state && this.mc.player.getHeldItemOffhand().getItem() == Items.AIR)
+                if (this.getSettings().get(0).asToggle().state && this.mc.player.getHeldItemOffhand().getItem() == Items.AIR)
                 {
                     for (i = 9; i <= 44; ++i)
                     {
@@ -44,7 +44,7 @@ public class AutoTotem extends Module
                     }
                 }
 
-                if (this.getSettings().get(1).toToggle().state)
+                if (this.getSettings().get(1).asToggle().state)
                 {
                     if (this.mc.player.inventory.getStackInSlot(0).getItem() == Items.TOTEM_OF_UNDYING)
                     {

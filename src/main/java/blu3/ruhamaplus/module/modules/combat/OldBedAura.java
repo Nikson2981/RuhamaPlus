@@ -17,7 +17,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -91,14 +90,14 @@ public class OldBedAura extends Module
     {
         this.placeTargets.clear();
 
-        if (this.breakDelay.passedMs((long) this.getSettings().get(10).toSlider().getValue() * 25L)) {
-            if (this.getSettings().get(5).toToggle().state) {
+        if (this.breakDelay.passedMs((long) this.getSettings().get(10).asSlider().getValue() * 25L)) {
+            if (this.getSettings().get(5).asToggle().state) {
                 this.clickBed();
             }
          this.breakDelay.reset();
         }
 
-        if (this.placeDelay.passedMs((long) this.getSettings().get(9).toSlider().getValue() * 25L)) {
+        if (this.placeDelay.passedMs((long) this.getSettings().get(9).asSlider().getValue() * 25L)) {
             this.placeDelay.reset();
             this.moveBed();
 
@@ -127,11 +126,11 @@ public class OldBedAura extends Module
             List<BlockPos> blocks = this.findBedBlocks();
             List<Entity> entities = new ArrayList<>();
 
-            if (this.getSettings().get(1).toToggle().state) {
+            if (this.getSettings().get(1).asToggle().state) {
                 entities.addAll(this.mc.world.playerEntities);
             }
 
-            entities.addAll(this.mc.world.loadedEntityList.stream().filter((entityx) -> entityx instanceof EntityAnimal ? this.getSettings().get(3).toToggle().state : this.getSettings().get(2).toToggle().state).collect(Collectors.toList()));
+            entities.addAll(this.mc.world.loadedEntityList.stream().filter((entityx) -> entityx instanceof EntityAnimal ? this.getSettings().get(3).asToggle().state : this.getSettings().get(2).asToggle().state).collect(Collectors.toList()));
             BlockPos q = null;
 
             double damage = 0.5D;
@@ -154,9 +153,9 @@ public class OldBedAura extends Module
 
                             this.render = q.up();
 
-                            if (this.getSettings().get(4).toToggle().state) {
+                            if (this.getSettings().get(4).asToggle().state) {
                                 if (!offhand && this.mc.player.inventory.currentItem != bedSlot) {
-                                    if (this.getSettings().get(0).toToggle().state) {
+                                    if (this.getSettings().get(0).asToggle().state) {
                                         this.mc.player.inventory.currentItem = bedSlot;
 
 
@@ -171,9 +170,9 @@ public class OldBedAura extends Module
 
 
 
-                               if (this.getSettings().get(11).toMode().mode == 0) { WorldUtils.rotateBedPacket(q, this.targetPos); }
+                               if (this.getSettings().get(11).asMode().mode == 0) { WorldUtils.rotateBedPacket(q, this.targetPos); }
 
-                               if (this.getSettings().get(11).toMode().mode == 1){
+                               if (this.getSettings().get(11).asMode().mode == 1){
 
 
                                    this.plusX = new BlockPos(q.getX() + 1.0D, q.getY(), q.getZ());
@@ -281,7 +280,7 @@ public class OldBedAura extends Module
 
         if (!(mc.player.dimension == 0)) {
 
-            double range = this.getSettings().get(8).toSlider().getValue();
+            double range = this.getSettings().get(8).asSlider().getValue();
             double negativeRange = range - range * 2;
 
             for (x = (int) negativeRange; x <= range; ++x) {
@@ -300,7 +299,7 @@ public class OldBedAura extends Module
 
 
     public void moveBed(){
-        if (this.getSettings().get(7).toToggle().state) {
+        if (this.getSettings().get(7).asToggle().state) {
 
             if (mc.currentScreen instanceof GuiContainer) return;
 
@@ -382,7 +381,7 @@ public class OldBedAura extends Module
     {
         BlockPos boost = blockPos.add(0, 1, 0);
 
-        if (this.getSettings().get(12).toToggle().state){
+        if (this.getSettings().get(12).asToggle().state){
         return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK
                 || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.NETHERRACK
                 || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.NETHER_BRICK
@@ -413,7 +412,7 @@ public class OldBedAura extends Module
     private List<BlockPos> findBedBlocks()
     {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(this.getSphere(this.getPlayerPos(), (float) this.getSettings().get(8).toSlider().getValue(), (int) this.getSettings().get(8).toSlider().getValue(), false, true, 0).stream().filter(this::canPlaceBed).collect(Collectors.toList()));
+        positions.addAll(this.getSphere(this.getPlayerPos(), (float) this.getSettings().get(8).asSlider().getValue(), (int) this.getSettings().get(8).asSlider().getValue(), false, true, 0).stream().filter(this::canPlaceBed).collect(Collectors.toList()));
 
         return positions;
     }
@@ -517,7 +516,7 @@ public class OldBedAura extends Module
 
     public void onEnable()
     {
-        if (this.getSettings().get(6).toToggle().state)
+        if (this.getSettings().get(6).asToggle().state)
         {
             ClientChat.log("1.12BedAura: ON");
         }
@@ -525,7 +524,7 @@ public class OldBedAura extends Module
 
     public void onDisable()
     {
-        if (this.getSettings().get(6).toToggle().state)
+        if (this.getSettings().get(6).asToggle().state)
         {
             ClientChat.log("1.12BedAura: OFF");
         }

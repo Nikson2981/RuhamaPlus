@@ -1,7 +1,6 @@
 package blu3.ruhamaplus.module.modules.combat;
 
 
-import blu3.ruhamaplus.RuhamaPlus;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
@@ -9,7 +8,6 @@ import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.ClientChat;
 import blu3.ruhamaplus.utils.RenderUtils;
-import blu3.ruhamaplus.utils.Timer;
 import blu3.ruhamaplus.utils.WorldUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.block.BlockBed;
@@ -102,19 +100,19 @@ public class BedAuraECME extends Module {
 
 
 
-            if (mc.player.ticksExisted % this.getSettings().get(0).toSlider().getValue() == 0) {
-                if (this.getSettings().get(7).toToggle().state) this.clickBed();
+            if (mc.player.ticksExisted % this.getSettings().get(0).asSlider().getValue() == 0) {
+                if (this.getSettings().get(7).asToggle().state) this.clickBed();
             }
 
-            if (mc.player.ticksExisted % this.getSettings().get(1).toSlider().getValue() == 0) {
+            if (mc.player.ticksExisted % this.getSettings().get(1).asSlider().getValue() == 0) {
                 this.moveBed();
 
                 do {
 
                     if (!entityIter.hasNext()) {
-                        if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < this.getSettings().get(2).toSlider().getValue()) {
+                        if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < this.getSettings().get(2).asSlider().getValue()) {
                             if (this.mc.player.getHeldItemMainhand().getItem() == Items.BED) {
-                                if (this.getSettings().get(6).toToggle().state) this.bomb(this.target);
+                                if (this.getSettings().get(6).asToggle().state) this.bomb(this.target);
                             }
                         }
                         return;
@@ -156,7 +154,7 @@ public class BedAuraECME extends Module {
 
             // +x bed
 
-            if (this.mc.player.getDistance(player.posX + 1.0D, player.posY + 1.0D, player.posZ) <= this.getSettings().get(5).toSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX + 1.0D, player.posY + 1.0D, player.posZ) <= this.getSettings().get(5).asSlider().getValue()) {
                 if (this.mc.world.getBlockState(this.blockpos7).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
@@ -169,7 +167,7 @@ public class BedAuraECME extends Module {
             }
             // +z bed
 
-            if (this.mc.player.getDistance(player.posX, player.posY + 1.0D, player.posZ + 1.0D) <= this.getSettings().get(5).toSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX, player.posY + 1.0D, player.posZ + 1.0D) <= this.getSettings().get(5).asSlider().getValue()) {
                 if (this.mc.world.getBlockState(this.blockpos8).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
@@ -183,7 +181,7 @@ public class BedAuraECME extends Module {
 
             // -x bed
 
-            if (this.mc.player.getDistance(player.posX - 1.0D, player.posY + 1.0D, player.posZ) <= this.getSettings().get(5).toSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX - 1.0D, player.posY + 1.0D, player.posZ) <= this.getSettings().get(5).asSlider().getValue()) {
                 if (this.mc.world.getBlockState(this.blockpos9).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
@@ -196,7 +194,7 @@ public class BedAuraECME extends Module {
             }
             // -z bed
 
-            if (this.mc.player.getDistance(player.posX, player.posY + 1.0D, player.posZ - 1.0D) <= this.getSettings().get(5).toSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX, player.posY + 1.0D, player.posZ - 1.0D) <= this.getSettings().get(5).asSlider().getValue()) {
                 if (this.mc.world.getBlockState(this.blockpos10).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
@@ -210,7 +208,7 @@ public class BedAuraECME extends Module {
 
             // +x upper bed
 
-            if (this.mc.player.getDistance(player.posX + 1.0D, player.posY + 2.0D, player.posZ) <= this.getSettings().get(5).toSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX + 1.0D, player.posY + 2.0D, player.posZ) <= this.getSettings().get(5).asSlider().getValue()) {
                 if (this.mc.world.getBlockState(this.blockpos11).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable()) {
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
@@ -225,7 +223,7 @@ public class BedAuraECME extends Module {
             }
 
             // +z upper bed
-            if (this.mc.player.getDistance(player.posX, player.posY + 2.0D, player.posZ + 1.0D) <= this.getSettings().get(5).toSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX, player.posY + 2.0D, player.posZ + 1.0D) <= this.getSettings().get(5).asSlider().getValue()) {
                 if (this.mc.world.getBlockState(this.blockpos12).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable()) {
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
@@ -240,7 +238,7 @@ public class BedAuraECME extends Module {
             }
 
             // -x upper bed
-            if (this.mc.player.getDistance(player.posX - 1.0D, player.posY + 2.0D, player.posZ) <= this.getSettings().get(5).toSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX - 1.0D, player.posY + 2.0D, player.posZ) <= this.getSettings().get(5).asSlider().getValue()) {
                 if (this.mc.world.getBlockState(this.blockpos13).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable()) {
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
@@ -254,7 +252,7 @@ public class BedAuraECME extends Module {
                 }
             }
             // -z upper bed
-            if (this.mc.player.getDistance(player.posX, player.posY + 2.0D, player.posZ - 1.0D) <= this.getSettings().get(5).toSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX, player.posY + 2.0D, player.posZ - 1.0D) <= this.getSettings().get(5).asSlider().getValue()) {
                 if (this.mc.world.getBlockState(this.blockpos14).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable()) {
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
@@ -309,7 +307,7 @@ public class BedAuraECME extends Module {
 
         if (!(mc.player.dimension == 0)) {
 
-            double range = this.getSettings().get(5).toSlider().getValue();
+            double range = this.getSettings().get(5).asSlider().getValue();
             double negativeRange = range - range * 2;
 
             for (x = (int) negativeRange; x <= range; ++x) {
@@ -332,7 +330,7 @@ public class BedAuraECME extends Module {
 
         if (!(mc.player.dimension == 0)) {
 
-            double range = this.getSettings().get(5).toSlider().getValue();
+            double range = this.getSettings().get(5).asSlider().getValue();
             double negativeRange = range - range * 2;
 
             for (x = (int) negativeRange; x <= range; ++x) {
@@ -350,7 +348,7 @@ public class BedAuraECME extends Module {
     }
 
     public void moveBed(){
-        if (this.getSettings().get(4).toToggle().state) {
+        if (this.getSettings().get(4).asToggle().state) {
 
             if (mc.currentScreen instanceof GuiContainer) return;
 

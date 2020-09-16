@@ -63,6 +63,7 @@ public class ModuleManager
             new PearlViewer(),
             new Peek(),
             new PlayerRadar(),
+            new FeetXp(),
             new ChatSuffix(),
             new ShulkerAura(),
             new StashFinder(),

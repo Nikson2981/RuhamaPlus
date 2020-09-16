@@ -3,7 +3,6 @@ package blu3.ruhamaplus.module.modules.render;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
-import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 
 import java.util.Collections;
@@ -22,7 +21,7 @@ public class FOVSlider extends Module {
     }
 
     public void onUpdate(){
-     this.mc.gameSettings.fovSetting = (float) this.getSettings().get(0).toSlider().getValue();
+     this.mc.gameSettings.fovSetting = (float) this.getSettings().get(0).asSlider().getValue();
     }
 
     public void onDisable() {

@@ -113,10 +113,10 @@ public class TunnelESP extends Module
 
     public void onRender()
     {
-        float r = (float) (this.getSettings().get(2).toSlider().getValue() / 255.0D);
-        float g = (float) (this.getSettings().get(3).toSlider().getValue() / 255.0D);
-        float b = (float) (this.getSettings().get(4).toSlider().getValue() / 255.0D);
-        float a = (float) (this.getSettings().get(5).toSlider().getValue() / 255.0D);
+        float r = (float) (this.getSettings().get(2).asSlider().getValue() / 255.0D);
+        float g = (float) (this.getSettings().get(3).asSlider().getValue() / 255.0D);
+        float b = (float) (this.getSettings().get(4).asSlider().getValue() / 255.0D);
+        float a = (float) (this.getSettings().get(5).asSlider().getValue() / 255.0D);
 
         for (Object o : new ArrayList<>(this.spaces))
         {
@@ -179,7 +179,7 @@ public class TunnelESP extends Module
 
             List<List<BlockPos>> rotations = Arrays.asList(Arrays.asList(new BlockPos(0, 0, 1), new BlockPos(0, 0, -1), new BlockPos(0, 1, 0), new BlockPos(0, -1, 0)), Arrays.asList(new BlockPos(1, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 1, 0), new BlockPos(0, -1, 0)));
 
-            if (this.getSettings().get(0).toMode().mode == 0)
+            if (this.getSettings().get(0).asMode().mode == 0)
             {
                 Iterator airIter = air.iterator();
 
@@ -231,7 +231,7 @@ public class TunnelESP extends Module
                 }
             } else
             {
-                max = (int) this.getSettings().get(1).toSlider().getValue();
+                max = (int) this.getSettings().get(1).asSlider().getValue();
                 Iterator rotsIter = rotations.iterator();
 
                 fern:

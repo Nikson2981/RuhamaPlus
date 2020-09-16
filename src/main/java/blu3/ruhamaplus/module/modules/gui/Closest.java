@@ -10,7 +10,6 @@ import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -85,9 +84,9 @@ public class Closest extends Module {
 
 
 
-        int x = (int) this.getSettings().get(0).toSlider().getValue();
-        int y = (int) this.getSettings().get(1).toSlider().getValue();
-       // if (!knownPlayers.isEmpty()) {
+        int x = (int) this.getSettings().get(0).asSlider().getValue();
+        int y = (int) this.getSettings().get(1).asSlider().getValue();
+        if (!knownPlayers.isEmpty()) {
 
             EntityPlayer l_Player = null;
 
@@ -96,13 +95,13 @@ public class Closest extends Module {
                 players.remove(this.mc.player);
                 players.sort((a, b) -> Float.compare(a.getDistance(this.mc.player), b.getDistance(this.mc.player)));
 
-                if (players.get(0).getDistance(this.mc.player) < this.getSettings().get(0).toSlider().getValue()) {
-                   // l_Player = (EntityPlayer) players.get(0);
+                if (players.get(0).getDistance(this.mc.player) < this.getSettings().get(0).asSlider().getValue()) {
+                    l_Player = (EntityPlayer) players.get(0);
                 }
             } catch (Exception ignored) {
             }
 
-            l_Player = this.mc.player;
+            //l_Player = this.mc.player;
             int p = -1;
             if (this.mc.getConnection() == null || this.mc.getConnection().getPlayerInfo(l_Player.getName()) == null) {
                 p = -1;
@@ -127,7 +126,7 @@ public class Closest extends Module {
             final String leggings2 = leggings.getItem().getItemStackDisplayName(leggings);
             final String boots2 = boots.getItem().getItemStackDisplayName(boots);
 
-            if(this.getSettings().get(2).toToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
+            if(this.getSettings().get(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
 
             mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + Name, x + 20, y - 55, 0);
             if (FriendManager.Get().isFriend(l_Player.getName().toLowerCase())) {
@@ -327,7 +326,7 @@ public class Closest extends Module {
                 this.mc.fontRenderer.drawStringWithShadow(TextFormatting.GRAY + "Weakness" + TextFormatting.WHITE + " None", x + 20, y + 10, 0);
             }
         }
-   // }
+    }
 
 
     public static class EnchantEntry

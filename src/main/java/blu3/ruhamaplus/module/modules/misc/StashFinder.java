@@ -88,7 +88,7 @@ public class StashFinder extends Module
 
     public boolean onPacketRead(Packet<?> packet)
     {
-        if (this.getSettings().get(8).toToggle().state && packet instanceof SPacketChunkData && this.mc.world.getBiome(this.mc.player.getPosition()) != Biomes.HELL)
+        if (this.getSettings().get(8).asToggle().state && packet instanceof SPacketChunkData && this.mc.world.getBiome(this.mc.player.getPosition()) != Biomes.HELL)
         {
             SPacketChunkData chunkPack = (SPacketChunkData) packet;
 
@@ -97,7 +97,7 @@ public class StashFinder extends Module
 
             List<Block> blocks = Arrays.asList(Blocks.BEDROCK, Blocks.BARRIER, Blocks.END_PORTAL_FRAME, Blocks.END_PORTAL);
 
-            if (this.getSettings().get(11).toToggle().state){ blocks.add(Blocks.CACTUS); }
+            if (this.getSettings().get(11).asToggle().state){ blocks.add(Blocks.CACTUS); }
 
             StringBuilder content = new StringBuilder();
 
@@ -132,7 +132,7 @@ public class StashFinder extends Module
             ClientChat.log("StashFinder: Starting from " + this.startChunk.getXStart() + ", " + this.startChunk.getZStart());
 
             this.range = ((int) Math.max(Math.abs(this.mc.player.posX - (double) this.startChunk.getXStart()), Math.abs(this.mc.player.posZ - (double) this.startChunk.getZStart())) >> 4) - 1;
-        } else if (this.getSettings().get(0).toMode().mode == 1)
+        } else if (this.getSettings().get(0).asMode().mode == 1)
         {
             this.range = ((int) Math.max(Math.abs(this.mc.player.posX), Math.abs(this.mc.player.posZ)) >> 4) - 1;
 
@@ -147,7 +147,7 @@ public class StashFinder extends Module
             this.startChunk = new ChunkPos(this.mc.player.getPosition());
         }
 
-        if (this.getSettings().get(8).toToggle().state)
+        if (this.getSettings().get(8).asToggle().state)
         {
             this.mc.renderGlobal.loadRenderers();
         }
@@ -155,13 +155,13 @@ public class StashFinder extends Module
 
     public void onUpdate()
     {
-        if (this.getSettings().get(10).toToggle().state)
+        if (this.getSettings().get(10).asToggle().state)
         {
             StringBuilder content;
             Iterator teIter;
             TileEntity t;
 
-            if (this.getSettings().get(4).toToggle().state && this.mc.player.ticksExisted % 10 == 0)
+            if (this.getSettings().get(4).asToggle().state && this.mc.player.ticksExisted % 10 == 0)
             {
                 content = new StringBuilder();
                 teIter = this.mc.world.loadedTileEntityList.iterator();
@@ -221,7 +221,7 @@ public class StashFinder extends Module
                 }
             }
 
-            if (this.getSettings().get(5).toToggle().state && this.mc.player.ticksExisted % 10 == 0)
+            if (this.getSettings().get(5).asToggle().state && this.mc.player.ticksExisted % 10 == 0)
             {
                 content = new StringBuilder();
                 HashMap<ChunkPos, Integer> chunkMap = new HashMap<>();
@@ -244,7 +244,7 @@ public class StashFinder extends Module
                 {
                     Entry<ChunkPos, Integer> e = (Entry) tileEntityIterator.next();
 
-                    if (!this.chestList.contains(e.getKey()) && (double) e.getValue() >= this.getSettings().get(9).toSlider().getValue())
+                    if (!this.chestList.contains(e.getKey()) && (double) e.getValue() >= this.getSettings().get(9).asSlider().getValue())
                     {
                         this.chestList.add(e.getKey());
                         String text = e.getValue() + "x Chest | " + e.getKey().getXStart() + ", " + e.getKey().getZStart();
@@ -262,7 +262,7 @@ public class StashFinder extends Module
                 }
             }
 
-            if (this.getSettings().get(6).toToggle().state && this.mc.player.ticksExisted % 10 == 0)
+            if (this.getSettings().get(6).asToggle().state && this.mc.player.ticksExisted % 10 == 0)
             {
                 content = new StringBuilder();
                 teIter = this.mc.world.loadedEntityList.iterator();
@@ -292,7 +292,7 @@ public class StashFinder extends Module
                 }
             }
 
-            if (this.getSettings().get(7).toToggle().state && this.mc.player.ticksExisted % 10 == 0)
+            if (this.getSettings().get(7).asToggle().state && this.mc.player.ticksExisted % 10 == 0)
             {
                 content = new StringBuilder();
                 teIter = this.mc.world.loadedTileEntityList.iterator();
@@ -330,9 +330,9 @@ public class StashFinder extends Module
 
             --this.elytratime;
 
-            boolean flat = Objects.requireNonNull(ModuleManager.getModuleByName("ElytraFly")).isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("ElytraFly")).getSettings().get(0).toMode().mode == 0;
+            boolean flat = Objects.requireNonNull(ModuleManager.getModuleByName("ElytraFly")).isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("ElytraFly")).getSettings().get(0).asMode().mode == 0;
 
-            if (!flat && this.getSettings().get(3).toToggle().state && this.elytratime > 0 && !this.mc.player.onGround && this.mc.currentScreen != null) {
+            if (!flat && this.getSettings().get(3).asToggle().state && this.elytratime > 0 && !this.mc.player.onGround && this.mc.currentScreen != null) {
                 this.mc.player.connection.sendPacket(new CPacketEntityAction(this.mc.player, Action.START_FALL_FLYING));
                 this.timeout = 80;
             }
@@ -390,12 +390,12 @@ public class StashFinder extends Module
                     this.nextChunk = this.nextChunks.get(0);
                     this.facePos(this.nextChunk.getXStart() + 8, this.nextChunk.getZStart() + 8);
 
-                    Vec3d forward = (new Vec3d(0.0D, 0.0D, Objects.requireNonNull(ModuleManager.getModuleByName("ElytraFly")).getSettings().get(4).toSlider().getValue())).rotateYaw(-((float) Math.toRadians(this.mc.player.rotationYaw)));
+                    Vec3d forward = (new Vec3d(0.0D, 0.0D, Objects.requireNonNull(ModuleManager.getModuleByName("ElytraFly")).getSettings().get(4).asSlider().getValue())).rotateYaw(-((float) Math.toRadians(this.mc.player.rotationYaw)));
                     this.mc.player.setVelocity(forward.x, forward.y, forward.z);
                 } else
                 {
                     this.chunks.clear();
-                    this.range += (int) this.getSettings().get(1).toSlider().getValue();
+                    this.range += (int) this.getSettings().get(1).asSlider().getValue();
 
                     for (x = this.startChunk.x - this.range; x <= this.startChunk.x + this.range; ++x)
                     {
@@ -420,7 +420,7 @@ public class StashFinder extends Module
 
     public void onRender()
     {
-        if (this.getSettings().get(2).toToggle().state)
+        if (this.getSettings().get(2).asToggle().state)
         {
             Iterator chonkIter = this.chunks.iterator();
 

@@ -59,7 +59,7 @@ public class HoleFiller extends Module
                     v = playersIter.next();
                 } while (v.getUniqueID().equals(this.mc.player.getUniqueID()));
 
-                int v2 = (int) this.getSettings().get(0).toSlider().getValue();
+                int v2 = (int) this.getSettings().get(0).asSlider().getValue();
 
                 BlockPos v3 = v.getPosition();
 
@@ -81,7 +81,7 @@ public class HoleFiller extends Module
                                 }
 
                                 v5 = (BlockPos) blockIter.next();
-                            } while (this.mc.player.getDistanceSqToCenter(v5) > this.getSettings().get(1).toSlider().getValue());
+                            } while (this.mc.player.getDistanceSqToCenter(v5) > this.getSettings().get(1).asSlider().getValue());
                         } while (!this.mc.world.getBlockState(v5).getMaterial().isReplaceable());
                     } while (!this.mc.world.getBlockState(v5.add(0, 1, 0)).getMaterial().isReplaceable());
 
@@ -92,7 +92,7 @@ public class HoleFiller extends Module
                         int v8 = this.mc.player.inventory.currentItem;
                         this.mc.player.inventory.currentItem = v7;
 
-                        WorldUtils.placeBlock(v5, v7, this.getSettings().get(2).toToggle().state, this.getSettings().get(2).toToggle().state);
+                        WorldUtils.placeBlock(v5, v7, this.getSettings().get(2).asToggle().state, this.getSettings().get(2).asToggle().state);
                         this.mc.player.inventory.currentItem = v8;
                     }
                 }

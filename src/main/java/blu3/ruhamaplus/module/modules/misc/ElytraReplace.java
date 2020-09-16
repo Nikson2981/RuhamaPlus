@@ -23,7 +23,7 @@ public class ElytraReplace extends Module
 
     public void onUpdate()
     {
-        if (this.mc.player.inventoryContainer.getSlot(6).getStack().getItem() instanceof ItemElytra && this.mc.player.inventoryContainer.getSlot(6).getStack().getMaxDamage() - this.mc.player.inventoryContainer.getSlot(6).getStack().getItemDamage() < this.getSettings().get(0).toSlider().getValue())
+        if (this.mc.player.inventoryContainer.getSlot(6).getStack().getItem() instanceof ItemElytra && this.mc.player.inventoryContainer.getSlot(6).getStack().getMaxDamage() - this.mc.player.inventoryContainer.getSlot(6).getStack().getItemDamage() < this.getSettings().get(0).asSlider().getValue())
         {
             int i = 9;
 
@@ -31,7 +31,7 @@ public class ElytraReplace extends Module
             {
                 ItemStack stack;
 
-                if ((stack = this.mc.player.inventoryContainer.getSlot(n).getStack()) != ItemStack.EMPTY && stack.getItem() instanceof ItemElytra && stack.getCount() == 1 && stack.getMaxDamage() - stack.getItemDamage() > (this.getSettings().get(0).toSlider().getValue()))
+                if ((stack = this.mc.player.inventoryContainer.getSlot(n).getStack()) != ItemStack.EMPTY && stack.getItem() instanceof ItemElytra && stack.getCount() == 1 && stack.getMaxDamage() - stack.getItemDamage() > (this.getSettings().get(0).asSlider().getValue()))
                 {
                     this.mc.playerController.windowClick(this.mc.player.inventoryContainer.windowId, 6, 0, ClickType.PICKUP, this.mc.player);
                     this.mc.playerController.windowClick(this.mc.player.inventoryContainer.windowId, n, 0, ClickType.QUICK_MOVE, this.mc.player);

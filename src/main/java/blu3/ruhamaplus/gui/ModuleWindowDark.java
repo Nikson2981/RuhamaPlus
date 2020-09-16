@@ -113,17 +113,17 @@ public class ModuleWindowDark extends ModuleWindow
 
                         if (s instanceof SettingMode)
                         {
-                            this.drawModeSetting(s.toMode(), this.posX, this.posY + count * 14);
+                            this.drawModeSetting(s.asMode(), this.posX, this.posY + count * 14);
                         }
 
                         if (s instanceof SettingToggle)
                         {
-                            this.drawToggleSetting(s.toToggle(), this.posX, this.posY + count * 14);
+                            this.drawToggleSetting(s.asToggle(), this.posX, this.posY + count * 14);
                         }
 
                         if (s instanceof SettingSlider)
                         {
-                            this.drawSliderSetting(s.toSlider(), this.posX, this.posY + count * 14);
+                            this.drawSliderSetting(s.asSlider(), this.posX, this.posY + count * 14);
                         }
                     }
 
