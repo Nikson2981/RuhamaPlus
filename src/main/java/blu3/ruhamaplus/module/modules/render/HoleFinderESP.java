@@ -33,8 +33,8 @@ public class HoleFinderESP extends Module
 
     public void onUpdate()
     {
-        if (this.mc.player.ticksExisted % this.getSettings().get(9).asSlider().getValue() == 0 || (this.mc.player.getPositionVector().distanceTo(this.prevPos) > 5.0 && this.mc.player.ticksExisted % 10 == 0)) {
-            this.update((int)this.getSettings().get(0).asSlider().getValue());
+        if (this.mc.player.ticksExisted % this.getSetting(9).asSlider().getValue() == 0 || (this.mc.player.getPositionVector().distanceTo(this.prevPos) > 5.0 && this.mc.player.ticksExisted % 10 == 0)) {
+            this.update((int)this.getSetting(0).asSlider().getValue());
         }
     }
 
@@ -92,13 +92,13 @@ public class HoleFinderESP extends Module
             final double x = blockPos.getX() - this.rPos[0];
             final double y = blockPos.getY() - this.rPos[1];
             final double z = blockPos.getZ() - this.rPos[2];
-            final float or = (float)(this.getSettings().get(3).asSlider().getValue() / 255.0);
-            final float og = (float)(this.getSettings().get(4).asSlider().getValue() / 255.0);
-            final float ob = (float)(this.getSettings().get(5).asSlider().getValue() / 255.0);
-            final float br = (float)(this.getSettings().get(6).asSlider().getValue() / 255.0);
-            final float bg = (float)(this.getSettings().get(7).asSlider().getValue() / 255.0);
-            final float bb = (float)(this.getSettings().get(8).asSlider().getValue() / 255.0);
-            if (this.getSettings().get(2).asToggle().state) {
+            final float or = (float)(this.getSetting(3).asSlider().getValue() / 255.0);
+            final float og = (float)(this.getSetting(4).asSlider().getValue() / 255.0);
+            final float ob = (float)(this.getSetting(5).asSlider().getValue() / 255.0);
+            final float br = (float)(this.getSetting(6).asSlider().getValue() / 255.0);
+            final float bg = (float)(this.getSetting(7).asSlider().getValue() / 255.0);
+            final float bb = (float)(this.getSetting(8).asSlider().getValue() / 255.0);
+            if (this.getSetting(2).asToggle().state) {
                 RenderGlobal.renderFilledBox(new AxisAlignedBB(x, y, z, x + 1.0, y, z + 1.0), r, g, b, a);
                 RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(x, y, z, x + 1.0, y, z + 1.0), r, g, b, a * 1.5f);
             }
@@ -110,10 +110,10 @@ public class HoleFinderESP extends Module
                 RenderGlobal.renderFilledBox(new AxisAlignedBB(x, y, z, x + 1.0, y, z + 1.0), br, bg, bb, a);
                 RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(x, y, z, x + 1.0, y, z + 1.0), br, bg, bb, a * 1.5f);
             }
-            if (this.getSettings().get(1).asMode().mode == 1) {
+            if (this.getSetting(1).asMode().mode == 1) {
                 return;
             }
-            if (this.getSettings().get(2).asToggle().state) {
+            if (this.getSetting(2).asToggle().state) {
                 RenderGlobal.renderFilledBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z), r, g, b, a);
                 RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z), r, g, b, a * 1.5f);
                 RenderGlobal.renderFilledBox(new AxisAlignedBB(x, y, z, x, y + 1.0, z + 1.0), r, g, b, a);

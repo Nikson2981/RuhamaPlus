@@ -147,13 +147,13 @@ public class AutoWither extends Module
                     return;
                 }
 
-                if (WorldUtils.placeBlock(blockPosIntegerEntry.getKey(), blockPosIntegerEntry.getValue(), this.getSettings().get(1).asToggle().state, blockPosIntegerEntry.equals(blocks.entrySet().toArray()[blocks.size() - 1]) && this.getSettings().get(1).asToggle().state))
+                if (WorldUtils.placeBlock(blockPosIntegerEntry.getKey(), blockPosIntegerEntry.getValue(), this.getSetting(1).asToggle().state, blockPosIntegerEntry.equals(blocks.entrySet().toArray()[blocks.size() - 1]) && this.getSetting(1).asToggle().state))
                 {
                     ++cap;
                 }
             }
 
-            if (this.getSettings().get(0).asToggle().state)
+            if (this.getSetting(0).asToggle().state)
             {
                 this.nameTagTime = true;
             } else

@@ -51,7 +51,7 @@ public class TreeAura extends Module
         {
             ItemStack stack = this.mc.player.inventory.getStackInSlot(i);
 
-            if (this.isSapling(stack, this.getSettings().get(4).asToggle().state))
+            if (this.isSapling(stack, this.getSetting(4).asToggle().state))
             {
                 sapling = i;
             }
@@ -78,7 +78,7 @@ public class TreeAura extends Module
 
             Block block;
 
-            if (this.getSettings().get(4).asToggle().state)
+            if (this.getSetting(4).asToggle().state)
             {
                 for (x = -2; x <= 1; ++x)
                 {
@@ -96,9 +96,9 @@ public class TreeAura extends Module
 
                             if ((block == Blocks.GRASS || block == Blocks.DIRT) && (block1 == Blocks.GRASS || block1 == Blocks.DIRT) && (block2 == Blocks.GRASS || block2 == Blocks.DIRT) && (block3 == Blocks.GRASS || block3 == Blocks.DIRT) && this.isBlockAir(this.pos) && this.isBlockAir(this.pos.east()) && this.isBlockAir(this.pos.south()) && this.isBlockAir(this.pos.south().east()) && this.canTreeGrow(this.pos))
                             {
-                                if (this.getSettings().get(0).asMode().mode == 1)
+                                if (this.getSetting(0).asMode().mode == 1)
                                 {
-                                    this.queue.add(new WaitAction((int) this.getSettings().get(5).asSlider().getValue()));
+                                    this.queue.add(new WaitAction((int) this.getSetting(5).asSlider().getValue()));
                                 }
 
                                 this.queue.add(new PlaceAction(this.pos, sapling));
@@ -121,9 +121,9 @@ public class TreeAura extends Module
                 {
                     this.pos = backupPos;
 
-                    if (this.getSettings().get(0).asMode().mode == 1)
+                    if (this.getSetting(0).asMode().mode == 1)
                     {
-                        this.queue.add(new WaitAction((int) this.getSettings().get(5).asSlider().getValue()));
+                        this.queue.add(new WaitAction((int) this.getSetting(5).asSlider().getValue()));
                     }
 
                     this.queue.add(new PlaceAction(this.pos.down(), dirt));
@@ -154,7 +154,7 @@ public class TreeAura extends Module
 
                                 if ((block == Blocks.GRASS || block == Blocks.DIRT) && this.isBlockAir(this.pos) && this.canTreeGrow(this.pos))
                                 {
-                                    this.queue.add(new WaitAction((int) this.getSettings().get(5).asSlider().getValue()));
+                                    this.queue.add(new WaitAction((int) this.getSetting(5).asSlider().getValue()));
                                     this.queue.add(new PlaceAction(this.pos, sapling));
 
                                     return;
@@ -173,9 +173,9 @@ public class TreeAura extends Module
                 {
                     this.pos = backupPos;
 
-                    if (this.getSettings().get(0).asMode().mode == 1)
+                    if (this.getSetting(0).asMode().mode == 1)
                     {
-                        this.queue.add(new WaitAction((int) this.getSettings().get(5).asSlider().getValue()));
+                        this.queue.add(new WaitAction((int) this.getSetting(5).asSlider().getValue()));
                     }
 
                     this.queue.add(new PlaceAction(this.pos.down(), dirt));
@@ -185,7 +185,7 @@ public class TreeAura extends Module
                 }
             }
 
-            if (this.getSettings().get(0).asMode().mode == 0)
+            if (this.getSetting(0).asMode().mode == 0)
             {
                 ClientChat.log("Nowhere to place sapling");
 
@@ -202,7 +202,7 @@ public class TreeAura extends Module
     {
         if (this.pos != null)
         {
-            if (this.getSettings().get(4).asToggle().state)
+            if (this.getSetting(4).asToggle().state)
             {
                 RenderUtils.drawFilledBlockBox(new AxisAlignedBB(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.pos.getX() + 2, this.pos.getY(), this.pos.getZ() + 2), 1.0F, 0.0F, 0.0F, 0.1F);
             } else
@@ -224,7 +224,7 @@ public class TreeAura extends Module
             {
                 ItemStack stack = this.mc.player.inventory.getStackInSlot(i);
 
-                if (sapling == -1 && this.isSapling(stack, this.getSettings().get(4).asToggle().state))
+                if (sapling == -1 && this.isSapling(stack, this.getSetting(4).asToggle().state))
                 {
                     sapling = i;
                 }
@@ -247,18 +247,18 @@ public class TreeAura extends Module
                 this.setToggled(false);
             } else
             {
-                if (this.getSettings().get(4).asToggle().state && this.mc.player.getEntityBoundingBox().intersects(new AxisAlignedBB(this.pos.down(), this.pos.add(2, 1, 2))) && !this.queue.isEmpty() && !(this.queue.get(0) instanceof TreeAura.WaitAction))
+                if (this.getSetting(4).asToggle().state && this.mc.player.getEntityBoundingBox().intersects(new AxisAlignedBB(this.pos.down(), this.pos.add(2, 1, 2))) && !this.queue.isEmpty() && !(this.queue.get(0) instanceof TreeAura.WaitAction))
                 {
                     this.queue.add(0, new WaitAction(1));
                 }
 
-                if (this.queue.isEmpty() && this.getSettings().get(1).asToggle().state && bonemeal != -1 && this.timesBonemealed < 10)
+                if (this.queue.isEmpty() && this.getSetting(1).asToggle().state && bonemeal != -1 && this.timesBonemealed < 10)
                 {
                     this.queue.add(new BonemealAction(this.pos, bonemeal));
                     ++this.timesBonemealed;
                 } else if (this.queue.isEmpty())
                 {
-                    if (this.getSettings().get(0).asMode().mode == 0)
+                    if (this.getSetting(0).asMode().mode == 0)
                     {
                         this.setToggled(false);
                     } else
@@ -269,7 +269,7 @@ public class TreeAura extends Module
                     return;
                 }
 
-                if (this.getSettings().get(3).asToggle().state && !this.queue.isEmpty() && (!(this.queue.get(0) instanceof TreeAura.WaitAction) || ((TreeAura.WaitAction) this.queue.get(0)).waitTime <= 1))
+                if (this.getSetting(3).asToggle().state && !this.queue.isEmpty() && (!(this.queue.get(0) instanceof TreeAura.WaitAction) || ((TreeAura.WaitAction) this.queue.get(0)).waitTime <= 1))
                 {
                     this.mc.player.motionX = MathHelper.clamp(this.playerPos.x - this.mc.player.posX, -0.1D, 0.1D);
                     this.mc.player.motionZ = MathHelper.clamp(this.playerPos.z - this.mc.player.posZ, -0.1D, 0.1D);
@@ -279,7 +279,7 @@ public class TreeAura extends Module
             }
         } else
         {
-            if (this.getSettings().get(0).asMode().mode == 0)
+            if (this.getSetting(0).asMode().mode == 0)
             {
                 this.setToggled(false);
             } else
@@ -307,13 +307,13 @@ public class TreeAura extends Module
             } else if (this.queue.get(0) instanceof TreeAura.PlaceAction)
             {
                 TreeAura.PlaceAction action = (TreeAura.PlaceAction) this.queue.get(0);
-                WorldUtils.placeBlock(action.pos, action.slot, this.getSettings().get(2).asToggle().state, false);
+                WorldUtils.placeBlock(action.pos, action.slot, this.getSetting(2).asToggle().state, false);
 
                 this.queue.remove(0);
 
-                if (this.getSettings().get(6).asSlider().getValue() > 0.0D)
+                if (this.getSetting(6).asSlider().getValue() > 0.0D)
                 {
-                    this.queue.add(0, new WaitAction((int) this.getSettings().get(6).asSlider().getValue()));
+                    this.queue.add(0, new WaitAction((int) this.getSetting(6).asSlider().getValue()));
                 }
             } else if (this.queue.get(0) instanceof TreeAura.BonemealAction)
             {
@@ -322,9 +322,9 @@ public class TreeAura extends Module
                 WorldUtils.openBlock(this.queue.get(0).pos);
                 this.queue.remove(0);
 
-                if (this.getSettings().get(6).asSlider().getValue() > 0.0D)
+                if (this.getSetting(6).asSlider().getValue() > 0.0D)
                 {
-                    this.queue.add(0, new WaitAction((int) this.getSettings().get(6).asSlider().getValue()));
+                    this.queue.add(0, new WaitAction((int) this.getSetting(6).asSlider().getValue()));
                 }
             }
         }

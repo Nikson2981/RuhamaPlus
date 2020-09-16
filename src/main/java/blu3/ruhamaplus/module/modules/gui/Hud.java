@@ -54,12 +54,12 @@ public class Hud extends Module {
 
         height = 2;
 
-        if (this.getSettings().get(0).asToggle().state) {
+        if (this.getSetting(0).asToggle().state) {
             mc.fontRenderer.drawStringWithShadow("Ruhama+ " + RuhamaPlus.version, 2, height, Rainbow.getInt());
             height+=10;
         }
 
-        if(this.getSettings().get(1).asToggle().state) {
+        if(this.getSetting(1).asToggle().state) {
 
             if (mc.getCurrentServerData() != null && !this.mc.getCurrentServerData().serverIP.equals("")) {
                 mc.fontRenderer.drawStringWithShadow("IP: " + this.mc.getCurrentServerData().serverIP, 2, height, Rainbow.getInt());
@@ -73,16 +73,16 @@ public class Hud extends Module {
             height+=10;
         }
 
-        if (this.getSettings().get(2).asToggle().state) {
+        if (this.getSetting(2).asToggle().state) {
             mc.fontRenderer.drawStringWithShadow("Ping: " + this.getPing() + "ms", 2, height, Rainbow.getInt());
             height+=10;
         }
 
-        if (this.getSettings().get(3).asToggle().state) {
+        if (this.getSetting(3).asToggle().state) {
             mc.fontRenderer.drawStringWithShadow("Logged in as " + this.mc.player.getName(), 2, height, Rainbow.getInt());
             height+=10;
         }
-        if (this.getSettings().get(4).asToggle().state) {
+        if (this.getSetting(4).asToggle().state) {
 
             final int s = this.mc.player.dimension;
             String biom = "";

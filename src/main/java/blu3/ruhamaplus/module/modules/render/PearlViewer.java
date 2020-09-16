@@ -63,7 +63,7 @@ public class PearlViewer extends Module
 
                 if (!this.poses.containsKey(e.getUniqueID()))
                 {
-                    if (this.getSettings().get(0).asToggle().state)
+                    if (this.getSetting(0).asToggle().state)
                     {
                         for (net.minecraft.entity.player.EntityPlayer entityPlayer : this.mc.world.playerEntities)
                         {
@@ -77,10 +77,10 @@ public class PearlViewer extends Module
                     }
 
                     this.poses.put(e.getUniqueID(), new ArrayList<>(Collections.singletonList(e.getPositionVector())));
-                    this.time.put(e.getUniqueID(), this.getSettings().get(2).asSlider().getValue());
+                    this.time.put(e.getUniqueID(), this.getSetting(2).asSlider().getValue());
                 } else
                 {
-                    this.time.replace(e.getUniqueID(), this.getSettings().get(2).asSlider().getValue());
+                    this.time.replace(e.getUniqueID(), this.getSetting(2).asSlider().getValue());
                     List<Vec3d> v = this.poses.get(e.getUniqueID());
                     v.add(e.getPositionVector());
                 }
@@ -90,10 +90,10 @@ public class PearlViewer extends Module
 
     public void onRender()
     {
-        if (this.getSettings().get(1).asToggle().state)
+        if (this.getSetting(1).asToggle().state)
         {
             RenderUtils.glSetup();
-            GL11.glLineWidth((float) this.getSettings().get(3).asSlider().getValue());
+            GL11.glLineWidth((float) this.getSetting(3).asSlider().getValue());
             Iterator posIter = this.poses.entrySet().iterator();
 
             while (true)

@@ -28,6 +28,7 @@ public class ModuleManager
             new TabNames(),
             new Hud(),
             new BedObsidianTrap(),
+            new BedCityESP(),
             new OldBedAura(),
             new SwingArm(),
             new Aura(),

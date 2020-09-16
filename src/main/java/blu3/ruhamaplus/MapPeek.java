@@ -75,12 +75,12 @@ public class MapPeek
                 return;
             }
 
-            if (Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).getSettings().get(1).asToggle().state)
+            if (Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).getSetting(1).asToggle().state)
             {
                 this.drawBookToolTip(slot, mouseX, mouseY);
             }
 
-            if (Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).getSettings().get(0).asToggle().state)
+            if (Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).isToggled() && Objects.requireNonNull(ModuleManager.getModuleByName("Peek")).getSetting(0).asToggle().state)
             {
                 if (slot.getStack().getItem() != Items.FILLED_MAP)
                 {

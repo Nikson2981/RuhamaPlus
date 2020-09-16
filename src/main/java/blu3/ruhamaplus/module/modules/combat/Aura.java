@@ -34,22 +34,22 @@ public class Aura extends Module
     public void onUpdate()
     {
         ++this.delay;
-        final int reqDelay = (int)Math.round(20.0 / this.getSettings().get(5).asSlider().getValue());
-        if (this.getSettings().get(0).asToggle().state && !(this.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) && !(this.mc.player.getHeldItemMainhand().getItem() instanceof ItemAxe)) {
+        final int reqDelay = (int)Math.round(20.0 / this.getSetting(5).asSlider().getValue());
+        if (this.getSetting(0).asToggle().state && !(this.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) && !(this.mc.player.getHeldItemMainhand().getItem() instanceof ItemAxe)) {
             return;
         }
         for (final EntityPlayer e : this.mc.world.playerEntities) {
-            if (this.mc.player.getDistance((Entity)e) <= this.getSettings().get(4).asSlider().getValue() && e.getHealth() > 0.0f && e != this.mc.player && e != this.mc.player.getRidingEntity() && e != this.mc.getRenderViewEntity()) {
-                if (!this.mc.player.canEntityBeSeen((Entity)e) && !this.getSettings().get(2).asToggle().state) {
+            if (this.mc.player.getDistance((Entity)e) <= this.getSetting(4).asSlider().getValue() && e.getHealth() > 0.0f && e != this.mc.player && e != this.mc.player.getRidingEntity() && e != this.mc.getRenderViewEntity()) {
+                if (!this.mc.player.canEntityBeSeen((Entity)e) && !this.getSetting(2).asToggle().state) {
                     continue;
                 }
                 if (FriendManager.Get().isFriend(e.getName().toLowerCase())){
                     continue;
                 }
-                if (((this.delay <= reqDelay && reqDelay != 0) || this.getSettings().get(1).asToggle().state) && (this.mc.player.getCooledAttackStrength(this.mc.getRenderPartialTicks()) < 1.0f || !this.getSettings().get(1).asToggle().state)) {
+                if (((this.delay <= reqDelay && reqDelay != 0) || this.getSetting(1).asToggle().state) && (this.mc.player.getCooledAttackStrength(this.mc.getRenderPartialTicks()) < 1.0f || !this.getSetting(1).asToggle().state)) {
                     continue;
                 }
-                if (this.getSettings().get(3).asToggle().state) {
+                if (this.getSetting(3).asToggle().state) {
                     final Random rng = new Random();
                     final double n = 1.282622531E-314;
                     final double n2 = 1.282622531E-314 + 1.282622531E-314 * (1.0 + rng.nextInt(rng.nextBoolean() ? 34 : 43));

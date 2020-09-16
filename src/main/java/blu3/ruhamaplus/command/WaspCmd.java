@@ -42,11 +42,11 @@ WaspCmd extends CommandBase implements IClientCommand {
             {
                 ((LongRangeAim) Objects.requireNonNull(ModuleManager.getModuleByName("LongRangeAim"))).cmdTarget = args[0];
 
-                if (Objects.requireNonNull(ModuleManager.getModuleByName("LongRangeAim")).getSettings().get(1).asMode().mode == 1) {
+                if (Objects.requireNonNull(ModuleManager.getModuleByName("LongRangeAim")).getSetting(1).asMode().mode == 1) {
                     ModuleManager.getModuleByName("LongRangeAim").setToggled(true);
                     ClientChat.log("Set target as " + args[0]);
                 }
-                else if (Objects.requireNonNull(ModuleManager.getModuleByName("WaspAim")).getSettings().get(1).asMode().mode == 0) {
+                else if (Objects.requireNonNull(ModuleManager.getModuleByName("WaspAim")).getSetting(1).asMode().mode == 0) {
                     ClientChat.warn("Set target as " + args[0] + ", however LongRangeAim is set to Closest.");
                 }
 

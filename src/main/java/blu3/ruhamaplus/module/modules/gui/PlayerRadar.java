@@ -47,7 +47,7 @@ public class PlayerRadar extends Module
                 double health = (BigDecimal.valueOf(e.getHealth() + e.getAbsorptionAmount())).setScale(1, RoundingMode.HALF_UP).doubleValue();
                 double dist = (BigDecimal.valueOf(e.getDistance(this.mc.player))).setScale(1, RoundingMode.HALF_UP).doubleValue();
 
-                boolean round = this.getSettings().get(0).asToggle().state;
+                boolean round = this.getSetting(0).asToggle().state;
                 boolean dead = e.getHealth() <= 0.0F;
 
                 if (round)

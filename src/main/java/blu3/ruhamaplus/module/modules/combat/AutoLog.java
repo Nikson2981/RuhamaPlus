@@ -29,16 +29,16 @@ public class AutoLog extends Module
     {
         if (!this.mc.player.capabilities.isCreativeMode)
         {
-            if (this.getSettings().get(0).asToggle().state && (double) this.mc.player.getHealth() < this.getSettings().get(1).asSlider().getValue())
+            if (this.getSetting(0).asToggle().state && (double) this.mc.player.getHealth() < this.getSetting(1).asSlider().getValue())
             {
                 this.logOut("Logged Out At " + this.mc.player.getHealth() + " Health");
             } else
             {
-                if (this.getSettings().get(2).asToggle().state)
+                if (this.getSetting(2).asToggle().state)
                 {
                     int t = this.getTotems();
 
-                    if (t <= (int) this.getSettings().get(3).asSlider().getValue())
+                    if (t <= (int) this.getSetting(3).asSlider().getValue())
                     {
                         this.logOut("Logged Out With " + t + " Totems Left");
 
@@ -48,7 +48,7 @@ public class AutoLog extends Module
 
                 Iterator entityIter;
 
-                if (this.getSettings().get(4).asMode().mode != 0)
+                if (this.getSetting(4).asMode().mode != 0)
                 {
                     entityIter = this.mc.world.loadedEntityList.iterator();
 
@@ -60,7 +60,7 @@ public class AutoLog extends Module
                         {
                             double d = this.mc.player.getDistance(e);
 
-                            if (d <= this.getSettings().get(5).asSlider().getValue() && (this.getSettings().get(4).asMode().mode == 1 || this.getSettings().get(4).asMode().mode == 2 && this.getTotems() <= (int) this.getSettings().get(3).asSlider().getValue() || this.getSettings().get(4).asMode().mode == 3 && (double) this.mc.player.getHealth() < this.getSettings().get(1).asSlider().getValue()))
+                            if (d <= this.getSetting(5).asSlider().getValue() && (this.getSetting(4).asMode().mode == 1 || this.getSetting(4).asMode().mode == 2 && this.getTotems() <= (int) this.getSetting(3).asSlider().getValue() || this.getSetting(4).asMode().mode == 3 && (double) this.mc.player.getHealth() < this.getSetting(1).asSlider().getValue()))
                             {
                                 this.logOut("Logged Out " + d + " Blocks Away From A Crystal");
 
@@ -70,7 +70,7 @@ public class AutoLog extends Module
                     }
                 }
 
-                if (this.getSettings().get(6).asToggle().state)
+                if (this.getSetting(6).asToggle().state)
                 {
                     entityIter = this.mc.world.playerEntities.iterator();
 
@@ -78,7 +78,7 @@ public class AutoLog extends Module
                     {
                         EntityPlayer e = (EntityPlayer) entityIter.next();
 
-                        if (!e.getName().equals(this.mc.player.getName()) && (double) this.mc.player.getDistance(e) <= this.getSettings().get(7).asSlider().getValue())
+                        if (!e.getName().equals(this.mc.player.getName()) && (double) this.mc.player.getDistance(e) <= this.getSetting(7).asSlider().getValue())
                         {
                             this.logOut("Logged Out " + this.mc.player.getDistance(e) + " Blocks Away From A Player (" + e.getName() + ")");
                         }

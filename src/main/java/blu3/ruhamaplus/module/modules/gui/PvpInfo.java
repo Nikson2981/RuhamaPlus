@@ -48,7 +48,7 @@ public class PvpInfo extends Module {
 
 
 
-        if (this.getSettings().get(0).asToggle().state){
+        if (this.getSetting(0).asToggle().state){
             if (ModuleManager.getModuleByName("BedAura").isToggled() && !(ModuleManager.getModuleByName("1.12 BedAura").isToggled())){
                 this.getWindows().get(0).addText(new AdvancedText("BedAura: ECME", true, color));
             } else if (!(ModuleManager.getModuleByName("BedAura").isToggled()) && ModuleManager.getModuleByName("1.12 BedAura").isToggled()){
@@ -62,7 +62,7 @@ public class PvpInfo extends Module {
 
 
             }
-        if (this.getSettings().get(1).asToggle().state){
+        if (this.getSetting(1).asToggle().state){
             if (ModuleManager.getModuleByName("BedObsidianTrap").isToggled()){
             this.getWindows().get(1).addText(new AdvancedText("AutoTrap: ON", true, color));
         } else {
@@ -71,8 +71,8 @@ public class PvpInfo extends Module {
         }
 
 
-        if (this.getSettings().get(2).asToggle().state) this.getWindows().get(2).addText(new AdvancedText("Totems: " + t, true, color));
-        if (this.getSettings().get(3).asToggle().state) this.getWindows().get(3).addText(new AdvancedText("Beds: " + b, true, color));
+        if (this.getSetting(2).asToggle().state) this.getWindows().get(2).addText(new AdvancedText("Totems: " + t, true, color));
+        if (this.getSetting(3).asToggle().state) this.getWindows().get(3).addText(new AdvancedText("Beds: " + b, true, color));
 
     }
 

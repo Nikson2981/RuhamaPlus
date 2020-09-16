@@ -72,9 +72,9 @@ public class CrystalAura extends Module
 
         int crystalSlot;
 
-        if (this.getSettings().get(5).asToggle().state && crystal != null && (double) this.mc.player.getDistance(crystal) <= this.getSettings().get(11).asSlider().getValue())
+        if (this.getSetting(5).asToggle().state && crystal != null && (double) this.mc.player.getDistance(crystal) <= this.getSetting(11).asSlider().getValue())
         {
-            if (this.getSettings().get(7).asToggle().state && this.mc.player.isPotionActive(MobEffects.WEAKNESS))
+            if (this.getSetting(7).asToggle().state && this.mc.player.isPotionActive(MobEffects.WEAKNESS))
             {
                 if (!this.isAttacking)
                 {
@@ -118,9 +118,9 @@ public class CrystalAura extends Module
 
             ++this.breaks;
 
-            if (this.breaks == 2 && !this.getSettings().get(8).asToggle().state)
+            if (this.breaks == 2 && !this.getSetting(8).asToggle().state)
             {
-                if (this.getSettings().get(9).asToggle().state)
+                if (this.getSetting(9).asToggle().state)
                 {
                     this.resetRotation();
                 }
@@ -130,9 +130,9 @@ public class CrystalAura extends Module
                 return;
             }
 
-            if (this.getSettings().get(8).asToggle().state && this.breaks == 1)
+            if (this.getSetting(8).asToggle().state && this.breaks == 1)
             {
-                if (this.getSettings().get(9).asToggle().state)
+                if (this.getSetting(9).asToggle().state)
                 {
                     this.resetRotation();
                 }
@@ -143,7 +143,7 @@ public class CrystalAura extends Module
             }
         } else
         {
-            if (this.getSettings().get(9).asToggle().state)
+            if (this.getSetting(9).asToggle().state)
             {
                 this.resetRotation();
             }
@@ -184,7 +184,7 @@ public class CrystalAura extends Module
         List<BlockPos> blocks = this.findCrystalBlocks();
         List<Entity> entities = new ArrayList<>();
 
-        if (this.getSettings().get(1).asToggle().state)
+        if (this.getSetting(1).asToggle().state)
         {
             entities.addAll(this.mc.world.playerEntities);
             for (Object o : new ArrayList<>(entities)) {
@@ -196,7 +196,7 @@ public class CrystalAura extends Module
             }
         }
 
-        entities.addAll(this.mc.world.loadedEntityList.stream().filter((entityx) -> entityx instanceof EntityAnimal ? this.getSettings().get(3).asToggle().state : this.getSettings().get(2).asToggle().state).collect(Collectors.toList()));
+        entities.addAll(this.mc.world.loadedEntityList.stream().filter((entityx) -> entityx instanceof EntityAnimal ? this.getSetting(3).asToggle().state : this.getSetting(2).asToggle().state).collect(Collectors.toList()));
         BlockPos q = null;
 
         double damage = 0.5D;
@@ -217,7 +217,7 @@ public class CrystalAura extends Module
                         if (damage == 0.5D)
                         {
                             this.render = null;
-                            if (this.getSettings().get(9).asToggle().state)
+                            if (this.getSetting(9).asToggle().state)
                             {
                                 this.resetRotation();
                             }
@@ -227,15 +227,15 @@ public class CrystalAura extends Module
 
                         this.render = q;
 
-                        if (this.getSettings().get(4).asToggle().state)
+                        if (this.getSetting(4).asToggle().state)
                         {
                             if (!offhand && this.mc.player.inventory.currentItem != crystalSlot)
                             {
-                                if (this.getSettings().get(0).asToggle().state)
+                                if (this.getSetting(0).asToggle().state)
                                 {
                                     this.mc.player.inventory.currentItem = crystalSlot;
 
-                                    if (this.getSettings().get(9).asToggle().state)
+                                    if (this.getSetting(9).asToggle().state)
                                     {
                                         this.resetRotation();
                                     }
@@ -249,7 +249,7 @@ public class CrystalAura extends Module
                             this.lookAtPacket((double) q.getX() + 0.5D, (double) q.getY() - 0.5D, (double) q.getZ() + 0.5D, this.mc.player);
                             EnumFacing f;
 
-                            if (!this.getSettings().get(10).asToggle().state)
+                            if (!this.getSetting(10).asToggle().state)
                             {
                                 f = EnumFacing.UP;
                             } else
@@ -379,7 +379,7 @@ public class CrystalAura extends Module
 
     private boolean canPlaceCrystal(BlockPos blockPos)
     {
-        if (this.getSettings().get(12).asToggle().state) {
+        if (this.getSetting(12).asToggle().state) {
             BlockPos boost = blockPos.add(0, 1, 0);
             return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
         } else {
@@ -397,7 +397,7 @@ public class CrystalAura extends Module
     private List<BlockPos> findCrystalBlocks()
     {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(this.getSphere(this.getPlayerPos(), (float) this.getSettings().get(11).asSlider().getValue(), (int) this.getSettings().get(11).asSlider().getValue(), false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
+        positions.addAll(this.getSphere(this.getPlayerPos(), (float) this.getSetting(11).asSlider().getValue(), (int) this.getSetting(11).asSlider().getValue(), false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
 
         return positions;
     }
@@ -506,7 +506,7 @@ public class CrystalAura extends Module
 
     public void onEnable()
     {
-        if (this.getSettings().get(6).asToggle().state)
+        if (this.getSetting(6).asToggle().state)
         {
             ClientChat.log("AutoCrystal: " + TextFormatting.GREEN + "ON!");
         }
@@ -514,7 +514,7 @@ public class CrystalAura extends Module
 
     public void onDisable()
     {
-        if (this.getSettings().get(6).asToggle().state)
+        if (this.getSetting(6).asToggle().state)
         {
             ClientChat.log("AutoCrystal: " + TextFormatting.RED + "OFF!");
         }

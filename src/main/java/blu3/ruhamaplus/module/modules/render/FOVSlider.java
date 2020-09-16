@@ -21,7 +21,7 @@ public class FOVSlider extends Module {
     }
 
     public void onUpdate(){
-     this.mc.gameSettings.fovSetting = (float) this.getSettings().get(0).asSlider().getValue();
+     this.mc.gameSettings.fovSetting = (float) this.getSetting(0).asSlider().getValue();
     }
 
     public void onDisable() {

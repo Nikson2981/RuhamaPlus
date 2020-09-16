@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Gui extends Module
 {
@@ -31,26 +32,26 @@ public class Gui extends Module
     {
         this.getWindows().get(0).clearText();
 
-        int color = (new Color((int) this.getSettings().get(0).asSlider().getValue(), (int) this.getSettings().get(1).asSlider().getValue(), (int) this.getSettings().get(2).asSlider().getValue())).getRGB();
+        int color = (new Color((int) this.getSetting(0).asSlider().getValue(), (int) this.getSetting(1).asSlider().getValue(), (int) this.getSetting(2).asSlider().getValue())).getRGB();
         String s = "Ruhama+ " + RuhamaPlus.version;
-        if (this.getSettings().get(7).asToggle().state) this.getWindows().get(0).addText(new AdvancedText(s, true, color));
+        if (this.getSetting(7).asToggle().state) this.getWindows().get(0).addText(new AdvancedText(s, true, color));
 
-        if (this.getSettings().get(3).asToggle().state)
+        if (this.getSetting(3).asToggle().state)
         {
             int age = (int) (System.currentTimeMillis() / 20L % 510L);
             color = (new Color(255, MathHelper.clamp(age > 255 ? 510 - age : age, 0, 255), MathHelper.clamp(255 - (age > 255 ? 510 - age : age), 0, 255))).getRGB();
         } else
         {
-            color = (new Color((int) this.getSettings().get(4).asSlider().getValue(), (int) this.getSettings().get(5).asSlider().getValue(), (int) this.getSettings().get(6).asSlider().getValue())).getRGB();
+            color = (new Color((int) this.getSetting(4).asSlider().getValue(), (int) this.getSetting(5).asSlider().getValue(), (int) this.getSetting(6).asSlider().getValue())).getRGB();
         }
 
         List<Module> arrayList = ModuleManager.getModules();
 
         arrayList.remove(this);
-        arrayList.remove(ClickGui.class);
-        arrayList.remove(Closest.class);
-        arrayList.remove(Hud.class);
-        arrayList.remove(PvpInfo.class);
+        arrayList.remove(Objects.requireNonNull(ModuleManager.getModuleByName("Closest")));
+        arrayList.remove(Objects.requireNonNull(ModuleManager.getModuleByName("Hud")));
+        arrayList.remove(Objects.requireNonNull(ModuleManager.getModuleByName("PVPInfo")));
+
 
         arrayList.sort((a, b) -> Integer.compare(this.mc.fontRenderer.getStringWidth(b.getName()), this.mc.fontRenderer.getStringWidth(a.getName())));
 

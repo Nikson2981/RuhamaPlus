@@ -38,9 +38,9 @@ public class ChestSwap extends Module {
         ItemStack l_ChestSlot = mc.player.inventoryContainer.getSlot(6).getStack();
         if (l_ChestSlot.isEmpty())
         {
-            int l_Slot = FindChestItem(this.getSettings().get(2).asToggle().state);
+            int l_Slot = FindChestItem(this.getSetting(2).asToggle().state);
 
-            if (!this.getSettings().get(2).asToggle().state && l_Slot == -1)
+            if (!this.getSetting(2).asToggle().state && l_Slot == -1)
                 l_Slot = FindChestItem(true);
 
             if (l_Slot != -1)
@@ -87,7 +87,7 @@ public class ChestSwap extends Module {
                     {
                         final float currentDamage = (armor.damageReduceAmount + EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION, s));
 
-                        final boolean cursed = this.getSettings().get(1).asToggle().state ? (EnchantmentHelper.hasBindingCurse(s)) : false;
+                        final boolean cursed = this.getSetting(1).asToggle().state ? (EnchantmentHelper.hasBindingCurse(s)) : false;
 
                         if (currentDamage > damage && !cursed)
                         {

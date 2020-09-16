@@ -28,8 +28,8 @@ public class FogColour extends Module {
 
     @SubscribeEvent
     public void fogColour(EntityViewRenderEvent.FogColors event) {
-        event.setRed((float)this.getSettings().get(0).asSlider().getValue()/100);
-        event.setGreen((float)this.getSettings().get(1).asSlider().getValue()/100);
-        event.setBlue((float)this.getSettings().get(2).asSlider().getValue()/100);
+        event.setRed((float)this.getSetting(0).asSlider().getValue()/100);
+        event.setGreen((float)this.getSetting(1).asSlider().getValue()/100);
+        event.setBlue((float)this.getSetting(2).asSlider().getValue()/100);
     }
 }

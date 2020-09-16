@@ -84,8 +84,8 @@ public class Closest extends Module {
 
 
 
-        int x = (int) this.getSettings().get(0).asSlider().getValue();
-        int y = (int) this.getSettings().get(1).asSlider().getValue();
+        int x = (int) this.getSetting(0).asSlider().getValue();
+        int y = (int) this.getSetting(1).asSlider().getValue();
         if (!knownPlayers.isEmpty()) {
 
             EntityPlayer l_Player = null;
@@ -95,7 +95,7 @@ public class Closest extends Module {
                 players.remove(this.mc.player);
                 players.sort((a, b) -> Float.compare(a.getDistance(this.mc.player), b.getDistance(this.mc.player)));
 
-                if (players.get(0).getDistance(this.mc.player) < this.getSettings().get(0).asSlider().getValue()) {
+                if (players.get(0).getDistance(this.mc.player) < this.getSetting(0).asSlider().getValue()) {
                     l_Player = (EntityPlayer) players.get(0);
                 }
             } catch (Exception ignored) {
@@ -126,7 +126,7 @@ public class Closest extends Module {
             final String leggings2 = leggings.getItem().getItemStackDisplayName(leggings);
             final String boots2 = boots.getItem().getItemStackDisplayName(boots);
 
-            if(this.getSettings().get(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
+            if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
 
             mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + Name, x + 20, y - 55, 0);
             if (FriendManager.Get().isFriend(l_Player.getName().toLowerCase())) {
