@@ -38,7 +38,7 @@ public class BedObsidianTrap extends Module
 
     public boolean isInBlockRange(Entity target)
     {
-        return target.getDistance(this.mc.player) <= 4.0F;
+        return target.getDistance(this.mc.player) <= 7.0F;
     }
 
     public boolean isValid(EntityPlayer entity)
@@ -84,7 +84,7 @@ public class BedObsidianTrap extends Module
             {
                 if (!playerIter.hasNext())
                 {
-                    if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < 4.0F)
+                    if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < 7.0F)
                     {
                         this.trap(this.target);
                     }

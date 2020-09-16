@@ -2,6 +2,7 @@ package blu3.ruhamaplus.module;
 
 import blu3.ruhamaplus.module.modules.chat.*;
 import blu3.ruhamaplus.module.modules.combat.*;
+import blu3.ruhamaplus.module.modules.experimental.TestAutoTotem;
 import blu3.ruhamaplus.module.modules.exploits.*;
 import blu3.ruhamaplus.module.modules.gui.*;
 import blu3.ruhamaplus.module.modules.misc.*;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
-            new CrystalAuraECME(),
+            new CrystalAura(),
             //new AutoBedCrafter(),
             new Capes(),
             new Annoyer(),
@@ -44,12 +45,12 @@ public class ModuleManager
             new ClickGui(),
             new TotemPopCounter(),
             new Crasher(),
-            new RuhamaCrystalAura(),
             new DispenserAura(),
             new ElytraFly(),
             new ElytraReplace(),
             new FOVSlider(),
             //new GreenText(),
+            new TestAutoTotem(),
             new Gui(),
             new HoleFiller(),
             new HoleFinderESP(),

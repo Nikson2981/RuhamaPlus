@@ -5,8 +5,8 @@ import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
-import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -26,14 +26,29 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RuhamaCrystalAura extends Module
+public class CrystalAura extends Module
 {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingToggle(true, "AutoSwitch"), new SettingToggle(true, "Players"), new SettingToggle(false, "Mobs"), new SettingToggle(false, "Animals"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"), new SettingToggle(true, "Chat Alert"), new SettingToggle(false, "Anti Weakness"), new SettingToggle(false, "Slow"), new SettingToggle(false, "Rotate"), new SettingToggle(false, "RayTrace"), new SettingSlider(0.0D, 6.0D, 4.25D, 0, "Range: "));
+    private static final List<SettingBase> settings = Arrays.asList(
+            new SettingToggle(true, "AutoSwitch"), // 0
+            new SettingToggle(true, "Players"), // 1
+            new SettingToggle(false, "Mobs"), // 2
+            new SettingToggle(false, "Animals"), // 3
+            new SettingToggle(true, "Place"), // 4
+            new SettingToggle(true, "Explode"), // 5
+            new SettingToggle(false, "Chat Alert"), // 6
+            new SettingToggle(false, "Anti Weakness"), // 7
+            new SettingToggle(false, "Slow"), // 8
+            new SettingToggle(false, "Rotate"), // 9
+            new SettingToggle(false, "RayTrace"), // 10
+            new SettingSlider(0.0D, 6.0D, 4.25D, 2, "Range: "), // 11
+            new SettingToggle(false, "1.13+") // 12
+    );
 
     private BlockPos render;
 
@@ -46,9 +61,9 @@ public class RuhamaCrystalAura extends Module
 
     private boolean isSpoofingAngles;
 
-    public RuhamaCrystalAura()
+    public CrystalAura()
     {
-        super("RuhamaCA", 0, Category.COMBAT, "Fast but not very customizable", settings);
+        super("CrystalAura", 0, Category.COMBAT, "cool ca bro", settings);
     }
 
     public void onUpdate()
@@ -99,6 +114,7 @@ public class RuhamaCrystalAura extends Module
 
             this.mc.playerController.attackEntity(this.mc.player, crystal);
             this.mc.player.swingArm(EnumHand.MAIN_HAND);
+
 
             ++this.breaks;
 
@@ -257,6 +273,7 @@ public class RuhamaCrystalAura extends Module
                             }
 
                             this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(q, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0F, 0.0F, 0.0F));
+                            this.mc.player.swingArm(offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
                         }
 
                         if (this.isSpoofingAngles)
@@ -362,10 +379,14 @@ public class RuhamaCrystalAura extends Module
 
     private boolean canPlaceCrystal(BlockPos blockPos)
     {
-        BlockPos boost = blockPos.add(0, 1, 0);
-        BlockPos boost2 = blockPos.add(0, 2, 0);
-
-        return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+        if (this.getSettings().get(12).toToggle().state) {
+            BlockPos boost = blockPos.add(0, 1, 0);
+            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+        } else {
+            BlockPos boost = blockPos.add(0, 1, 0);
+            BlockPos boost2 = blockPos.add(0, 2, 0);
+            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+        }
     }
 
     public BlockPos getPlayerPos()
@@ -487,7 +508,7 @@ public class RuhamaCrystalAura extends Module
     {
         if (this.getSettings().get(6).toToggle().state)
         {
-            ClientChat.log("RuhamaCA: ON");
+            ClientChat.log("AutoCrystal: " + TextFormatting.GREEN + "ON!");
         }
     }
 
@@ -495,7 +516,7 @@ public class RuhamaCrystalAura extends Module
     {
         if (this.getSettings().get(6).toToggle().state)
         {
-            ClientChat.log("RuhamaCA: OFF");
+            ClientChat.log("AutoCrystal: " + TextFormatting.RED + "OFF!");
         }
 
         this.render = null;

@@ -21,7 +21,7 @@ public class TotemPopCounter extends Module {
 
     private HashMap<String, Integer> popList = new HashMap();
 
-    public void newPoppedTotem(Entity e) {
+    public void throwNewPoppedTotem(Entity e) {
         if(popList == null) {
             popList = new HashMap<>();
         }
@@ -70,7 +70,7 @@ public class TotemPopCounter extends Module {
                 SPacketEntityStatus theOneAndOnlyPacket = (SPacketEntityStatus) packet; // had to change the name LMAO
                 if (theOneAndOnlyPacket.getOpCode() == 35) {
                     Entity entity = theOneAndOnlyPacket.getEntity(mc.world);
-                    this.newPoppedTotem(entity);
+                    this.throwNewPoppedTotem(entity);
                     return false;
                 }
             }

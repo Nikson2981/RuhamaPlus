@@ -8,4 +8,5 @@ public enum Category
     EXPLOITS,
     CHAT,
     GUI,
+    EXPERIMENTAL,
 }
