@@ -14,6 +14,7 @@ import blu3.ruhamaplus.utils.*;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import blu3.ruhamaplus.utils.Friends;
 import me.nrubin29.pastebinapi.PastebinException;
+import me.zero.alpine.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.BlockPos;
@@ -50,7 +51,7 @@ public class    RuhamaPlus
     public static Minecraft mc = Minecraft.getMinecraft();
     public static HashMap<BlockPos, Integer> friendBlocks = new HashMap<>();
 
-    //public static final me.zero.alpine.EventBus EVENT_BUS = new EventManager();
+    public static final me.zero.alpine.EventBus EVENT_BUS = new EventManager();
 
     private long timer = 0L;
     private boolean timerStart = false;
@@ -81,7 +82,7 @@ public RuhamaPlus() { INSTANCE = this;}
 
         Friends.tryValidateHwid();
 
-        //ModuleManager.getModules().stream().forEach(EVENT_BUS::subscribe);
+        ModuleManager.getModules().stream().forEach(EVENT_BUS::subscribe);
 
 
 

@@ -2,6 +2,7 @@ package blu3.ruhamaplus.module;
 
 import blu3.ruhamaplus.module.modules.chat.*;
 import blu3.ruhamaplus.module.modules.combat.*;
+import blu3.ruhamaplus.module.modules.experimental.PacketMine;
 import blu3.ruhamaplus.module.modules.experimental.TestAutoTotem;
 import blu3.ruhamaplus.module.modules.exploits.*;
 import blu3.ruhamaplus.module.modules.gui.*;
@@ -23,12 +24,13 @@ public class ModuleManager
             //new AutoBedCrafter(),
             new Capes(),
             new Annoyer(),
+            new PacketMine(),
             new ChestSwap(),
             new PvpInfo(),
             new TabNames(),
             new Hud(),
             new BedObsidianTrap(),
-            new BedCityESP(),
+            //new BedCityESP(),
             new OldBedAura(),
             new SwingArm(),
             new Aura(),

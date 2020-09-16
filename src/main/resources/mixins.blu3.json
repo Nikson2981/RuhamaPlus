@@ -11,6 +11,7 @@
     "MixinGuiMainMenu",
     "MixinGuiPlayerTabOverlay",
     "MixinEventBus",
-    "MixinAbstractClientPlayer"
-   ]
+    "MixinAbstractClientPlayer",
+    "MixinPlayerControllerMP"
+  ]
 }
