@@ -50,17 +50,11 @@ public class Aura extends Module
                     continue;
                 }
                 if (this.getSetting(3).asToggle().state) {
-                    final Random rng = new Random();
-                    final double n = 1.282622531E-314;
-                    final double n2 = 1.282622531E-314 + 1.282622531E-314 * (1.0 + rng.nextInt(rng.nextBoolean() ? 34 : 43));
-                    final double[] array2;
-                    final double[] array = array2 = new double[] { 1.531232163E-314 + n2, 0.0, 1.135895857E-315 + n2, 0.0 };
-                    for (final double d : array2) {
-                        this.mc.player.connection.sendPacket((Packet)new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY + d, this.mc.player.posZ, false));
-                    }
+                    this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY + 0.1f, this.mc.player.posZ, false));
+                    this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY, this.mc.player.posZ, false));
                 }
-                this.mc.player.connection.sendPacket((Packet)new CPacketUseEntity((Entity)e, EnumHand.MAIN_HAND));
-                this.mc.playerController.attackEntity((EntityPlayer)this.mc.player, (Entity)e);
+                this.mc.player.connection.sendPacket(new CPacketUseEntity(e, EnumHand.MAIN_HAND));
+                this.mc.playerController.attackEntity(this.mc.player, e);
                 this.mc.player.swingArm(EnumHand.MAIN_HAND);
                 this.delay = 0;
             }

@@ -2,6 +2,7 @@ package blu3.ruhamaplus.module;
 
 import blu3.ruhamaplus.module.modules.chat.*;
 import blu3.ruhamaplus.module.modules.combat.*;
+import blu3.ruhamaplus.module.modules.experimental.FeetXp;
 import blu3.ruhamaplus.module.modules.experimental.PacketMine;
 import blu3.ruhamaplus.module.modules.experimental.TestAutoTotem;
 import blu3.ruhamaplus.module.modules.exploits.*;
@@ -20,62 +21,60 @@ import java.util.List;
 public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
-            new CrystalAura(),
-            //new AutoBedCrafter(),
-            new Capes(),
             new Annoyer(),
-            new PacketMine(),
-            new ChestSwap(),
-            new PvpInfo(),
-            new TabNames(),
-            new Hud(),
-            new BedObsidianTrap(),
-            //new BedCityESP(),
-            new OldBedAura(),
-            new SwingArm(),
-            new Aura(),
-            new Closest(),
-            new VisualRange(),
-            new CoordHud(),
-            new LongRangeAim(),
-            //new AirBedPlace(),
-            new BedAuraECME(),
             new AntiChunkBan(),
+            new Aura(),
             new Auto32k(),
             new AutoLog(),
             new AutoTotem(),
             new AutoWither(),
+            new BedAuraECME(),
+            new BedObsidianTrap(),
+            new Capes(),
+            new ChatSuffix(),
+            new ChestSwap(),
             new ClickGui(),
-            new TotemPopCounter(),
+            new Closest(),
+            new CoordHud(),
             new Crasher(),
+            new CrystalAura(),
             new DispenserAura(),
             new ElytraFly(),
             new ElytraReplace(),
+            new FakePlayer(),
+            new FeetXp(),
             new FOVSlider(),
-            //new GreenText(),
-            new TestAutoTotem(),
+            new FogColour(),
             new Gui(),
             new HoleFiller(),
             new HoleFinderESP(),
             new HopperNuker(),
             new HopperRadius(),
+            new Hud(),
             new InvSorter(),
+            new LongRangeAim(),
             new NBTViewer(),
             new NewAuto32k(),
             new ObsidianTrap(),
+            new OldBedAura(),
+            new PacketMine(),
             new PearlViewer(),
             new Peek(),
             new PlayerRadar(),
-            new FeetXp(),
-            new ChatSuffix(),
+            new PvpInfo(),
             new ShulkerAura(),
             new StashFinder(),
             new StrengthESP(),
             new Surround(),
+            new SwingArm(),
+            new TabNames(),
+            new TestAutoTotem(),
             new ThunderHack(),
+            new TotemPopCounter(),
             new TreeAura(),
             new TunnelESP(),
-            new FogColour());
+            new VisualRange(),
+            new WurstPlusBedAura());
 
    public static List<Module> getModules()
     {
@@ -220,8 +219,8 @@ public class ModuleManager
                     {
                         m.keyActive = false;
                     }
-                } catch (Exception ignored)
-                {
+                } catch (Exception ignored) {
+                    System.out.println("qwaeszrdxtfcygvuhbijnokmpl,[;.]'/");
                 }
             }
         }

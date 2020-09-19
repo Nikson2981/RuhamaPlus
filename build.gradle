@@ -20,7 +20,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = '0.9.1'
+version = '0.9.6'
 group = 'gg.ruhamaplus'
 archivesBaseName = 'RuhamaPlus'
 
@@ -53,8 +53,15 @@ repositories {
 }
 
 dependencies {
-    compile 'org.spongepowered:mixin:0.8.1-SNAPSHOT'
-    compile 'com.github.ZeroMemes:Alpine:1.5'
+    compile ('org.spongepowered:mixin:0.7.11-SNAPSHOT'){
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'gson'
+        exclude module: 'commons-io'
+        exclude module: 'log4j-core'
+    }
+    compile "com.github.ionar2:Alpine:1.9f"
+    //compile 'com.github.ZeroMemes:Alpine:1.7'
     compile 'club.minnced:java-discord-rpc:2.0.2'
     compile 'com.github.MrPowerGamerBR:TemmieWebhook:-SNAPSHOT'
 
@@ -67,7 +74,8 @@ mixin {
 shadowJar {
     dependencies {
         include(dependency('org.spongepowered:mixin'))
-        include(dependency('com.github.ZeroMemes:Alpine'))
+        //include(dependency('com.github.ZeroMemes:Alpine'))
+        include(dependency('com.github.ionar2:Alpine'))
         include(dependency('club.minnced:java-discord-rpc'))
         include(dependency('net.jodah:typetools'))
         include(dependency('com.github.MrPowerGamerBR:TemmieWebhook'))

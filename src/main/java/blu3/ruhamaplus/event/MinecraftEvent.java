@@ -1,7 +1,8 @@
 package blu3.ruhamaplus.event;
 
 import blu3.ruhamaplus.utils.Wrapper;
-import me.zero.alpine.type.Cancellable;
+import me.zero.alpine.fork.event.type.Cancellable;
+
 
 public class MinecraftEvent extends Cancellable
 {

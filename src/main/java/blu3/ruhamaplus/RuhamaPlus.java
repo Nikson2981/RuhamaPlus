@@ -12,9 +12,8 @@ import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.utils.*;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
-import blu3.ruhamaplus.utils.Friends;
+import blu3.ruhamaplus.utils.friendutils.Friends;
 import me.nrubin29.pastebinapi.PastebinException;
-import me.zero.alpine.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.BlockPos;
@@ -46,17 +45,14 @@ import java.util.Objects;
         version = "0.9",
         acceptedMinecraftVersions = "[1.12.2]"
 )
-public class    RuhamaPlus
+public class RuhamaPlus
 {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static HashMap<BlockPos, Integer> friendBlocks = new HashMap<>();
 
-    public static final me.zero.alpine.EventBus EVENT_BUS = new EventManager();
-
     private long timer = 0L;
     private boolean timerStart = false;
 
-    public Friends lockUtils;
     public CapeUtils capeUtils;
 
     private static FriendManager m_FriendManager = new FriendManager();
@@ -80,11 +76,14 @@ public RuhamaPlus() { INSTANCE = this;}
     @EventHandler
     public void init(FMLInitializationEvent event) throws IOException, PastebinException {
 
+        System.out.println("Initialization beginning...");
+        System.out.println("\n\n");
+        System.out.println("|\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | ");
+        System.out.println("| \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | ");
+        System.out.println("|  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| ");
+        System.out.println("\n\n");
+
         Friends.tryValidateHwid();
-
-        ModuleManager.getModules().stream().forEach(EVENT_BUS::subscribe);
-
-
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new Rainbow());
@@ -116,11 +115,13 @@ public RuhamaPlus() { INSTANCE = this;}
         }
 
         this.timerStart = true;
+        System.out.println("Initialization completed!");
     }
 
     @EventHandler
     public void postinit(FMLPostInitializationEvent event)
     {
+        System.out.println("Initializing commands...");
         ClientCommandHandler.instance.registerCommand(new PeekCmd.PeekCommand());
         ClientCommandHandler.instance.registerCommand(new InvSorterCmd());
         ClientCommandHandler.instance.registerCommand(new StashFinderCmd());
@@ -133,9 +134,15 @@ public RuhamaPlus() { INSTANCE = this;}
         ClientCommandHandler.instance.registerCommand(new FriendCommand());
         ClientCommandHandler.instance.registerCommand(new UnfriendCommand());
         ClientCommandHandler.instance.registerCommand(new ToggleCmd());
+        ClientCommandHandler.instance.registerCommand(new FakePlayerCmd());
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
-        lockUtils = new Friends();
+        System.out.println("Commands initialized!");
+
+        System.out.println("Capes loading...");
+
         capeUtils = new CapeUtils();
+
+        System.out.println("Capes initialized!");
     }
 
     @SubscribeEvent

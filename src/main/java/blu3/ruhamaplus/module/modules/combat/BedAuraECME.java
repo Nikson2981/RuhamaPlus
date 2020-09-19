@@ -58,13 +58,7 @@ public class BedAuraECME extends Module {
 
     public BedAuraECME() {
         super("BedAura", 0, Category.COMBAT, "1.13 BedAura", settings);
-
     }
-
-
-    //if (mc.player.ticksExisted % delay.getValue() == 0) {
-    //            this.update();
-    //        }
 
     public boolean isInBlockRange(Entity target) {
         return target.getDistance(this.mc.player) <= 8.0F;

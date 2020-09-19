@@ -6,14 +6,17 @@ import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Enchantments;
@@ -33,7 +36,8 @@ public class Closest extends Module {
     private static final List<SettingBase> settings = Arrays.asList(
             new SettingSlider(0.0D, 1920.0D, 400.0D, 10, "X"),
             new SettingSlider(0.0D, 1080.0D, 400.0D, 10, "Y"),
-            new SettingToggle(false, "Background"));
+            new SettingToggle(false, "Background"),
+            new SettingToggle(false, "RenderBox"));
 
     public Closest()
     {
@@ -94,10 +98,8 @@ public class Closest extends Module {
                 List<Entity> players = new ArrayList<>(this.mc.world.playerEntities);
                 players.remove(this.mc.player);
                 players.sort((a, b) -> Float.compare(a.getDistance(this.mc.player), b.getDistance(this.mc.player)));
+                l_Player = (EntityPlayer) players.get(0);
 
-                if (players.get(0).getDistance(this.mc.player) < this.getSetting(0).asSlider().getValue()) {
-                    l_Player = (EntityPlayer) players.get(0);
-                }
             } catch (Exception ignored) {
             }
 
@@ -118,7 +120,6 @@ public class Closest extends Module {
             final ItemStack leggings = items.armorItemInSlot(1);
             final ItemStack body = items.armorItemInSlot(2);
             final ItemStack helm = items.armorItemInSlot(3);
-            final ItemStack offHand = l_Player.getHeldItemOffhand();
             final String Distance = "" + Distanc;
             final String Ping = "" + p;
             final String helm2 = helm.getItem().getItemStackDisplayName(helm);
@@ -126,21 +127,27 @@ public class Closest extends Module {
             final String leggings2 = leggings.getItem().getItemStackDisplayName(leggings);
             final String boots2 = boots.getItem().getItemStackDisplayName(boots);
 
-            if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
+
 
             mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + Name, x + 20, y - 55, 0);
             if (FriendManager.Get().isFriend(l_Player.getName().toLowerCase())) {
+                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 165, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + "Verified Cool" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Diamond Helmet") && body2.equals("Diamond Chestplate") && leggings2.equals("Diamond Leggings") && boots2.equals("Diamond Boots")) {
+                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 180, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + "Potential Threat" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Chain Helmet") && body2.equals("Chain Chestplate") && leggings2.equals("Chain Leggings") && boots2.equals("Chain Boots") && this.mc.getCurrentServerData().serverIP.contains("endcrystal")) {
+                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 155, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + "Netherite Retard" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Diamond Helmet") && body2.equals("Elytra") && leggings2.equals("Diamond Leggings") && boots2.equals("Diamond Boots")) {
+                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.YELLOW + "Wasp" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Air") && body2.equals("Air") && leggings2.equals("Air") && boots2.equals("Air")) {
+                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.GREEN + "Naked" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else {
-                mc.fontRenderer.drawStringWithShadow(ChatFormatting.LIGHT_PURPLE + "Newfag" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
+                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
+                mc.fontRenderer.drawStringWithShadow(ChatFormatting.LIGHT_PURPLE + "Fuckable" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             }
             int colour = 0;
             try {
@@ -156,8 +163,7 @@ public class Closest extends Module {
             mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + "Pops: " + ChatFormatting.RED + popList.get(l_Player.getName()), x + 80, y - 15, 0);
         }
 
-
-
+            GuiInventory.drawEntityOnScreen(x, y - 55 + 62, 30, (float)x + (float)51.0 - ((float)x +(float) 50.0), (float)y + (float)75.0 - (float)50.0 - (float)y + (float)12.0, (EntityLivingBase)l_Player);
 
             int i = 0;
             final List<ItemStack> armor = new ArrayList<ItemStack>();
@@ -187,114 +193,7 @@ public class Closest extends Module {
             this.mc.getRenderItem().renderItemAndEffectIntoGUI(inOffHand, xxx, yyy);
             this.mc.getRenderItem().renderItemOverlays(this.mc.fontRenderer, inOffHand, xxx, yyy);
             RenderHelper.disableStandardItemLighting();
-            final EnchantEntry[] enchants = {new EnchantEntry(Enchantments.PROTECTION, "Pro"), new EnchantEntry(Enchantments.BLAST_PROTECTION, "Bla"), new EnchantEntry(Enchantments.FIRE_PROTECTION, "Fpr"), new EnchantEntry(Enchantments.PROJECTILE_PROTECTION, "Ppr"), new EnchantEntry(Enchantments.UNBREAKING, "Unb"), new EnchantEntry(Enchantments.MENDING, "Men"), new EnchantEntry(Enchantments.AQUA_AFFINITY, "Aqu"), new EnchantEntry(Enchantments.RESPIRATION, "Res"), new EnchantEntry(Enchantments.FEATHER_FALLING, "Fea"), new EnchantEntry(Enchantments.DEPTH_STRIDER, "Dep"), new EnchantEntry(Enchantments.FROST_WALKER, "Fro"), new EnchantEntry(Enchantments.THORNS, "Thr"), new EnchantEntry(Enchantments.SHARPNESS, "Sha"), new EnchantEntry(Enchantments.FIRE_ASPECT, "Fia"), new EnchantEntry(Enchantments.KNOCKBACK, "Knb"), new EnchantEntry(Enchantments.POWER, "Pow"), new EnchantEntry(Enchantments.BINDING_CURSE, "Bin"), new EnchantEntry(Enchantments.SMITE, "Smi"), new EnchantEntry(Enchantments.BANE_OF_ARTHROPODS, "Ban"), new EnchantEntry(Enchantments.LOOTING, "Loo"), new EnchantEntry(Enchantments.SWEEPING, "Swe"), new EnchantEntry(Enchantments.EFFICIENCY, "Eff"), new EnchantEntry(Enchantments.SILK_TOUCH, "Sil"), new EnchantEntry(Enchantments.FORTUNE, "For"), new EnchantEntry(Enchantments.FLAME, "Fla"), new EnchantEntry(Enchantments.LUCK_OF_THE_SEA, "Luc"), new EnchantEntry(Enchantments.LURE, "Lur"), new EnchantEntry(Enchantments.PUNCH, "Pun"), new EnchantEntry(Enchantments.VANISHING_CURSE, "Van")};
-            int lolok = 0;
-            int lolok2 = 0;
-            int lolok3 = 0;
-            int lolok4 = 0;
-            int lolok5 = 0;
-            int lolok6 = 0;
-            EnchantEntry[] array;
-            for (int length = (array = enchants).length, lolokq = 0; lolokq < length; ++lolokq) {
-                final EnchantEntry enchant = array[lolokq];
-                final int level = EnchantmentHelper.getEnchantmentLevel(enchant.getEnchant(), helm);
-                String levelDisplay = "" + level;
-                if (level > 10) {
-                    levelDisplay = "10+";
-                }
-                if (level > 0) {
 
-                    if (enchant.getName().equals("Van")) {
-                        //this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + enchant.getName() + " " + levelDisplay, x, y, 0);
-                    } else {
-                        //this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + enchant.getName() + " " + levelDisplay, x, y, 0);
-                    }
-                    lolok += 5;
-
-                }
-            }
-            for (int length2 = (array = enchants).length, lolok2q = 0; lolok2q < length2; ++lolok2q) {
-                final EnchantEntry enchant2 = array[lolok2q];
-                final int level2 = EnchantmentHelper.getEnchantmentLevel(enchant2.getEnchant(), body);
-                String levelDisplay2 = "" + level2;
-                if (level2 > 10) {
-                    levelDisplay2 = "10+";
-                }
-                if (level2 > 0) {
-                    if (enchant2.getName().equals("Van")) {
-                        //this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + enchant2.getName() + " " + levelDisplay2, x, y, 0);
-                    } else {
-                        //this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + enchant2.getName() + " " + levelDisplay2, x, y, 0);
-                    }
-                    lolok2 += 5;
-                }
-            }
-            for (int length3 = (array = enchants).length, lolok3q = 0; lolok3q < length3; ++lolok3q) {
-                final EnchantEntry enchant3 = array[lolok3q];
-                final int level3 = EnchantmentHelper.getEnchantmentLevel(enchant3.getEnchant(), leggings);
-                String levelDisplay3 = "" + level3;
-                if (level3 > 10) {
-                    levelDisplay3 = "10+";
-                }
-
-                if (level3 > 0) {
-                    if (enchant3.getName().equals("Van")) {
-                        //this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + enchant3.getName() + " " + levelDisplay3, 0.0f, (float)(-Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT), 0);
-                    } else {
-                        //this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + enchant3.getName() + " " + levelDisplay3, 0.0f, (float)(-Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT), 0);
-                    }
-                    lolok3 += 5;
-                }
-            }
-            for (int length4 = (array = enchants).length, lolok4q = 0; lolok4q < length4; ++lolok4q) {
-                final EnchantEntry enchant4 = array[lolok4q];
-                final int level4 = EnchantmentHelper.getEnchantmentLevel(enchant4.getEnchant(), boots);
-                String levelDisplay4 = "" + level4;
-                if (level4 > 10) {
-                    levelDisplay4 = "10+";
-                }
-                if (level4 > 0) {
-                    if (enchant4.getName().equals("Van")) {
-                        //this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + enchant4.getName() + " " + levelDisplay4, 0.0f, (float)(-Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT), 0);
-                    } else {
-                        //this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + enchant4.getName() + " " + levelDisplay4, 0.0f, (float)(-Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT), 0);
-                    }
-                    lolok4 += 5;
-                }
-            }
-            for (int length5 = (array = enchants).length, lolok5q = 0; lolok5q < length5; ++lolok5q) {
-                final EnchantEntry enchant5 = array[lolok5q];
-                final int level5 = EnchantmentHelper.getEnchantmentLevel(enchant5.getEnchant(), inHand);
-                String levelDisplay5 = "" + level5;
-                if (level5 > 10) {
-                    levelDisplay5 = "10+";
-                }
-                if (level5 > 0) {
-                    if (enchant5.getName().equals("Van")) {
-                        this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + enchant5.getName() + " " + levelDisplay5, 0.0f, (float) (-Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT), 0);
-                    } else {
-                        this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + enchant5.getName() + " " + levelDisplay5, 0.0f, (float) (-Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT), 0);
-                    }
-                    lolok5 += 5;
-                }
-            }
-            for (int length6 = (array = enchants).length, lolok6q = 0; lolok6q < length6; ++lolok6q) {
-                final EnchantEntry enchant6 = array[lolok6q];
-                final int level6 = EnchantmentHelper.getEnchantmentLevel(enchant6.getEnchant(), offHand);
-                String levelDisplay6 = "" + level6;
-                if (level6 > 10) {
-                    levelDisplay6 = "10+";
-                }
-                if (level6 > 0) {
-
-                    if (enchant6.getName().equals("Van")) {
-                        this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + enchant6.getName() + " " + levelDisplay6, 0.0f, (float) (-Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT), 0);
-                    } else {
-                        this.mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + enchant6.getName() + " " + levelDisplay6, 0.0f, (float) (-Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT), 0);
-                    }
-                    lolok6 += 5;
-                }
-            }
 
             if (l_Player.isPotionActive(MobEffects.STRENGTH)) {
                 final DecimalFormat format1 = new DecimalFormat("0");
@@ -329,6 +228,18 @@ public class Closest extends Module {
     }
 
 
+    public void onRender() {
+        EntityPlayer l_Player = null;
+        try {
+            List<Entity> players = new ArrayList<>(this.mc.world.playerEntities);
+            players.remove(this.mc.player);
+            players.sort((a, b) -> Float.compare(a.getDistance(this.mc.player), b.getDistance(this.mc.player)));
+            l_Player = (EntityPlayer) players.get(0);
+
+        } catch (Exception ignored) {}
+        if (this.getSetting(3).asToggle().state) RenderUtils.drawFilledBlockBox(l_Player.getEntityBoundingBox(), 1.0F, 0.0F, 0.0F, 0.3F);
+    }
+
     public static class EnchantEntry
     {
         private Enchantment enchant;
@@ -354,16 +265,13 @@ public class Closest extends Module {
         }
 
         if(popList.get(e.getName()) == null) {
-
             popList.put(e.getName(), 1);
-            ClientChat.log(e.getName() + " popped " + 1 + " totem");
 
         } else if(!(popList.get(e.getName()) == null)) {
             int popCounter = popList.get(e.getName());
             int newPopCounter = popCounter += 1;
 
             popList.put(e.getName(), newPopCounter);
-            ClientChat.log(e.getName() + " popped " + newPopCounter + " totems");
         }
     }
 

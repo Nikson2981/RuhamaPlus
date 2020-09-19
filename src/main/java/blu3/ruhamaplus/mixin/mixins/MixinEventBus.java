@@ -7,13 +7,9 @@ import net.minecraft.client.*;
 import net.minecraft.util.text.*;
 import org.spongepowered.asm.mixin.injection.*;
 
-@Mixin({ EventBus.class })
+@Mixin(EventBus.class)
 public class MixinEventBus
 {
-    public MixinEventBus() {
-        super();
-    }
-
     @Redirect(method = { "post" }, at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/eventhandler/IEventListener;invoke(Lnet/minecraftforge/fml/common/eventhandler/Event;)V", remap = false), remap = false)
     private void invoke(final IEventListener v_1, final Event v0) {
         try {

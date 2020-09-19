@@ -1,4 +1,4 @@
-package blu3.ruhamaplus.utils;
+package blu3.ruhamaplus.utils.friendutils;
 
 import blu3.ruhamaplus.RuhamaPlus;
 import blu3.ruhamaplus.module.ModuleManager;
@@ -7,6 +7,8 @@ import blu3.ruhamaplus.settings.NetworkError;
 import blu3.ruhamaplus.settings.SettingMode;
 import me.nrubin29.pastebinapi.*;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.Sys;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
