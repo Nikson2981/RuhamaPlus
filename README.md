@@ -1,5 +1,3 @@
-# Ruhama Leak
+# Ruhama+ ez
 
-Ruhama, reverse engineered, clear as crystal.
-
-Full Gradle project too. Can't be arsed != incompetence lel
+i did something i guess lmao
