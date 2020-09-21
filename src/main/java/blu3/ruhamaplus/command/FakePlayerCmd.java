@@ -38,6 +38,17 @@ public class FakePlayerCmd extends CommandBase implements IClientCommand {
     }
 
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-        (((FakePlayer) Objects.requireNonNull(ModuleManager.getModuleByName("FakePlayer")))).name = args[1];
+
+        if (args.length == 1) (((FakePlayer) Objects.requireNonNull(ModuleManager.getModuleByName("FakePlayer")))).name = args[1];
+
+        else if (args.length == 0) ClientChat.warn("/.fakeplayer [name]");
+
+        else ClientChat.testError(this, "what the fuck");
+
+    }
+
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+    {
+        return true;
     }
 }

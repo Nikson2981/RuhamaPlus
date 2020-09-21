@@ -40,12 +40,12 @@ public class ToggleCmd extends CommandBase implements IClientCommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 
         if (args.length == 0) {
-            ClientChat.warn("Please specify a module!");
+            ClientChat.warn("module? bruh");
             return;
         }
         Module m = ModuleManager.getModuleByName(args[0]);
         if (m == null) {
-            ClientChat.warn("Unknown module '" + args[0] + "'");
+            ClientChat.warn("what ths fuck is '" + args[0] + "'");
             return;
         }
         m.toggle();

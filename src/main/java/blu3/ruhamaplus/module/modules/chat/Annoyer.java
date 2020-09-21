@@ -46,7 +46,7 @@ public class Annoyer extends Module {
 
                         String[] arr = message.split(" ", 2); // splits the message at " " into 2 parts
 
-                        mc.player.sendChatMessage(arr[1]); // sends the second part
+                        mc.player.sendChatMessage(arr[1]); // sends the second part, without the username
 
 
                         this.delay.reset();

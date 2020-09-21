@@ -21,7 +21,7 @@ public class ClientChat
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.RED + "[Ruhama+: ERROR]: " + TextFormatting.RESET + "at " + TextFormatting.RED + location + ": " + TextFormatting.RESET + text));
     }
 
-    public static void testError(final Class location, String text){
+    public static void testError(Object location, String text){
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.RED + "[Ruhama+: ERROR]: " + TextFormatting.RESET + "at " + TextFormatting.RED + location + ": " + TextFormatting.RESET + text));
     }
 }
