@@ -4,7 +4,7 @@ import blu3.ruhamaplus.module.modules.chat.*;
 import blu3.ruhamaplus.module.modules.combat.*;
 import blu3.ruhamaplus.module.modules.experimental.FeetXp;
 import blu3.ruhamaplus.module.modules.experimental.PacketMine;
-import blu3.ruhamaplus.module.modules.experimental.TestAutoTotem;
+import blu3.ruhamaplus.module.modules.combat.TestAutoTotem;
 import blu3.ruhamaplus.module.modules.exploits.*;
 import blu3.ruhamaplus.module.modules.gui.*;
 import blu3.ruhamaplus.module.modules.misc.*;
@@ -26,7 +26,6 @@ public class ModuleManager
             new Aura(),
             new Auto32k(),
             new AutoLog(),
-            new AutoTotem(),
             new AutoWither(),
             new BedAuraECME(),
             new BedObsidianTrap(),
@@ -73,6 +72,7 @@ public class ModuleManager
             new TotemPopCounter(),
             new TreeAura(),
             new TunnelESP(),
+            new Velocity(),
             new VisualRange(),
             new WurstPlusBedAura());
 

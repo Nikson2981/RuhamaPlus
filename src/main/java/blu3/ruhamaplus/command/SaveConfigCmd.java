@@ -33,6 +33,13 @@ public class SaveConfigCmd extends CommandBase implements IClientCommand {
         FileMang.saveSettings();
         FileMang.saveModules();
         FileMang.saveBinds();
+        FileMang.saveFriends(); //this should never be necessary\
+
+        FileMang.readModules();
+        FileMang.readSettings();
+        FileMang.readClickGui();
+        FileMang.readBinds();
+        FileMang.readFriends(); //yeah again
 
         ClientChat.log("Saved Configurations.");
     }

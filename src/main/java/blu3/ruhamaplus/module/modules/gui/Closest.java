@@ -86,8 +86,6 @@ public class Closest extends Module {
 
     public void onOverlay() {
 
-
-
         int x = (int) this.getSetting(0).asSlider().getValue();
         int y = (int) this.getSetting(1).asSlider().getValue();
         if (!knownPlayers.isEmpty()) {

@@ -36,7 +36,7 @@ public class Annoyer extends Module {
 
     public boolean onPacketRead(Packet<?> packet)
     {
-        if (this.delay.passedMs(4000)){
+        if (this.delay.passedMs(5000)){
             if (!(this.mc.player == null) && !(this.mc.world == null)) {
                 if (packet instanceof SPacketChat) {
                     SPacketChat sPacketChat = (SPacketChat) packet;

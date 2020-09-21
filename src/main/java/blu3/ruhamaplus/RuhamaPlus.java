@@ -64,9 +64,9 @@ public class RuhamaPlus
         return m_FriendManager;
     }
 
-@Mod.Instance private static RuhamaPlus INSTANCE;
+    @Mod.Instance private static RuhamaPlus INSTANCE;
 
-public RuhamaPlus() { INSTANCE = this;}
+    public RuhamaPlus() { INSTANCE = this;}
 
     public static RuhamaPlus getInstance(){
         return INSTANCE;

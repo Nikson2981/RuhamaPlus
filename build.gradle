@@ -30,11 +30,11 @@ compileJava {
 }
 
 minecraft {
-    version = '1.12.2-14.23.5.2847'
+    version = project.forgeVersion
     runDir = 'run'
     coreMod = 'bleach.a32k.mixin.MixinLoader'
 
-    mappings = 'stable_39'
+    mappings = project.mcpVersion
 }
 
 jar.manifest.attributes(

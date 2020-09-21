@@ -1,4 +1,4 @@
-package blu3.ruhamaplus.module.modules.experimental;
+package blu3.ruhamaplus.module.modules.combat;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
@@ -24,7 +24,7 @@ public class TestAutoTotem extends Module
 
     public TestAutoTotem()
     {
-        super("2b2tAutoTotem", 0, Category.EXPERIMENTAL, "Automatically places totems in your offhand, test for 2b bypass", settings);
+        super("AutoTotem", 0, Category.COMBAT, "Automatically places totems in your offhand, test for 2b bypass", settings);
     }
 
 
