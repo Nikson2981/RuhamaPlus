@@ -14,6 +14,7 @@ import net.minecraft.client.gui.inventory.GuiDispenser;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.ClickType;
@@ -282,6 +283,12 @@ public class NewAuto32k extends Module
                     {
                         players.remove(e);
                     }
+
+                    if (e instanceof EntityLivingBase && ((EntityLivingBase) e).getHealth() <= 0)
+                    {
+                        players.remove(e);
+                    }
+
                 }
 
                 players.remove(this.mc.player);
@@ -300,7 +307,7 @@ public class NewAuto32k extends Module
                 return;
             }
 
-            WorldUtils.rotateClient(target.posX, target.posY + 1.0D, target.posZ);
+            WorldUtils.rotatePacket(target.posX, target.posY + 1.0D, target.posZ);
 
             if (target.getDistance(this.mc.player) > 6.0F)
             {

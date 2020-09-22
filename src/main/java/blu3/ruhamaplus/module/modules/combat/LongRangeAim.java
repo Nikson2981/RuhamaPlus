@@ -41,8 +41,6 @@ public class LongRangeAim extends Module {
     public void onUpdate() {
         if (this.getSetting(1).asMode().mode == 0) {
 
-            //pasted auto32k killaura without the attacking, just finds the closest EntityPlayer
-
             Entity target = null;
 
             try {

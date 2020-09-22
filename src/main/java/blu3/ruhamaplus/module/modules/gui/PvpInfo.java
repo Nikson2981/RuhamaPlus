@@ -43,6 +43,7 @@ public class PvpInfo extends Module {
         this.getWindows().get(2).clearText();
         this.getWindows().get(3).clearText();
 
+
         int age = (int) (System.currentTimeMillis() / 20L % 510L);
         int color = (new Color(255, MathHelper.clamp(age > 255 ? 510 - age : age, 0, 255), MathHelper.clamp(255 - (age > 255 ? 510 - age : age), 0, 255))).getRGB();
 

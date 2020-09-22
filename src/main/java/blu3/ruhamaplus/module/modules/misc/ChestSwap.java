@@ -50,7 +50,7 @@ public class ChestSwap extends Module {
                 this.mc.playerController.windowClick(mc.player.inventoryContainer.windowId, l_Slot, 0, ClickType.PICKUP, mc.player);
             }
 
-            toggle();
+            this.setToggled(false);
             return;
         }
 
@@ -65,6 +65,7 @@ public class ChestSwap extends Module {
         }
 
         this.setToggled(false);
+        return;
     }
     private int FindChestItem(boolean p_Elytra)
     {
@@ -95,6 +96,7 @@ public class ChestSwap extends Module {
                             slot = i;
                         }
                     }
+                    break;
                 }
                 else if (p_Elytra && s.getItem() instanceof ItemElytra)
                     return i;

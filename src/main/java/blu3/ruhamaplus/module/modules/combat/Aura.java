@@ -2,9 +2,11 @@ package blu3.ruhamaplus.module.modules.combat;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
+import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
+import blu3.ruhamaplus.utils.WorldUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +19,7 @@ import net.minecraft.util.EnumHand;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Aura extends Module
@@ -50,9 +53,9 @@ public class Aura extends Module
                     continue;
                 }
                 if (this.getSetting(3).asToggle().state) {
-                    this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY + 0.1f, this.mc.player.posZ, false));
-                    this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY, this.mc.player.posZ, false));
+                    (((Criticals) Objects.requireNonNull(ModuleManager.getModuleByName("Criticals")))).performCritical();
                 }
+
                 this.mc.player.connection.sendPacket(new CPacketUseEntity(e, EnumHand.MAIN_HAND));
                 this.mc.playerController.attackEntity(this.mc.player, e);
                 this.mc.player.swingArm(EnumHand.MAIN_HAND);

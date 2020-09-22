@@ -2,6 +2,7 @@ package blu3.ruhamaplus.mixin.mixins;
 
 import blu3.ruhamaplus.RuhamaPlus;
 import blu3.ruhamaplus.module.ModuleManager;
+import blu3.ruhamaplus.module.modules.combat.Criticals;
 import blu3.ruhamaplus.module.modules.experimental.FeetXp;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemShulkerBox;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -53,5 +55,21 @@ public class MixinPacketSend
                 e.printStackTrace();
             }
         }
+
+        if (Objects.requireNonNull(ModuleManager.getModuleByName("Criticals").isToggled())){
+            try {
+                if (!(Minecraft.getMinecraft().player == null) && !(Minecraft.getMinecraft().world == null)) {
+                    if (packetIn instanceof CPacketUseEntity) {
+
+                        CPacketUseEntity bruh = (CPacketUseEntity) packetIn;
+
+                        if (bruh.getAction() == CPacketUseEntity.Action.ATTACK && Minecraft.getMinecraft().player.onGround) (((Criticals)Objects.requireNonNull(ModuleManager.getModuleByName("Criticals")))).performCritical();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

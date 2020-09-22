@@ -48,6 +48,8 @@ public class CrystalAura extends Module
             new SettingToggle(false, "RayTrace"), // 10
             new SettingSlider(0.0D, 6.0D, 4.25D, 2, "Range: "), // 11
             new SettingToggle(false, "1.13+") // 12
+            //new SettingSlider(0.0D, 20.0D, 3.0D, 0, "Hit Delay: "), // 13
+           // new SettingSlider(0.0D, 20.0D, 3.0D, 0, "Place Delay: ") // 14
     );
 
     private BlockPos render;
@@ -110,10 +112,12 @@ public class CrystalAura extends Module
                 }
             }
 
-            this.lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, this.mc.player);
+            //if (mc.player.ticksExisted % this.getSetting(13).asSlider().getValue() == 0) {
+                this.lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, this.mc.player);
 
-            this.mc.playerController.attackEntity(this.mc.player, crystal);
-            this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                this.mc.playerController.attackEntity(this.mc.player, crystal);
+                this.mc.player.swingArm(EnumHand.MAIN_HAND);
+            //}
 
 
             ++this.breaks;
@@ -271,9 +275,10 @@ public class CrystalAura extends Module
                                     return;
                                 }
                             }
-
-                            this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(q, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0F, 0.0F, 0.0F));
-                            this.mc.player.swingArm(offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+                            //if (mc.player.ticksExisted % this.getSetting(13).asSlider().getValue() == 0) {
+                                this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(q, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0F, 0.0F, 0.0F));
+                                this.mc.player.swingArm(offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+                            //}
                         }
 
                         if (this.isSpoofingAngles)

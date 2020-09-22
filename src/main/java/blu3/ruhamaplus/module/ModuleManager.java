@@ -2,9 +2,7 @@ package blu3.ruhamaplus.module;
 
 import blu3.ruhamaplus.module.modules.chat.*;
 import blu3.ruhamaplus.module.modules.combat.*;
-import blu3.ruhamaplus.module.modules.experimental.FeetXp;
-import blu3.ruhamaplus.module.modules.experimental.PacketMine;
-import blu3.ruhamaplus.module.modules.combat.TestAutoTotem;
+import blu3.ruhamaplus.module.modules.experimental.*;
 import blu3.ruhamaplus.module.modules.exploits.*;
 import blu3.ruhamaplus.module.modules.gui.*;
 import blu3.ruhamaplus.module.modules.misc.*;
@@ -36,6 +34,7 @@ public class ModuleManager
             new Closest(),
             new CoordHud(),
             new Crasher(),
+            new Criticals(),
             new CrystalAura(),
             new DispenserAura(),
             new ElytraFly(),
@@ -54,6 +53,7 @@ public class ModuleManager
             new LongRangeAim(),
             new NBTViewer(),
             new NewAuto32k(),
+            new NewChunks(),
             new ObsidianTrap(),
             new OldBedAura(),
             new PacketMine(),

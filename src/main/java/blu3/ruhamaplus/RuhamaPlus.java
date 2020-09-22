@@ -206,7 +206,7 @@ public class RuhamaPlus
     }
 
     @SubscribeEvent
-    public void chatSuffix(ClientChatEvent event)
+    public void onChat(ClientChatEvent event)
     {
         if (Objects.requireNonNull(ModuleManager.getModuleByName("ChatSuffix") ).isToggled() && !event.getMessage().contains("\u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+") && !event.getMessage().startsWith("/") && !event.getMessage().startsWith("!"))
         {
