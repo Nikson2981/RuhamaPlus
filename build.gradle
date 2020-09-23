@@ -20,7 +20,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = '0.9.6'
+version = '0.9.8'
 group = 'gg.ruhamaplus'
 archivesBaseName = 'RuhamaPlus'
 
@@ -32,14 +32,14 @@ compileJava {
 minecraft {
     version = project.forgeVersion
     runDir = 'run'
-    coreMod = 'bleach.a32k.mixin.MixinLoader'
+    coreMod = 'blu3.ruhamaplus.mixin.MixinLoader'
 
     mappings = project.mcpVersion
 }
 
 jar.manifest.attributes(
         'FMLCorePluginContainsFMLMod': true,
-        'FMLCorePlugin': 'bleach.a32k.mixin.MixinLoader',
+        'FMLCorePlugin': 'blu3.ruhamaplus.mixin.MixinLoader',
         'ForceLoadAsMod': true,
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
 

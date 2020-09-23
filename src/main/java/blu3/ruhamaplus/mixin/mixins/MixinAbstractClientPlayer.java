@@ -26,7 +26,7 @@ public abstract class MixinAbstractClientPlayer {
         String uuid = getPlayerInfo().getGameProfile().getId().toString();
 
         if(RuhamaPlus.getInstance().capeUtils.isCape(uuid) && ModuleManager.getModuleByName("Capes").isToggled()) {
-            cir.setReturnValue(new ResourceLocation("fyrehack:textures/cape.png"));
+            cir.setReturnValue(new ResourceLocation("ruhamaplus:textures/cape.png"));
         }
     }
 }

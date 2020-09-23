@@ -3,7 +3,9 @@ package blu3.ruhamaplus.module.modules.combat;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
+import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
+import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.ClientChat;
 import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.WorldUtils;
@@ -121,8 +123,8 @@ public class WurstPlusBedAura extends Module {
     public void place_bed() {
 
         if (find_bed() == -1) {
-            ClientChat.warn("CANNOT FIND BEDS");
-            this.setToggled(false);
+            //ClientChat.warn("CANNOT FIND BEDS");
+            //this.setToggled(false);
             return;
         }
 
@@ -163,8 +165,8 @@ public class WurstPlusBedAura extends Module {
         }
 
         if (best_target == null) {
-            ClientChat.log("cant find best player");
-            this.setToggled(false);
+            //ClientChat.log("cant find best player");
+            //this.setToggled(false);
             return;
         }
 
@@ -217,5 +219,4 @@ public class WurstPlusBedAura extends Module {
         NORTH,
         SOUTH
     }
-
 }

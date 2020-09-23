@@ -1,13 +1,13 @@
 [
 {
-  "modid": "fyrehack",
-  "name": "Fyre Hack",
-  "description": "yeah",
+  "modid": "ruhamaplus",
+  "name": "RuhamaPlus",
+  "description": "ecme client lol",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "credits": "Ruhama devs for the actual client (lol) & Dewy for leakage.",
+  "credits": "Bleach for Ruhama, me for new shit",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

@@ -8,6 +8,7 @@ import blu3.ruhamaplus.utils.WorldUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -88,6 +89,7 @@ public class Surround extends Module
             {
                 if (WorldUtils.placeBlock(b, obsidian, rotate, false))
                 {
+                    this.mc.player.swingArm(EnumHand.MAIN_HAND);
                     ++cap;
                 }
 

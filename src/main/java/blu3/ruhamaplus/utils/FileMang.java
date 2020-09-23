@@ -317,12 +317,6 @@ public class FileMang
         appendFile(lines.toString(), "modules.txt");
     }
 
-   public static void saveFriends(){
-        createEmptyFile("friends.txt");
-        StringBuilder lines = new StringBuilder();
-
-
-   }
 
     public static void readModules()
     {
@@ -384,8 +378,5 @@ public class FileMang
             }
         }
     }
-    public static List<String> readFriends(){
-        List<String> friends = readFileLines("friends.txt");
-        return friends;
-    }
+
 }

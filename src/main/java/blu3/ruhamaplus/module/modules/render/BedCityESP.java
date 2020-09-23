@@ -17,7 +17,7 @@ import java.util.List;
 
 public class BedCityESP extends Module {
     public BedCityESP() {
-        super("BedCityESP", 0, Category.CHAT, "rtdfcjyvghbkjnl;m", null);
+        super("BedCityESP", 0, Category.RENDER, "i can see you", null);
     }
 
     private EntityPlayer target;
@@ -34,7 +34,7 @@ public class BedCityESP extends Module {
     private BlockPos blockpos8;
 
     public boolean isInBlockRange(Entity target) {
-        return target.getDistance(this.mc.player) <= 8.0F;
+        return target.getDistance(this.mc.player) <= 15.0F;
     }
 
     public boolean isValid(EntityPlayer entity) {
@@ -42,7 +42,7 @@ public class BedCityESP extends Module {
     }
 
     public void onUpdate(){
-
+        this.clearSpots.clear();
         if (!this.mc.player.isHandActive()) {
             if (!this.isValid(this.target) || this.target == null) {
                 this.updateTarget();
@@ -80,17 +80,21 @@ public class BedCityESP extends Module {
     }
 
     private void showClearSpots(EntityPlayer player) {
-        this.blockpos1 = new BlockPos(player.posX + 1, player.posY + 1.0D, player.posZ);
-        this.blockpos2 = new BlockPos(player.posX - 1, player.posY + 1.0D, player.posZ);
-        this.blockpos3 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ + 1);
-        this.blockpos4 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ - 1);
 
-        this.blockpos5 = new BlockPos(player.posX + 1, player.posY + 2.0D, player.posZ);
-        this.blockpos6 = new BlockPos(player.posX - 1, player.posY + 2.0D, player.posZ);
-        this.blockpos7 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ + 1);
-        this.blockpos8 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ - 1);
+
 
         List <BlockPos> poses = new ArrayList<>();
+
+        this.blockpos1 = new BlockPos(player.posX + 1, player.posY + 1.0D, player.posZ); poses.add(this.blockpos1);
+        this.blockpos2 = new BlockPos(player.posX - 1, player.posY + 1.0D, player.posZ); poses.add(this.blockpos2);
+        this.blockpos3 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ + 1); poses.add(this.blockpos3);
+        this.blockpos4 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ - 1); poses.add(this.blockpos4);
+        this.blockpos5 = new BlockPos(player.posX + 1, player.posY + 2.0D, player.posZ); poses.add(this.blockpos5);
+        this.blockpos6 = new BlockPos(player.posX - 1, player.posY + 2.0D, player.posZ); poses.add(this.blockpos6);
+        this.blockpos7 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ + 1); poses.add(this.blockpos7);
+        this.blockpos8 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ - 1); poses.add(this.blockpos8);
+
+
 
         for (Object o : new ArrayList<>(poses))
         {
@@ -106,11 +110,10 @@ public class BedCityESP extends Module {
     }
 
     public void onRender() {
-        float blue = (float) (System.currentTimeMillis() / 10L % 512L) / 255.0F;
-        float red = (float) (System.currentTimeMillis() / 16L % 512L) / 255.0F;
+
         for (BlockPos p : this.clearSpots)
         {
-            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(p), red, 0.7F, blue, 0.25F);
+            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(p), 1, 0, 0, 0.25F);
         }
     }
 

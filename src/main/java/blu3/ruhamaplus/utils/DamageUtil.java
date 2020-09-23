@@ -6,20 +6,25 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.*;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.CombatRules;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DamageUtil {
     private static Minecraft mc = Minecraft.getMinecraft();
@@ -34,6 +39,39 @@ public class DamageUtil {
             }
         }
         return false;
+    }
+
+    private List<BlockPos> findCrystalBlocks1_12(double range)
+    {
+        NonNullList<BlockPos> positions = NonNullList.create();
+        positions.addAll(this.getSphere(this.getPlayerPos(), (float) range, (int) range, false, true, 0).stream().filter(this::canPlaceCrystal1_12).collect(Collectors.toList()));
+
+        return positions;
+    }
+
+    private List<BlockPos> findCrystalBlocks1_13(double range)
+    {
+        NonNullList<BlockPos> positions = NonNullList.create();
+        positions.addAll(this.getSphere(this.getPlayerPos(), (float) range, (int) range, false, true, 0).stream().filter(this::canPlaceCrystal1_13).collect(Collectors.toList()));
+
+        return positions;
+    }
+
+    public BlockPos getPlayerPos()
+    {
+        return new BlockPos(Math.floor(this.mc.player.posX), Math.floor(this.mc.player.posY), Math.floor(this.mc.player.posZ));
+    }
+
+    public boolean canPlaceCrystal1_12(BlockPos blockPos)
+    {
+        BlockPos boost = blockPos.add(0, 1, 0);
+        BlockPos boost2 = blockPos.add(0, 2, 0);
+        return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+    }
+
+    public boolean canPlaceCrystal1_13(BlockPos blockPos){
+            BlockPos boost = blockPos.add(0, 1, 0);
+            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
     }
 
     public static int getItemDamage(final ItemStack stack) {

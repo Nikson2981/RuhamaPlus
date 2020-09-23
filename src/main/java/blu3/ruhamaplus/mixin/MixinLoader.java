@@ -1,4 +1,4 @@
-package bleach.a32k.mixin;
+package blu3.ruhamaplus.mixin;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;

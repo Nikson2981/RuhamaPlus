@@ -146,7 +146,7 @@ public class Module
     public void registerBind(String name, int keycode)
     {
         this.key = new KeyBinding(name, keycode, "Ruhama+");
-        
+
         ClientRegistry.registerKeyBinding(this.key);
     }
 }

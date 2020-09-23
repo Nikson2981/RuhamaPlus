@@ -48,8 +48,6 @@ public class CrystalAura extends Module
             new SettingToggle(false, "RayTrace"), // 10
             new SettingSlider(0.0D, 6.0D, 4.25D, 2, "Range: "), // 11
             new SettingToggle(false, "1.13+") // 12
-            //new SettingSlider(0.0D, 20.0D, 3.0D, 0, "Hit Delay: "), // 13
-           // new SettingSlider(0.0D, 20.0D, 3.0D, 0, "Place Delay: ") // 14
     );
 
     private BlockPos render;

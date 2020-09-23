@@ -74,14 +74,14 @@ public class RuhamaPlus
 
 
     @EventHandler
-    public void init(FMLInitializationEvent event) throws IOException, PastebinException {
+    public void init(FMLInitializationEvent event){
 
         System.out.println("Initialization beginning...");
         System.out.println("\n\n");
         System.out.println("|\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | ");
         System.out.println("| \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | ");
-        System.out.println("|  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| ");
-        System.out.println("\n\n");
+        System.out.println("|  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| \n\n");
+
 
         Friends.tryValidateHwid();
 
@@ -98,7 +98,7 @@ public class RuhamaPlus
         FileMang.readSettings();
         FileMang.readClickGui();
         FileMang.readBinds();
-        FileMang.readFriends();
+
 
         for (Module m : ModuleManager.getModules())
         {
@@ -200,7 +200,6 @@ public class RuhamaPlus
                     }
                 }
             }
-
             ModuleManager.onOverlay();
         }
     }
@@ -216,10 +215,6 @@ public class RuhamaPlus
             mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+");
         }
     }
-
-
-
-
 
     @SubscribeEvent
     public void onTick(ClientTickEvent event)
