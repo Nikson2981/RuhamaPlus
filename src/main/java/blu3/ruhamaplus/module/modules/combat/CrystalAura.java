@@ -324,7 +324,7 @@ public class CrystalAura extends Module
                                 continue bruhFernflower;
                             }
 
-                            blockPos = (BlockPos) blocksIter.next();
+                            blockPos = blocksIter.next();
                             dd = entity.getDistanceSq(blockPos);
                         } while (dd >= 169.0D);
 

@@ -6,11 +6,15 @@ import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.ClientChat;
 import blu3.ruhamaplus.utils.WorldUtils;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
@@ -104,12 +108,6 @@ public class BedObsidianTrap extends Module
         if (this.doesHotbarHaveObby())
         {
             this.blockpos1 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ);
-            this.blockpos2 = new BlockPos(player.posX + 1.0D, player.posY + 2.0D, player.posZ);
-            this.blockpos3 = new BlockPos(player.posX + 1.0D, player.posY, player.posZ);
-            this.blockpos4 = new BlockPos(player.posX, player.posY, player.posZ + 1.0D);
-            this.blockpos5 = new BlockPos(player.posX - 1.0D, player.posY, player.posZ);
-            this.blockpos6 = new BlockPos(player.posX, player.posY, player.posZ - 1.0D);
-            this.blockpos7 = new BlockPos(player.posX + 1.0D, player.posY + 1.0D, player.posZ);
 
 
             for (int i = 36; i < 45; ++i)
@@ -124,40 +122,11 @@ public class BedObsidianTrap extends Module
                     {
                         this.mc.player.inventory.currentItem = i - 36;
 
-                        if (this.mc.world.getBlockState(this.blockpos3).getMaterial().isReplaceable())
-                        {
-                            WorldUtils.placeBlock(this.blockpos3, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
-                        }
 
-                        if (this.mc.world.getBlockState(this.blockpos4).getMaterial().isReplaceable())
-                        {
-                            WorldUtils.placeBlock(this.blockpos4, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
-                        }
-
-                        if (this.mc.world.getBlockState(this.blockpos5).getMaterial().isReplaceable())
-                        {
-                            WorldUtils.placeBlock(this.blockpos5, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
-                        }
-
-                        if (this.mc.world.getBlockState(this.blockpos6).getMaterial().isReplaceable())
-                        {
-                            WorldUtils.placeBlock(this.blockpos6, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
-                        }
-
-                        if (this.mc.world.getBlockState(this.blockpos7).getMaterial().isReplaceable())
-                        {
-                            WorldUtils.placeBlock(this.blockpos7, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
-                        }
-
-
-                        if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable())
-                        {
-                            WorldUtils.placeBlock(this.blockpos2, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
-                        }
 
                         if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable())
                         {
-                            WorldUtils.placeBlock(this.blockpos1, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, this.getSetting(0).asToggle().state);
+                            this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos1, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
                         }
 
                         this.mc.player.inventory.currentItem = oldSlot;

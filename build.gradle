@@ -20,7 +20,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = '0.9.8'
+version = '0.9.9'
 group = 'gg.ruhamaplus'
 archivesBaseName = 'RuhamaPlus'
 
@@ -33,7 +33,7 @@ minecraft {
     version = project.forgeVersion
     runDir = 'run'
     coreMod = 'blu3.ruhamaplus.mixin.MixinLoader'
-
+    makeObfSourceJar = false
     mappings = project.mcpVersion
 }
 
@@ -76,7 +76,7 @@ shadowJar {
         include(dependency('org.spongepowered:mixin'))
         //include(dependency('com.github.ZeroMemes:Alpine'))
         include(dependency('com.github.ionar2:Alpine'))
-        include(dependency('club.minnced:java-discord-rpc'))
+        include(dependency('club.minnced:java-discord-rpc:2.0.2'))
         include(dependency('net.jodah:typetools'))
         include(dependency('com.github.MrPowerGamerBR:TemmieWebhook'))
     }
@@ -89,6 +89,9 @@ shadowJar {
 build.dependsOn(shadowJar)
 
 reobf {
+    jar {
+        mappingType = 'SEARGE'
+    }
     shadowJar {
         mappingType = 'SEARGE'
         classpath = sourceSets.main.compileClasspath
@@ -108,6 +111,7 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 

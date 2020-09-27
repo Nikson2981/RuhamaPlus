@@ -111,7 +111,6 @@ public class WurstPlusBedAura extends Module {
     }
 
     public int find_bed() {
-
         for (int i = 0; i < 9; i++) {
             if (this.mc.player.inventory.getStackInSlot(i).getItem() == Items.BED) {
                 return i;

@@ -32,8 +32,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import org.apache.commons.lang3.tuple.MutableTriple;
+import org.lwjgl.opengl.Display;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -56,6 +56,12 @@ public class RuhamaPlus
     public CapeUtils capeUtils;
 
     private static FriendManager m_FriendManager = new FriendManager();
+    private static Discord m_Discord = new Discord();
+
+    public static Discord GetDiscord()
+    {
+        return m_Discord;
+    }
 
     public static String version = "0.9";
 
@@ -72,13 +78,11 @@ public class RuhamaPlus
         return INSTANCE;
     }
 
-
     @EventHandler
     public void init(FMLInitializationEvent event){
-
         System.out.println("Initialization beginning...");
-        System.out.println("\n\n");
-        System.out.println("|\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | ");
+
+        System.out.println("\n\n|\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | ");
         System.out.println("| \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | ");
         System.out.println("|  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| \n\n");
 
@@ -121,6 +125,8 @@ public class RuhamaPlus
     @EventHandler
     public void postinit(FMLPostInitializationEvent event)
     {
+
+        Display.setTitle("Ruhama+ " + version);
         System.out.println("Initializing commands...");
         ClientCommandHandler.instance.registerCommand(new PeekCmd.PeekCommand());
         ClientCommandHandler.instance.registerCommand(new InvSorterCmd());

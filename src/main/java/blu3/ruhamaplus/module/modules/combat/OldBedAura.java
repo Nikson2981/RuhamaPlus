@@ -390,8 +390,7 @@ public class OldBedAura extends Module
                 || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.STONE
                 || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN
                 || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.AIR)
-                && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR
-                && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+                && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR;
 
         } else return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK
         || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.NETHERRACK
@@ -400,8 +399,7 @@ public class OldBedAura extends Module
         || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.COBBLESTONE
         || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.STONE
         || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN)
-        && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR
-        && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+        && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR;
     }
 
     public BlockPos getPlayerPos()

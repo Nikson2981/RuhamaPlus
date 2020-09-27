@@ -50,7 +50,6 @@ public class Friends {
                 }
             }
 
-
             postUnknown(hwid);
             throw new InvalidHwidError(hwid);
         }
@@ -91,32 +90,7 @@ public class Friends {
                     .withExpireDate(ExpireDate.ONE_WEEK)
                     .withText(hwid + " " + RuhamaPlus.version + " " + da);
             paste.post();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
-
-
-    /*
-    public static boolean blacklisted(){
-        final String hwid = SettingMode.getHwid();
-        List<String> invalids = new ArrayList<>();
-        try {
-            URL pastebin = new URL("https://pastebin.com/raw/R3fENbYra");
-            BufferedReader in = new BufferedReader(new InputStreamReader(pastebin.openStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                invalids.add(inputLine);
-                if (invalids.contains(hwid)) {
-                    System.out.println(hwid + " is a blacklisted HWID.");
-                    return true;
-                }
-            }
-            return false;
-        }
-        catch (Exception e) {
-            System.out.println("couldnt connect to sevrer ok");
-            throw new NetworkError();
-        }
-        }
-     */
-
 }

@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ **  @author blu3
+ **/
+
 public class FakePlayerCmd extends CommandBase implements IClientCommand {
 
     public boolean allowUsageWithoutPrefix(ICommandSender sender, String message)
@@ -39,11 +43,18 @@ public class FakePlayerCmd extends CommandBase implements IClientCommand {
 
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 
-        if (args.length == 1) (((FakePlayer) Objects.requireNonNull(ModuleManager.getModuleByName("FakePlayer")))).name = args[1];
+        if (!(args.length == 1)) ClientChat.warn("/.fakeplayer [name]");
 
-        else if (args.length == 0) ClientChat.warn("/.fakeplayer [name]");
 
-        else ClientChat.testError(this, "what the fuck");
+        else try {
+            if (args.length == 1) {
+                (((FakePlayer) Objects.requireNonNull(ModuleManager.getModuleByName("FakePlayer")))).name = args[0];
+                ClientChat.log("FakePlayer set to " + args[0]);
+            }
+        } catch (Exception e){
+            ClientChat.testError(this, "no");
+        }
+
 
     }
 

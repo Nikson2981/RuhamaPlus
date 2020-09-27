@@ -8,20 +8,26 @@ public class ClientChat
 {
     public static void log(String text)
     {
+        if (Minecraft.getMinecraft().world != null)
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.AQUA + "[Ruhama+]: " + TextFormatting.RESET + text));
     }
 
     public static void warn(String text)
     {
+        if (Minecraft.getMinecraft().world != null)
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.YELLOW + "[Ruhama+: WARN]: " + TextFormatting.RESET + text));
     }
 
     public static void error(String location, String text)
     {
+        if (Minecraft.getMinecraft().world != null)
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.RED + "[Ruhama+: ERROR]: " + TextFormatting.RESET + "at " + TextFormatting.RED + location + ": " + TextFormatting.RESET + text));
     }
 
     public static void testError(Object location, String text){
+        if (Minecraft.getMinecraft().world != null)
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.RED + "[Ruhama+: ERROR]: " + TextFormatting.RESET + "at " + TextFormatting.RED + location + ": " + TextFormatting.RESET + text));
     }
+
+
 }

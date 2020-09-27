@@ -14,10 +14,8 @@ public class PacketMine extends Module {
     public boolean packetMine(BlockPos swerdtfvygbuhni, EnumFacing bruh){
         if (this.isToggled()) {
             this.mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.connection.sendPacket(new CPacketPlayerDigging(
-                    CPacketPlayerDigging.Action.START_DESTROY_BLOCK, swerdtfvygbuhni, bruh));
-            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK,
-                    swerdtfvygbuhni, bruh));
+            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, swerdtfvygbuhni, bruh));
+            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, swerdtfvygbuhni, bruh));
             return true;
         }
         return false;
