@@ -12,9 +12,9 @@ import net.minecraft.world.Explosion;
 import java.util.List;
 
 
-public class Velocity extends Module {
-    public Velocity() {
-        super("Velocity", 0, Category.CHAT, "HE HACER NO KB REEEEEEE", null);
+public class EnhancedMovement extends Module {
+    public EnhancedMovement() {
+        super("EnhancedMovement", 0, Category.MISC, "HE HACER NO KB AND MOVE IN INVENTORY REEEEEEE", null);
     }
 
     public boolean onPacketRead(Packet<?> packet) {

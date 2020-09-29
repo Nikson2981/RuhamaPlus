@@ -52,6 +52,7 @@ public class BedAuraECME extends Module {
     private BlockPos blockpos14;
 
 
+
     private final List<BlockPos> beds = new ArrayList<>();
 
     private EntityPlayer target;
@@ -71,7 +72,6 @@ public class BedAuraECME extends Module {
 
 
     public void onUpdate() {
-        this.renderBeds();
         if (!this.mc.player.isHandActive()) {
             if (!this.isValid(this.target) || this.target == null) {
                 this.updateTarget();
@@ -94,9 +94,9 @@ public class BedAuraECME extends Module {
 
 
 
-            if (mc.player.ticksExisted % this.getSetting(0).asSlider().getValue() == 0) {
-                if (this.getSetting(7).asToggle().state) this.clickBed();
-            }
+
+            if (this.getSetting(7).asToggle().state) this.clickBed();
+
 
             if (mc.player.ticksExisted % this.getSetting(1).asSlider().getValue() == 0) {
                 this.moveBed();
@@ -135,6 +135,8 @@ public class BedAuraECME extends Module {
     //
     // ew
     //
+
+        this.beds.clear();
             this.blockpos1 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ); // above player head
             this.blockpos2 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ); // player head
             this.blockpos7 = new BlockPos(player.posX + 1.0D, player.posY + 1.0D, player.posZ); // +x bed
@@ -154,8 +156,10 @@ public class BedAuraECME extends Module {
 
                         WorldUtils.rotatePacket(this.mc.player.posX - 2.0D, this.mc.player.posY + 1.0D, this.mc.player.posZ);
 
-
+                        this.beds.add(blockpos7);
+                        this.beds.add(blockpos2);
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos7, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
+                        return;
                     }
                 }
             }
@@ -167,8 +171,10 @@ public class BedAuraECME extends Module {
 
                         WorldUtils.rotatePacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ - 2.0D);
 
-
+                        this.beds.add(blockpos8);
+                        this.beds.add(blockpos2);
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos8, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
+                        return;
                     }
                 }
             }
@@ -181,8 +187,10 @@ public class BedAuraECME extends Module {
 
                         WorldUtils.rotatePacket(this.mc.player.posX + 2.0D, this.mc.player.posY + 1.0D, this.mc.player.posZ);
 
-
+                        this.beds.add(blockpos9);
+                        this.beds.add(blockpos2);
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos9, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
+                        return;
                     }
                 }
             }
@@ -194,8 +202,10 @@ public class BedAuraECME extends Module {
 
                         WorldUtils.rotatePacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ + 2);
 
-
+                        this.beds.add(blockpos10);
+                        this.beds.add(blockpos2);
                         this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos10, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
+                        return;
                     }
                 }
             }
@@ -209,8 +219,10 @@ public class BedAuraECME extends Module {
 
                             WorldUtils.rotatePacket(this.mc.player.posX - 2.0D, this.mc.player.posY + 1.0D, this.mc.player.posZ);
 
-
+                            this.beds.add(blockpos11);
+                            this.beds.add(blockpos1);
                             this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos11, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
+                            return;
                         }
                     }
                 }
@@ -224,8 +236,10 @@ public class BedAuraECME extends Module {
 
                             WorldUtils.rotatePacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ - 2.0D);
 
-
+                            this.beds.add(blockpos12);
+                            this.beds.add(blockpos1);
                             this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos12, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
+                            return;
                         }
                     }
                 }
@@ -239,8 +253,10 @@ public class BedAuraECME extends Module {
 
                             WorldUtils.rotatePacket(this.mc.player.posX + 2.0D, this.mc.player.posY + 1.0D, this.mc.player.posZ);
 
-
+                            this.beds.add(blockpos13);
+                            this.beds.add(blockpos1);
                             this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos13, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
+                            return;
                         }
                     }
                 }
@@ -253,8 +269,10 @@ public class BedAuraECME extends Module {
 
                             WorldUtils.rotatePacket(this.mc.player.posX, this.mc.player.posY + 1.0D, this.mc.player.posZ + 2);
 
-
+                            this.beds.add(blockpos14);
+                            this.beds.add(blockpos1);
                             this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos14, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
+                            return;
                         }
                     }
                 }
@@ -293,30 +311,7 @@ public class BedAuraECME extends Module {
 
     }
 
-    public void renderBeds(){
 
-        this.beds.clear();
-
-        int x;
-
-        if (!(mc.player.dimension == 0)) {
-
-            double range = this.getSetting(5).asSlider().getValue();
-            double negativeRange = range - range * 2;
-
-            for (x = (int) negativeRange; x <= range; ++x) {
-                for (int y = (int) negativeRange; y <= range; ++y) {
-                    for (int z = (int) negativeRange; z <= range; ++z) {
-                        BlockPos pos = this.mc.player.getPosition().add(x, y, z);
-
-                        if (this.mc.world.getBlockState(pos).getBlock() instanceof BlockBed && this.mc.player.getPositionVector().distanceTo((new Vec3d(pos)).add(0.5D, 0.5D, 0.5D)) <= 5.25D) {
-                            this.beds.add(pos);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     public void clickBed() {
 
@@ -333,7 +328,7 @@ public class BedAuraECME extends Module {
                         BlockPos pos = this.mc.player.getPosition().add(x, y, z);
 
                         if (this.mc.world.getBlockState(pos).getBlock() instanceof BlockBed && this.mc.player.getPositionVector().distanceTo((new Vec3d(pos)).add(0.5D, 0.5D, 0.5D)) <= 5.25D) {
-                            WorldUtils.openBlock(pos);
+                            WorldUtils.openBlockOffhand(pos);
                         }
                     }
                 }
@@ -377,5 +372,4 @@ public class BedAuraECME extends Module {
             }
         }
     }
-
 }

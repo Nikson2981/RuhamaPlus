@@ -2,6 +2,7 @@ package blu3.ruhamaplus.settings;
 
 public class SettingBase
 {
+
     public SettingMode asMode()
     {
         try

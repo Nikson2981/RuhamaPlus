@@ -34,11 +34,6 @@ public class SaveConfigCmd extends CommandBase implements IClientCommand {
         FileMang.saveModules();
         FileMang.saveBinds();
 
-        FileMang.readModules();
-        FileMang.readSettings();
-        FileMang.readClickGui();
-        FileMang.readBinds();
-
         ClientChat.log("Saved Configurations.");
     }
     public boolean checkPermission(MinecraftServer server, ICommandSender sender)

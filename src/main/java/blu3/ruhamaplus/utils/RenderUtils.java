@@ -1,5 +1,8 @@
 package blu3.ruhamaplus.utils;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -30,6 +33,37 @@ public class RenderUtils
         }
         catch (Exception ex) {}
     }
+
+    public static void drawText(final BlockPos pos, final String text) {
+        GlStateManager.pushMatrix();
+        glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, (EntityPlayer)mc.player, 1.0f);
+        GlStateManager.disableDepth();
+        GlStateManager.translate(-(mc.fontRenderer.getStringWidth(text) / 2.0), 0.0, 0.0);
+        mc.fontRenderer.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
+        GlStateManager.popMatrix();
+    }
+
+    public static void glBillboard(final float x, final float y, final float z) {
+        final float scale = 0.02666667f;
+        try {
+            GlStateManager.translate(x - (double) ReflectUtils.getField(RenderManager.class, "renderPosX", "field_78725_b").get(RenderUtils.mc.getRenderManager()), y - (double)ReflectUtils.getField(RenderManager.class, "renderPosY", "field_78726_c").get(RenderUtils.mc.getRenderManager()), z - (double)ReflectUtils.getField(RenderManager.class, "renderPosZ", "field_78723_d").get(RenderUtils.mc.getRenderManager()));
+        } catch (Exception e) {}
+        GlStateManager.glNormal3f(0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(-mc.player.rotationYaw, 0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(mc.player.rotationPitch, (mc.gameSettings.thirdPersonView == 2) ? -1.0f : 1.0f, 0.0f, 0.0f);
+        GlStateManager.scale(-scale, -scale, scale);
+    }
+
+    public static void glBillboardDistanceScaled(final float x, final float y, final float z, final EntityPlayer player, final float scale) {
+        glBillboard(x, y, z);
+        final int distance = (int)player.getDistance((double)x, (double)y, (double)z);
+        float scaleDistance = distance / 2.0f / (2.0f + (2.0f - scale));
+        if (scaleDistance < 1.0f) {
+            scaleDistance = 1.0f;
+        }
+        GlStateManager.scale(scaleDistance, scaleDistance, scaleDistance);
+    }
+
 
     public static void glSetup() {
         GL11.glPushMatrix();

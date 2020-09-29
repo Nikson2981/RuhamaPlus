@@ -28,10 +28,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import org.apache.commons.lang3.tuple.MutableTriple;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import java.util.HashMap;
@@ -141,6 +144,7 @@ public class RuhamaPlus
         ClientCommandHandler.instance.registerCommand(new UnfriendCommand());
         ClientCommandHandler.instance.registerCommand(new ToggleCmd());
         ClientCommandHandler.instance.registerCommand(new FakePlayerCmd());
+        ClientCommandHandler.instance.registerCommand(new KickExploitCmd());
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
         System.out.println("Commands initialized!");
 
@@ -219,6 +223,15 @@ public class RuhamaPlus
 
             mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());
             mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+");
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (Keyboard.getEventKeyState()) {
+            if(Keyboard.getEventKey() == 0 || Keyboard.getEventKey() == Keyboard.KEY_NONE) return;
+            //Module binds
+            ModuleManager.onBind(Keyboard.getEventKey());
         }
     }
 

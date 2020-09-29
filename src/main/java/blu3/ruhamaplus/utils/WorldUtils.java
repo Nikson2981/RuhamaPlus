@@ -44,6 +44,19 @@ public class WorldUtils {
             }
         }
     }
+    public static void openBlockOffhand(BlockPos pos) {
+        EnumFacing[] facings = EnumFacing.values();
+
+        for (EnumFacing f : facings) {
+            Block neighborBlock = mc.world.getBlockState(pos.offset(f)).getBlock();
+
+            if (emptyBlocks.contains(neighborBlock)) {
+                mc.playerController.processRightClickBlock(mc.player, mc.world, pos, f.getOpposite(), new Vec3d(pos), EnumHand.OFF_HAND);
+
+                return;
+            }
+        }
+    }
 
     public static boolean placeBlock(BlockPos pos, int slot, boolean rotate, boolean rotateBack) {
         if (!isBlockEmpty(pos)) {
@@ -166,6 +179,89 @@ public class WorldUtils {
         double diffX = rotateTarget.getX() - placeTarget.getX();
         double diffY = rotateTarget.getY() - (mc.player.posY + (double) mc.player.getEyeHeight());
         double diffZ = rotateTarget.getZ() - placeTarget.getZ();
+        double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
+
+        float yaw = (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90.0F;
+        float pitch = (float) (-Math.toDegrees(Math.atan2(diffY, diffXZ)));
+
+        mc.player.connection.sendPacket(new Rotation(yaw, pitch, mc.player.onGround));
+    }
+
+    public static BlockPos getNextSmartPos(BlockPos placeTarget){
+        BlockPos plusXUp = new BlockPos(placeTarget.getX() + 1.0D, placeTarget.getY() + 1.0D, placeTarget.getZ());
+
+        BlockPos plusZUp = new BlockPos(placeTarget.getX(), placeTarget.getY() + 1.0D, placeTarget.getZ() + 1.0D);
+
+        BlockPos negXUp = new BlockPos(placeTarget.getX() - 1.0D, placeTarget.getY() + 1.0D, placeTarget.getZ());
+
+        BlockPos negZUp = new BlockPos(placeTarget.getX(), placeTarget.getY() + 1.0D, placeTarget.getZ() - 1.0D);
+
+        if (mc.world.getBlockState(plusXUp).getMaterial().isReplaceable()) {
+            return plusXUp;
+        }
+
+        if (mc.world.getBlockState(plusZUp).getMaterial().isReplaceable()) {
+            return plusZUp;
+        }
+
+        if (mc.world.getBlockState(negXUp).getMaterial().isReplaceable()) {
+            return negXUp;
+        }
+
+        if (mc.world.getBlockState(negZUp).getMaterial().isReplaceable()) {
+            return negZUp;
+        }
+
+        return null;
+    }
+
+    public static void smartBedRotation(BlockPos placeTarget){
+
+        BlockPos plusX = new BlockPos(placeTarget.getX() + 1.0D, placeTarget.getY(), placeTarget.getZ());
+        BlockPos plusXUp = new BlockPos(placeTarget.getX() + 1.0D, placeTarget.getY() + 1.0D, placeTarget.getZ());
+
+        BlockPos plusZ = new BlockPos(placeTarget.getX(), placeTarget.getY(), placeTarget.getZ() + 1.0D);
+        BlockPos plusZUp = new BlockPos(placeTarget.getX(), placeTarget.getY() + 1.0D, placeTarget.getZ() + 1.0D);
+
+        BlockPos negX = new BlockPos(placeTarget.getX() - 1.0D, placeTarget.getY(), placeTarget.getZ());
+        BlockPos negXUp = new BlockPos(placeTarget.getX() - 1.0D, placeTarget.getY() + 1.0D, placeTarget.getZ());
+
+        BlockPos negZ = new BlockPos(placeTarget.getX(), placeTarget.getY(), placeTarget.getZ() - 1.0D);
+        BlockPos negZUp = new BlockPos(placeTarget.getX(), placeTarget.getY() + 1.0D, placeTarget.getZ() - 1.0D);
+
+        if (!(mc.world.getBlockState(plusX).getMaterial().isReplaceable())) {
+            if (mc.world.getBlockState(plusXUp).getMaterial().isReplaceable()) {
+                WorldUtils.rotateBedPacket(placeTarget, placeTarget.add(1,0,0));
+                return;
+            }
+        }
+
+        if (!(mc.world.getBlockState(plusZ).getMaterial().isReplaceable())) {
+            if (mc.world.getBlockState(plusZUp).getMaterial().isReplaceable()) {
+                WorldUtils.rotateBedPacket(placeTarget, placeTarget.add(0,0,1));
+                return;
+            }
+        }
+
+        if (!(mc.world.getBlockState(negX).getMaterial().isReplaceable())) {
+            if (mc.world.getBlockState(negXUp).getMaterial().isReplaceable()) {
+                WorldUtils.rotateBedPacket(placeTarget, placeTarget.add(-1,0,0));
+                return;
+            }
+        }
+
+        if (!(mc.world.getBlockState(negZ).getMaterial().isReplaceable())) {
+            if (mc.world.getBlockState(negZUp).getMaterial().isReplaceable()) {
+                WorldUtils.rotateBedPacket(placeTarget, placeTarget.add(0,0,-1));
+                return;
+            }
+        }
+    }
+
+    public static void rotateBedPacket(BlockPos placeTarget, Entity rotateTarget) {
+        double diffX = rotateTarget.posX - placeTarget.getX();
+        double diffY = rotateTarget.posY - (mc.player.posY + (double) mc.player.getEyeHeight());
+        double diffZ = rotateTarget.posZ - placeTarget.getZ();
         double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
 
         float yaw = (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90.0F;

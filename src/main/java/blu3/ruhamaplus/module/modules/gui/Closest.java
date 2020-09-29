@@ -45,7 +45,7 @@ public class Closest extends Module {
     }
 
 
-    List<Entity> knownPlayers = new ArrayList<>();;
+    List<Entity> knownPlayers = new ArrayList<>();
     List<Entity> players;
 
     private HashMap<String, Integer> popList = new HashMap();
@@ -85,9 +85,9 @@ public class Closest extends Module {
 
 
     public void onOverlay() {
-
-        int x = (int) this.getSetting(0).asSlider().getValue();
-        int y = (int) this.getSetting(1).asSlider().getValue();
+        int x = (int) this.getSlider("X");
+        int y = (int) this.getSlider("Y");
+        
         if (!knownPlayers.isEmpty()) {
 
             EntityPlayer l_Player = null;
@@ -129,22 +129,22 @@ public class Closest extends Module {
 
             mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + Name, x + 20, y - 55, 0);
             if (FriendManager.Get().isFriend(l_Player.getName().toLowerCase())) {
-                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 165, y + 25, 1879048192);
+                if(this.getBoolean("Background")) GuiScreen.drawRect(x - 20, y - 65, x + 165, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + "Verified Cool" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Diamond Helmet") && body2.equals("Diamond Chestplate") && leggings2.equals("Diamond Leggings") && boots2.equals("Diamond Boots")) {
-                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 180, y + 25, 1879048192);
+                if(this.getBoolean("Background")) GuiScreen.drawRect(x - 20, y - 65, x + 180, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + "Potential Threat" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Chain Helmet") && body2.equals("Chain Chestplate") && leggings2.equals("Chain Leggings") && boots2.equals("Chain Boots") && this.mc.getCurrentServerData().serverIP.contains("endcrystal")) {
-                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 155, y + 25, 1879048192);
+                if(this.getBoolean("Background")) GuiScreen.drawRect(x - 20, y - 65, x + 155, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + "Netherite Retard" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Diamond Helmet") && body2.equals("Elytra") && leggings2.equals("Diamond Leggings") && boots2.equals("Diamond Boots")) {
-                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
+                if(this.getBoolean("Background")) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.YELLOW + "Wasp" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Air") && body2.equals("Air") && leggings2.equals("Air") && boots2.equals("Air")) {
-                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
+                if(this.getBoolean("Background")) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.GREEN + "Naked" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else {
-                if(this.getSetting(2).asToggle().state) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
+                if(this.getBoolean("Background")) GuiScreen.drawRect(x - 20, y - 65, x + 135, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.LIGHT_PURPLE + "Fuckable" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             }
             int colour = 0;
@@ -235,7 +235,8 @@ public class Closest extends Module {
             l_Player = (EntityPlayer) players.get(0);
 
         } catch (Exception ignored) {}
-        if (this.getSetting(3).asToggle().state) RenderUtils.drawFilledBlockBox(l_Player.getEntityBoundingBox(), 1.0F, 0.0F, 0.0F, 0.3F);
+
+        if (this.getBoolean("RenderBox") && l_Player != null) RenderUtils.drawFilledBlockBox(l_Player.getEntityBoundingBox(), 1.0F, 0.0F, 0.0F, 0.3F);
     }
 
     public static class EnchantEntry

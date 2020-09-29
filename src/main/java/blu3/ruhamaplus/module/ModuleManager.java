@@ -28,6 +28,7 @@ public class ModuleManager
             new BedCityESP(),
             new BedAuraECME(),
             new BedObsidianTrap(),
+            //new blu3BedAura(),
             new blu3CrystalAura(),
             new BoxESP(),
             new Capes(),
@@ -45,6 +46,7 @@ public class ModuleManager
             new ElytraFly(),
             new ElytraReplace(),
             new EnderChestBackpack(),
+            new EnhancedMovement(),
             new FakePlayer(),
             new FeetXp(),
             new FOVSlider(),
@@ -56,6 +58,7 @@ public class ModuleManager
             new HopperRadius(),
             new Hud(),
             new InvSorter(),
+            new KickExploit9b9t(),
             new LongRangeAim(),
             new NBTViewer(),
             new NewAuto32k(),
@@ -79,7 +82,6 @@ public class ModuleManager
             new TotemPopCounter(),
             new TreeAura(),
             new TunnelESP(),
-            new Velocity(),
             new VisualRange(),
             new WurstPlusBedAura());
 
@@ -231,5 +233,14 @@ public class ModuleManager
                 }
             }
         }
+    }
+
+    public static void onBind(int key) {
+        if (key == 0 || key == Keyboard.KEY_NONE) return;
+        mods.forEach(module -> {
+            if(module.getBind() == key){
+                module.toggle();
+            }
+        });
     }
 }

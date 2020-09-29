@@ -2,10 +2,14 @@ package blu3.ruhamaplus.module;
 
 import blu3.ruhamaplus.gui.TextWindow;
 import blu3.ruhamaplus.settings.SettingBase;
+import blu3.ruhamaplus.settings.SettingMode;
+import blu3.ruhamaplus.settings.SettingSlider;
+import blu3.ruhamaplus.settings.SettingToggle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +27,11 @@ public class Module
     
     private final String name;
     private KeyBinding key;
+
+    int bind;
     
     private boolean toggled;
     private List<SettingBase> settings = new ArrayList<>();
-
-
 
     public Module(String name, int bind, Category cat, String desc, List<SettingBase> settings)
     {
@@ -35,6 +39,10 @@ public class Module
         this.registerBind(name, bind);
         this.category = cat;
         this.desc = desc;
+
+        //this.bind = Keyboard.KEY_NONE;
+
+        //bind = this.bind;
         
         if (settings != null)
         {
@@ -42,8 +50,14 @@ public class Module
         }
 
         this.toggled = false;
+    }
 
+    public int getBind(){
+        return bind;
+    }
 
+    public void setBind(int b){
+        bind = b;
     }
 
     public void toggle()
@@ -119,6 +133,46 @@ public class Module
     public KeyBinding getKey()
     {
         return this.key;
+    }
+
+    public Boolean getBoolean(String name){
+        SettingBase b = new SettingBase();
+        for (SettingBase m : getSettings()){
+            if (m instanceof SettingToggle) {
+                if (((SettingToggle) m).text.equalsIgnoreCase(name)) {
+                    b = m;
+                    break;
+                }
+            }
+        }
+        return b.asToggle().state;
+    }
+
+    public int getMode(String name) {
+        SettingBase b = new SettingBase();
+        for (SettingBase m : getSettings()){
+            if (m instanceof SettingMode) {
+                if (((SettingMode) m).text.equalsIgnoreCase(name)) {
+                    b = m;
+                    break;
+                }
+            }
+        }
+
+         return b.asMode().mode;
+    }
+
+    public double getSlider (String name) {
+        SettingBase b = new SettingBase();
+        for (SettingBase m : getSettings()){
+            if (m instanceof SettingSlider) {
+                if (((SettingSlider) m).text.equalsIgnoreCase(name)) {
+                    b = m;
+                    break;
+                }
+            }
+        }
+        return b.asSlider().getValue();
     }
     
     public List<SettingBase> getSettings()
