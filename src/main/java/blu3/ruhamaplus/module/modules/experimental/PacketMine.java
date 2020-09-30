@@ -13,6 +13,7 @@ public class PacketMine extends Module {
 
     public boolean packetMine(BlockPos swerdtfvygbuhni, EnumFacing bruh){
         if (this.isToggled()) {
+            if (!(this.mc.world.getBlockState(swerdtfvygbuhni).getBlock() == Blocks.BEDROCK) || !(this.mc.world.getBlockState(swerdtfvygbuhni).getBlock() == Blocks.BARRIER))
             this.mc.player.swingArm(EnumHand.MAIN_HAND);
             mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, swerdtfvygbuhni, bruh));
             mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, swerdtfvygbuhni, bruh));
