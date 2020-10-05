@@ -1,20 +1,7 @@
 package blu3.ruhamaplus.settings;
 
-import net.minecraft.client.Minecraft;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.math.RoundingMode;
 import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 public class SettingSlider extends SettingBase
 {

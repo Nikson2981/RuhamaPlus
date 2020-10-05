@@ -24,6 +24,7 @@ public class EnhancedMovement extends Module {
                 return true;
             }
         } else if (packet instanceof SPacketExplosion) {
+            SPacketExplosion explosion = (SPacketExplosion) packet;
             return true;
         }
         return false;

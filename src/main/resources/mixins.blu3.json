@@ -13,6 +13,7 @@
     "MixinEventBus",
     "MixinAbstractClientPlayer",
     "MixinPlayerControllerMP",
-    "MixinMovementInputFromOptions"
+    "MixinMovementInputFromOptions",
+    "MixinGuiNewChat"
   ]
 }

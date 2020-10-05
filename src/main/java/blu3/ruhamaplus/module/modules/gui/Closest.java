@@ -102,8 +102,8 @@ public class Closest extends Module {
             }
 
             //l_Player = this.mc.player;
-            int p = -1;
-            if (this.mc.getConnection() == null || this.mc.getConnection().getPlayerInfo(l_Player.getName()) == null) {
+            int p;
+            if (this.mc.getConnection() == null) {
                 p = -1;
             } else {
                 p = this.mc.getConnection().getPlayerInfo(l_Player.getName()).getResponseTime();

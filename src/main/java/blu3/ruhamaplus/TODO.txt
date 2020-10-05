@@ -1,2 +1,1 @@
 enemies module
-test out new 9b kick exploit - targeted chatrepeater

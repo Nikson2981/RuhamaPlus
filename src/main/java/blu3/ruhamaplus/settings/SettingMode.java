@@ -1,6 +1,5 @@
 package blu3.ruhamaplus.settings;
 
-
 import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
 

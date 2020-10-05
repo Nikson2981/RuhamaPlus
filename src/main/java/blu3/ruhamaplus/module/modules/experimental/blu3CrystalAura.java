@@ -10,6 +10,7 @@ import blu3.ruhamaplus.utils.Timer;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -298,7 +299,7 @@ public class blu3CrystalAura extends Module {
        }
         if (this.getBoolean("RenderTarget")) {
             for (EntityPlayer e : targetPlayers)
-                RenderUtils.drawFilledBlockBox(e.getEntityBoundingBox(), 0.0F, 1.0F, 1.0F, 0.3F);
+                RenderUtils.drawBlockBox(e.getEntityBoundingBox(), 0.0F, 1.0F, 1.0F, 0.3F);
         }
     }
 
@@ -307,11 +308,11 @@ public class blu3CrystalAura extends Module {
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public boolean onPacketRead(Packet<?> packet){
         if (packet instanceof SPacketSoundEffect && this.getBoolean("speedi")) {
-            final SPacketSoundEffect bruh = (SPacketSoundEffect) packet;
-            if (bruh.getCategory() == SoundCategory.BLOCKS && bruh.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+            final SPacketSoundEffect explosion = (SPacketSoundEffect) packet;
+            if (explosion.getCategory() == SoundCategory.BLOCKS && explosion.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
                 for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
                     if (e instanceof EntityEnderCrystal) {
-                        if (e.getDistance(bruh.getX(), bruh.getY(), bruh.getZ()) <= 6.0f) {
+                        if (e.getDistance(explosion.getX(), explosion.getY(), explosion.getZ()) <= 6.0f) {
                             e.setDead();
                         }
                     }

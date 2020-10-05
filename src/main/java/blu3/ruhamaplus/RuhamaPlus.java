@@ -6,6 +6,7 @@ import blu3.ruhamaplus.gui.NewRuhamaGui;
 import blu3.ruhamaplus.gui.TextWindow;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.module.ModuleManager;
+import blu3.ruhamaplus.module.modules.exploits.FakePlayer;
 import blu3.ruhamaplus.module.modules.gui.ClickGui;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingMode;
@@ -19,6 +20,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.IClientCommand;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Text;
@@ -45,7 +47,7 @@ import java.util.Objects;
 @Mod(
         modid = "ruhamaplus",
         name = "Ruhama+",
-        version = "0.9",
+        version = "1.0",
         acceptedMinecraftVersions = "[1.12.2]"
 )
 public class RuhamaPlus
@@ -58,15 +60,21 @@ public class RuhamaPlus
 
     public CapeUtils capeUtils;
 
+    private static blu3.ruhamaplus.irc.IRCClient ircClient;
+
     private static FriendManager m_FriendManager = new FriendManager();
     private static Discord m_Discord = new Discord();
+
+    public static blu3.ruhamaplus.irc.IRCClient getIRCClient() {
+        return ircClient;
+    }
 
     public static Discord GetDiscord()
     {
         return m_Discord;
     }
 
-    public static String version = "0.9";
+    public static String version = "1.0";
 
     public static FriendManager GetFriendManager()
     {
@@ -83,11 +91,12 @@ public class RuhamaPlus
 
     @EventHandler
     public void init(FMLInitializationEvent event){
-        System.out.println("Initialization beginning...");
+        Display.setTitle("Ruhama+ initializing...");
+        System.out.println("Initialization beginning...   ");
 
-        System.out.println("\n\n|\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | ");
-        System.out.println("| \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | ");
-        System.out.println("|  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| \n\n");
+        System.out.println("\n\n|\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  | |\\  |\n" +
+                "| \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ |\n" +
+                "|  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\|\n\n");
 
 
         Friends.tryValidateHwid();
@@ -128,23 +137,22 @@ public class RuhamaPlus
     @EventHandler
     public void postinit(FMLPostInitializationEvent event)
     {
-
-        Display.setTitle("Ruhama+ " + version);
+        Display.setTitle("Ruhama+ Initializing commands...");
         System.out.println("Initializing commands...");
-        ClientCommandHandler.instance.registerCommand(new PeekCmd.PeekCommand());
-        ClientCommandHandler.instance.registerCommand(new InvSorterCmd());
-        ClientCommandHandler.instance.registerCommand(new StashFinderCmd());
-        ClientCommandHandler.instance.registerCommand(new EntityDesyncCmd());
-        ClientCommandHandler.instance.registerCommand(new LoginCmd());
-        ClientCommandHandler.instance.registerCommand(new SetYawCmd());
-        ClientCommandHandler.instance.registerCommand(new WaspCmd());
-        ClientCommandHandler.instance.registerCommand(new HelpCmd());
-        ClientCommandHandler.instance.registerCommand(new SaveConfigCmd());
-        ClientCommandHandler.instance.registerCommand(new FriendCommand());
-        ClientCommandHandler.instance.registerCommand(new UnfriendCommand());
-        ClientCommandHandler.instance.registerCommand(new ToggleCmd());
-        ClientCommandHandler.instance.registerCommand(new FakePlayerCmd());
-        ClientCommandHandler.instance.registerCommand(new KickExploitCmd());
+        addCommand(new PeekCmd.PeekCommand());
+        addCommand(new InvSorterCmd());
+        addCommand(new StashFinderCmd());
+        addCommand(new EntityDesyncCmd());
+        addCommand(new LoginCmd());
+        addCommand(new SetYawCmd());
+        addCommand(new WaspCmd());
+        addCommand(new HelpCmd());
+        addCommand(new SaveConfigCmd());
+        addCommand(new FriendCommand());
+        addCommand(new UnfriendCommand());
+        addCommand(new ToggleCmd());
+        addCommand(new FakePlayerCmd());
+
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
         System.out.println("Commands initialized!");
 
@@ -153,6 +161,11 @@ public class RuhamaPlus
         capeUtils = new CapeUtils();
 
         System.out.println("Capes initialized!");
+        Display.setTitle("Ruhama+ " + version);
+    }
+
+    public void addCommand (IClientCommand o) {
+        ClientCommandHandler.instance.registerCommand(o);
     }
 
     @SubscribeEvent

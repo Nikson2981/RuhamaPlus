@@ -9,4 +9,5 @@ public enum Category
     CHAT,
     GUI,
     EXPERIMENTAL,
+    PLAYER
 }

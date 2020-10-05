@@ -1,3 +1,11 @@
 -Renamed Velocity to EnhancedMovement
     -Added inventory move
--Added KickExploit9b9t
+-Added BetterChat
+-Added AnvilFucker
+-Added blu3CrystalAura
+-Added blu3BedAura
+-Removed 1.12BedAura
+-Updated DiscordRPC
+    -More status shit
+-Updated FakePlayer
+    -FPS issues hopefully fixed

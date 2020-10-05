@@ -34,7 +34,20 @@ public class RenderUtils
         catch (Exception ex) {}
     }
 
+
+    public static void drawBlockBox(AxisAlignedBB box, final float r, final float g, final float b, final float a) {
+        try {
+            glSetup();
+            final double[] rPos = rPos();
+            box = new AxisAlignedBB(box.minX - rPos[0], box.minY - rPos[1], box.minZ - rPos[2], box.maxX - rPos[0], box.maxY - rPos[1], box.maxZ - rPos[2]);
+            RenderGlobal.drawSelectionBoundingBox(box, r, g, b, a * 1.5f);
+            glCleanup();
+        }
+        catch (Exception ex) {}
+    }
+
     public static void drawText(final BlockPos pos, final String text) {
+
         GlStateManager.pushMatrix();
         glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, (EntityPlayer)mc.player, 1.0f);
         GlStateManager.disableDepth();
@@ -56,14 +69,13 @@ public class RenderUtils
 
     public static void glBillboardDistanceScaled(final float x, final float y, final float z, final EntityPlayer player, final float scale) {
         glBillboard(x, y, z);
-        final int distance = (int)player.getDistance((double)x, (double)y, (double)z);
+        final int distance = (int)player.getDistance(x, y, z);
         float scaleDistance = distance / 2.0f / (2.0f + (2.0f - scale));
         if (scaleDistance < 1.0f) {
             scaleDistance = 1.0f;
         }
         GlStateManager.scale(scaleDistance, scaleDistance, scaleDistance);
     }
-
 
     public static void glSetup() {
         GL11.glPushMatrix();

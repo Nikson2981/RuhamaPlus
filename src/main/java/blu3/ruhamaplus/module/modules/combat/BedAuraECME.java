@@ -7,6 +7,7 @@ import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.InventoryUtil;
 import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.WorldUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
@@ -37,8 +38,15 @@ import java.util.List;
  **/
 
 public class BedAuraECME extends Module {
-    private static final List<SettingBase> settings = Arrays.asList(new SettingSlider(0.0D, 20.0D, 4.0D, 0, "BreakDelay: "), new SettingSlider(0.0D, 20.0D, 16.0D, 0, "PlaceDelay: "), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlayerRange: "), new SettingToggle(false, "Debug Messages"), new SettingToggle(true, "Fill Hotbar"), new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlaceRange"), new SettingToggle(true, "Place"), new SettingToggle(true, "Explode"));
-// 0 = rotate, 1= delay, 2= range, 3 = debug, 4 = hotbar, 5 = bedrange, 6 = place, 7 = explode
+    private static final List<SettingBase> settings = Arrays.asList(
+            new SettingSlider(0.0D, 20.0D, 16.0D, 0, "PlaceDelay: "), 
+            new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlayerRange: "),
+            new SettingSlider(0.0D, 7.0D, 5.0D, 0, "PlaceRange"),
+            new SettingToggle(true, "Fill Hotbar"),
+            new SettingToggle(true, "AutoSwitch"),
+            new SettingToggle(true, "Place"),
+            new SettingToggle(true, "Explode")
+    );
 
     private BlockPos blockpos1;
     private BlockPos blockpos2;
@@ -61,12 +69,10 @@ public class BedAuraECME extends Module {
         super("BedAura", 0, Category.COMBAT, "1.13 BedAura", settings);
     }
 
-    public boolean isInBlockRange(Entity target) {
-        return target.getDistance(this.mc.player) <= 8.0F;
-    }
+
 
     public boolean isValid(EntityPlayer entity) {
-        return entity != null && this.isInBlockRange(entity) && entity.getHealth() > 0.0F && !entity.isDead;
+        return entity != null && entity.getHealth() > 0.0F;
     }
 
 
@@ -91,22 +97,19 @@ public class BedAuraECME extends Module {
 
             EntityPlayer player;
 
+            if (this.getBoolean("Explode")) this.clickBed();
 
-
-
-
-            if (this.getSetting(7).asToggle().state) this.clickBed();
-
-
-            if (mc.player.ticksExisted % this.getSetting(1).asSlider().getValue() == 0) {
+            if (mc.player.ticksExisted % this.getSlider("PlaceDelay: ") == 0) {
                 this.moveBed();
 
                 do {
 
                     if (!entityIter.hasNext()) {
-                        if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < this.getSetting(2).asSlider().getValue()) {
+                        if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < this.getSlider("PlayerRange: ")) {
+
+                            if (this.getBoolean("AutoSwitch")) this.mc.player.inventory.currentItem = InventoryUtil.findHotbarItem(ItemBed.class);
                             if (this.mc.player.getHeldItemMainhand().getItem() == Items.BED) {
-                                if (this.getSetting(6).asToggle().state) this.bomb(this.target);
+                                if (this.getBoolean("Place")) this.bomb(this.target);
                             }
                         }
                         return;
@@ -150,7 +153,7 @@ public class BedAuraECME extends Module {
 
             // +x bed
 
-            if (this.mc.player.getDistance(player.posX + 1.0D, player.posY + 1.0D, player.posZ) <= this.getSetting(5).asSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX + 1.0D, player.posY + 1.0D, player.posZ) <= this.getSlider("PlaceRange")) {
                 if (this.mc.world.getBlockState(this.blockpos7).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
@@ -165,7 +168,7 @@ public class BedAuraECME extends Module {
             }
             // +z bed
 
-            if (this.mc.player.getDistance(player.posX, player.posY + 1.0D, player.posZ + 1.0D) <= this.getSetting(5).asSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX, player.posY + 1.0D, player.posZ + 1.0D) <= this.getSlider("PlaceRange")) {
                 if (this.mc.world.getBlockState(this.blockpos8).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
@@ -181,7 +184,7 @@ public class BedAuraECME extends Module {
 
             // -x bed
 
-            if (this.mc.player.getDistance(player.posX - 1.0D, player.posY + 1.0D, player.posZ) <= this.getSetting(5).asSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX - 1.0D, player.posY + 1.0D, player.posZ) <= this.getSlider("PlaceRange")) {
                 if (this.mc.world.getBlockState(this.blockpos9).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
@@ -196,7 +199,7 @@ public class BedAuraECME extends Module {
             }
             // -z bed
 
-            if (this.mc.player.getDistance(player.posX, player.posY + 1.0D, player.posZ - 1.0D) <= this.getSetting(5).asSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX, player.posY + 1.0D, player.posZ - 1.0D) <= this.getSlider("PlaceRange")) {
                 if (this.mc.world.getBlockState(this.blockpos10).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
 
@@ -212,7 +215,7 @@ public class BedAuraECME extends Module {
 
             // +x upper bed
 
-            if (this.mc.player.getDistance(player.posX + 1.0D, player.posY + 2.0D, player.posZ) <= this.getSetting(5).asSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX + 1.0D, player.posY + 2.0D, player.posZ) <= this.getSlider("PlaceRange")) {
                 if (this.mc.world.getBlockState(this.blockpos11).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable()) {
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
@@ -229,7 +232,7 @@ public class BedAuraECME extends Module {
             }
 
             // +z upper bed
-            if (this.mc.player.getDistance(player.posX, player.posY + 2.0D, player.posZ + 1.0D) <= this.getSetting(5).asSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX, player.posY + 2.0D, player.posZ + 1.0D) <= this.getSlider("PlaceRange")) {
                 if (this.mc.world.getBlockState(this.blockpos12).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable()) {
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
@@ -246,7 +249,7 @@ public class BedAuraECME extends Module {
             }
 
             // -x upper bed
-            if (this.mc.player.getDistance(player.posX - 1.0D, player.posY + 2.0D, player.posZ) <= this.getSetting(5).asSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX - 1.0D, player.posY + 2.0D, player.posZ) <= this.getSlider("PlaceRange")) {
                 if (this.mc.world.getBlockState(this.blockpos13).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable()) {
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
@@ -262,7 +265,7 @@ public class BedAuraECME extends Module {
                 }
             }
             // -z upper bed
-            if (this.mc.player.getDistance(player.posX, player.posY + 2.0D, player.posZ - 1.0D) <= this.getSetting(5).asSlider().getValue()) {
+            if (this.mc.player.getDistance(player.posX, player.posY + 2.0D, player.posZ - 1.0D) <= this.getSlider("PlaceRange")) {
                 if (this.mc.world.getBlockState(this.blockpos14).getMaterial().isReplaceable()) {
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable()) {
                         if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable()) {
@@ -319,7 +322,7 @@ public class BedAuraECME extends Module {
 
         if (!(mc.player.dimension == 0)) {
 
-            double range = this.getSetting(5).asSlider().getValue();
+            double range = this.getSlider("PlaceRange");
             double negativeRange = range - range * 2;
 
             for (x = (int) negativeRange; x <= range; ++x) {
@@ -337,7 +340,7 @@ public class BedAuraECME extends Module {
     }
 
     public void moveBed(){
-        if (this.getSetting(4).asToggle().state) {
+        if (this.getBoolean("Fill Hotbar")) {
 
             if (mc.currentScreen instanceof GuiContainer) return;
 
