@@ -4,6 +4,8 @@ import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.utils.ClientChat;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketExplosion;
@@ -28,5 +30,10 @@ public class EnhancedMovement extends Module {
             return true;
         }
         return false;
+    }
+
+    public boolean collision(Entity e){
+        if (this.isToggled() && e == this.mc.player) return true;
+        else return false;
     }
 }

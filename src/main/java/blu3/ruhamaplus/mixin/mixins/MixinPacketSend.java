@@ -31,7 +31,7 @@ public class MixinPacketSend
             cancellable = true
     )
     public void sendPacket(Packet<?> packetIn, CallbackInfo info) {
-        if (ModuleManager.onPacketSend()) {
+        if (ModuleManager.onPacketSend(packetIn)) {
             info.cancel();
         }
 

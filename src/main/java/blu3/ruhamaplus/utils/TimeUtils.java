@@ -1,9 +1,9 @@
 package blu3.ruhamaplus.utils;
 
-public class Timer {
+public class TimeUtils {
     private long time;
 
-    public Timer() {
+    public TimeUtils() {
         this.time = -1L;
     }
 

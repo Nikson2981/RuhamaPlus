@@ -2,7 +2,7 @@ package blu3.ruhamaplus.module.modules.chat;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
-import blu3.ruhamaplus.utils.Timer;
+import blu3.ruhamaplus.utils.TimeUtils;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketChat;
 
@@ -29,10 +29,10 @@ public class Annoyer extends Module {
                 "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
                 "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
                 "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+", null);
-        this.delay = new Timer();
+        this.delay = new TimeUtils();
     }
 
-    private final Timer delay;
+    private final TimeUtils delay;
 
     public boolean onPacketRead(Packet<?> packet)
     {

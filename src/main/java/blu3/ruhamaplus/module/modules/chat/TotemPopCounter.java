@@ -63,12 +63,13 @@ public class TotemPopCounter extends Module {
         }
     }
 
+    @Override
     public boolean onPacketRead(Packet<?> packet)
     {
         if (!(this.mc.player == null) && !(this.mc.world == null)){
             if (packet instanceof SPacketEntityStatus){
-                SPacketEntityStatus theOneAndOnlyPacket = (SPacketEntityStatus) packet; // had to change the name LMAO
-                if (theOneAndOnlyPacket.getOpCode() == 35) {
+                SPacketEntityStatus theOneAndOnlyPacket = (SPacketEntityStatus) packet; // had to change the name LMFAO
+                if (theOneAndOnlyPacket.getOpCode() == 35) { //anyone care to explain what the other opcodes are?
                     Entity entity = theOneAndOnlyPacket.getEntity(mc.world);
                     this.throwNewPoppedTotem(entity);
                     return false;

@@ -52,8 +52,6 @@ public class PvpInfo extends Module {
         if (this.getSetting(0).asToggle().state){
             if (ModuleManager.getModuleByName("BedAura").isToggled() && !(ModuleManager.getModuleByName("1.12 BedAura").isToggled())){
                 this.getWindows().get(0).addText(new AdvancedText("BedAura: ECME", true, color));
-            } else if (!(ModuleManager.getModuleByName("BedAura").isToggled()) && ModuleManager.getModuleByName("1.12 BedAura").isToggled()){
-                this.getWindows().get(0).addText(new AdvancedText("BedAura: 1.12", true, color));
             } else if (ModuleManager.getModuleByName("BedAura").isToggled() && ModuleManager.getModuleByName("1.12 BedAura").isToggled()){
                 this.getWindows().get(0).addText(new AdvancedText("BedAura: what the fuck be careful you retard", true, color));
             } else { this.getWindows().get(0).addText(new AdvancedText("BedAura: OFF", true, color)); }

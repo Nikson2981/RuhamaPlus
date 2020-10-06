@@ -7,6 +7,7 @@ import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -64,7 +65,7 @@ public class BedCityESP extends Module {
                 do {
 
                     if (!entityIter.hasNext()) {
-                        if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < 160) {
+                        if (this.isValid(this.target) && this.mc.player.getDistance(this.target) < 160 && inHole(target)) {
                                 this.showClearSpots(this.target);
                         }
                         return;
@@ -77,6 +78,19 @@ public class BedCityESP extends Module {
                 this.target = player;
 
         }
+    }
+
+    private boolean inHole(EntityPlayer player){
+        BlockPos pos = new BlockPos(player.posX, player.posY, player.posZ);
+        if (isBlockBlastResistant(pos.west()) && isBlockBlastResistant(pos.east()) && isBlockBlastResistant(pos.north()) && isBlockBlastResistant(pos.south()))
+            return true;
+
+        else return false;
+    }
+
+    private boolean isBlockBlastResistant(BlockPos pos){
+        if (this.mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN || this.mc.world.getBlockState(pos).getBlock() == Blocks.BEDROCK) return true;
+        else return false;
     }
 
     private void showClearSpots(EntityPlayer player) {
@@ -113,7 +127,7 @@ public class BedCityESP extends Module {
 
         for (BlockPos p : this.clearSpots)
         {
-            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(p), 1, 0, 0, 0.25F);
+            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(p), 1, 0, 0, 0.10F);
         }
     }
 

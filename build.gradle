@@ -19,7 +19,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = '1.0.0'
+version = '1.0.1'
 group = 'gg.ruhamaplus'
 archivesBaseName = 'RuhamaPlus'
 
@@ -41,7 +41,7 @@ jar.manifest.attributes(
         'FMLCorePlugin': 'blu3.ruhamaplus.mixin.MixinLoader',
         'ForceLoadAsMod': true,
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-        'FMLAT': 'ruhamaplus_at.cfg'
+        'FMLAT': 'ruhamaplus_at.cfg' // this is so incredibly important to have
 )
 
 repositories {

@@ -25,7 +25,7 @@ public class BetterChat extends Module {
     public boolean onPacketRead(Packet<?> packet) {
         if (packet instanceof SPacketChat && this.getBoolean("NameHighlight")) {
             SPacketChat sPacketChat = (SPacketChat) packet;
-            String message = sPacketChat.getChatComponent().getUnformattedText();
+            String message = sPacketChat.getChatComponent().getFormattedText();
 
             String s = this.mc.player.getName();
 

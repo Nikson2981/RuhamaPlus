@@ -22,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemShulkerBox;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -125,6 +126,8 @@ public class NewAuto32k extends Module
 
                     WorldUtils.placeBlock(this.pos, block, rotate, false);
                     WorldUtils.rotatePacket((double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getX() + 0.5D, this.pos.getY() + 1, (double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getZ() + 0.5D);
+                    this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY + 10, this.mc.player.posZ, true));
+                    this.mc.player.setPosition(this.mc.player.posX, this.mc.player.posY + 10, this.mc.player.posZ);
                     WorldUtils.placeBlock(this.pos.add(0, 1, 0), dispenser, false, false);
                 } else
                 {

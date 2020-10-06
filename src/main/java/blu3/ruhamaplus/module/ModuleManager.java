@@ -6,15 +6,14 @@ import blu3.ruhamaplus.module.modules.experimental.*;
 import blu3.ruhamaplus.module.modules.exploits.*;
 import blu3.ruhamaplus.module.modules.gui.*;
 import blu3.ruhamaplus.module.modules.misc.*;
+import blu3.ruhamaplus.module.modules.player.*;
+import blu3.ruhamaplus.module.modules.player.Timer;
 import blu3.ruhamaplus.module.modules.render.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import org.lwjgl.input.Keyboard;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ModuleManager
 {
@@ -50,6 +49,7 @@ public class ModuleManager
             new EnderChestBackpack(),
             new EnhancedMovement(),
             new FakePlayer(),
+            new FastUse(),
             new FeetXp(),
             new FOVSlider(),
             new FogColour(),
@@ -69,6 +69,7 @@ public class ModuleManager
             new PacketMine(),
             new PearlViewer(),
             new Peek(),
+            new PlayerFrame(),
             new PlayerRadar(),
             new PvpInfo(),
             new SelfTrap(),
@@ -80,6 +81,7 @@ public class ModuleManager
             new TabNames(),
             new TestAutoTotem(),
             new ThunderHack(),
+            new Timer(),
             new TotemPopCounter(),
             new TreeAura(),
             new TunnelESP(),
@@ -194,13 +196,13 @@ public class ModuleManager
         return false;
     }
 
-    public static boolean onPacketSend()
+    public static boolean onPacketSend(Packet<?> packet)
     {
         for (Module m : mods)
         {
             try
             {
-                if (m.isToggled() && m.onPacketSend())
+                if (m.isToggled() && m.onPacketSend(packet))
                 {
                     return true;
                 }

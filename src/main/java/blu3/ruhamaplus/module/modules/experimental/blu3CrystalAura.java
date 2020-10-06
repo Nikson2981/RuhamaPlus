@@ -6,11 +6,10 @@ import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.*;
-import blu3.ruhamaplus.utils.Timer;
+import blu3.ruhamaplus.utils.TimeUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,8 +40,8 @@ public class blu3CrystalAura extends Module {
             new SettingMode("PlaceMode: ", "1.12", "1.13+"), //3
             new SettingMode("BreakMode: ", "All", "Smart"), //4
             new SettingSlider(0.0D, 6.0D, 5.0D, 0, "Range: "), //5
-            new SettingSlider(0.0D, 20.0D, 3.0D, 0, "Hit Delay: "), //6
-            new SettingSlider(0.0D, 20.0D, 3.0D, 0, "Place Delay: "), //7
+            new SettingSlider(0.0D, 20.0D, 0, 0, "Hit Delay: "), //6
+            new SettingSlider(0.0D, 20.0D, 0, 0, "Place Delay: "), //7
             new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: "), //8
             new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: "), //9
             new SettingSlider(1.0D, 36.0D, 10.0D, 0, "FacePlace HP: "), //10
@@ -53,8 +52,8 @@ public class blu3CrystalAura extends Module {
             new SettingToggle(true, "speedi"), //15
             new SettingToggle(false, "DamageText")
     );
-    private final Timer placeTimer;
-    private final Timer breakTimer;
+    private final TimeUtils placeTimer;
+    private final TimeUtils breakTimer;
     private double renderDamage = 0;
 
 
@@ -63,8 +62,8 @@ public class blu3CrystalAura extends Module {
     private final List<EntityPlayer> ezplayers = new ArrayList<>();
     private final List<EntityPlayer> targetPlayers = new ArrayList<>();
     public blu3CrystalAura() { super("blu3CA", 0, Category.EXPERIMENTAL, "absolute shit i say", settings);
-        this.placeTimer = new Timer();
-        this.breakTimer = new Timer();
+        this.placeTimer = new TimeUtils();
+        this.breakTimer = new TimeUtils();
     }
     public void onDisable(){
         if (this.getBoolean("Chat Alert")) ClientChat.log("blu3CA: " + ChatFormatting.RED + "OFF");

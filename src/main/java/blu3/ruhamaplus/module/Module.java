@@ -10,6 +10,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.input.Keyboard;
+import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +111,7 @@ public class Module
         return false;
     }
 
-    public boolean onPacketSend()
+    public boolean onPacketSend(Packet<?> packet)
     {
         return false;
     }
@@ -139,7 +140,7 @@ public class Module
         SettingBase b = new SettingBase();
         for (SettingBase m : getSettings()){
             if (m instanceof SettingToggle) {
-                if (((SettingToggle) m).text.equalsIgnoreCase(name)) {
+                if (((SettingToggle) m).text.toLowerCase().contains(name.toLowerCase())) {
                     b = m;
                     break;
                 }
@@ -152,7 +153,7 @@ public class Module
         SettingBase b = new SettingBase();
         for (SettingBase m : getSettings()){
             if (m instanceof SettingMode) {
-                if (((SettingMode) m).text.equalsIgnoreCase(name)) {
+                if (((SettingMode) m).text.toLowerCase().contains(name.toLowerCase())) {
                     b = m;
                     break;
                 }
@@ -166,7 +167,7 @@ public class Module
         SettingBase b = new SettingBase();
         for (SettingBase m : getSettings()){
             if (m instanceof SettingSlider) {
-                if (((SettingSlider) m).text.equalsIgnoreCase(name)) {
+                if (((SettingSlider) m).text.toLowerCase().contains(name.toLowerCase())) {
                     b = m;
                     break;
                 }

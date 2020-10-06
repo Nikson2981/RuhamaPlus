@@ -6,7 +6,9 @@ import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.Rainbow;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -62,39 +64,39 @@ public class Hud extends Module {
         if(this.getSetting(1).asToggle().state) {
 
             if (mc.getCurrentServerData() != null && !this.mc.getCurrentServerData().serverIP.equals("")) {
-                mc.fontRenderer.drawStringWithShadow("IP: " + this.mc.getCurrentServerData().serverIP, 2, height, Rainbow.getInt());
+                mc.fontRenderer.drawStringWithShadow("IP: " + TextFormatting.WHITE + this.mc.getCurrentServerData().serverIP, 2, height, Rainbow.getInt());
             }
             else if (this.mc.isIntegratedServerRunning()) {
-                mc.fontRenderer.drawStringWithShadow("IP: Singleplayer", 2, height, Rainbow.getInt());
+                mc.fontRenderer.drawStringWithShadow("IP: " + TextFormatting.WHITE + "Singleplayer", 2, height, Rainbow.getInt());
             }
             else if (this.mc.getCurrentServerData() == null) {
-                mc.fontRenderer.drawStringWithShadow("IP: ERROR", 2, height, Rainbow.getInt());
+                mc.fontRenderer.drawStringWithShadow("IP: " + TextFormatting.WHITE + "ERROR", 2, height, Rainbow.getInt());
             }
             height+=10;
         }
 
         if (this.getSetting(2).asToggle().state) {
-            mc.fontRenderer.drawStringWithShadow("Ping: " + this.getPing() + "ms", 2, height, Rainbow.getInt());
+            mc.fontRenderer.drawStringWithShadow("Ping: "+ TextFormatting.WHITE + this.getPing() + "ms", 2, height, Rainbow.getInt());
             height+=10;
         }
 
         if (this.getSetting(3).asToggle().state) {
-            mc.fontRenderer.drawStringWithShadow("Logged in as " + this.mc.player.getName(), 2, height, Rainbow.getInt());
+            mc.fontRenderer.drawStringWithShadow("Hello, " + TextFormatting.WHITE + this.mc.player.getName(), 2, height, Rainbow.getInt());
             height+=10;
         }
         if (this.getSetting(4).asToggle().state) {
 
             final int s = this.mc.player.dimension;
-            String biom = "";
+            String biom = "Dimension:" + TextFormatting.WHITE + " Unknown";
 
             if (s == 0) {
-                biom = "Dimension: Overworld";
+                biom = "Dimension: " + TextFormatting.WHITE + "Overworld";
             }
             else if (s == -1) {
-                biom = "Dimension: Nether";
+                biom = "Dimension: " + TextFormatting.WHITE + "Nether";
             }
             else if (s == 1) {
-                biom = "Dimension: End";
+                biom = "Dimension: " + TextFormatting.WHITE + "End";
             }
             mc.fontRenderer.drawStringWithShadow(biom, 2, height, Rainbow.getInt());
             height+=10;
