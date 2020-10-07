@@ -38,7 +38,7 @@ minecraft {
 
 jar.manifest.attributes(
         'FMLCorePluginContainsFMLMod': true,
-        'FMLCorePlugin': 'blu3.ruhamaplus.mixin.MixinLoader',
+        'FMLCorePlugin': 'blu3.ruhamaplus.mixin.mixins.LoadingPlugin',
         'ForceLoadAsMod': true,
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'FMLAT': 'ruhamaplus_at.cfg' // this is so incredibly important to have

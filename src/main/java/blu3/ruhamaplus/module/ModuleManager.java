@@ -19,6 +19,7 @@ public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
             new Annoyer(),
+            new Anti32kLog(),
             new AntiChunkBan(),
             new AnvilFucker(),
             new Aura(),

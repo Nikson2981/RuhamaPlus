@@ -148,8 +148,8 @@ public class ModuleWindowDark extends ModuleWindow
         int x2 = this.posX + this.len;
         int y2 = this.posY + count * 14;
         GuiScreen.drawRect(this.posX, this.posY - 10, this.posX + 1, y2, Rainbow.getInt());
-        //GuiScreen.drawRect(this.posX, y2, x2, y2 + 1, Rainbow.getInt());
-        //GuiScreen.drawRect(x2, this.posY - 10, this.posX, this.posY - 11, Rainbow.getInt());
+        GuiScreen.drawRect(this.posX, y2, x2, y2 + 1, Rainbow.getInt());
+        GuiScreen.drawRect(x2, this.posY - 10, this.posX, this.posY - 11, Rainbow.getInt());
         GuiScreen.drawRect(x2, y2, x2 + 1, this.posY - 11, Rainbow.getInt());
 
 

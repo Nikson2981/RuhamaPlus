@@ -3,15 +3,16 @@ package blu3.ruhamaplus.module.modules.chat;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
-import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketChat;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
+/**
+ * @see blu3.ruhamaplus.mixin.mixins.MixinGuiNewChat
+ */
 
 public class BetterChat extends Module {
     public BetterChat() {

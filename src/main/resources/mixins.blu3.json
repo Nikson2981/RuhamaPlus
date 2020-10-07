@@ -10,11 +10,11 @@
   	"MixinPacketSend",
     "MixinGuiMainMenu",
     "MixinGuiPlayerTabOverlay",
-    "MixinEventBus",
     "MixinAbstractClientPlayer",
     "MixinPlayerControllerMP",
     "MixinMovementInputFromOptions",
     "MixinGuiNewChat",
-    "MixinEntity"
+    "MixinEntity",
+    "minecraftforge.MixinEventBus"
   ]
 }

@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAir;
@@ -43,6 +44,8 @@ public class NewAuto32k extends Module
     private boolean active;
     private boolean openedDispenser;
 
+    private boolean moved1st;
+
     private int dispenserTicks;
     private int ticksPassed;
 
@@ -50,7 +53,7 @@ public class NewAuto32k extends Module
 
     public NewAuto32k()
     {
-        super("NewAuto32k", 0, Category.COMBAT, "Dispenser Auto32k", settings);
+        super("Dispenser32k", 0, Category.COMBAT, "Dispenser Auto32k", settings);
     }
 
     public void onEnable()
@@ -63,10 +66,21 @@ public class NewAuto32k extends Module
         int block = -1;
         this.active = false;
         this.openedDispenser = false;
+        this.moved1st = false;
         this.dispenserTicks = 0;
         this.timer = 0;
 
         int x;
+
+        for (int i = 0; i <= 44; ++i)
+        {
+            Item item = this.mc.player.inventory.getStackInSlot(i).getItem();
+            if (item instanceof ItemShulkerBox)
+            {
+                shulker = i;
+                break;
+            }
+        }
 
         for (x = 0; x <= 8; ++x)
         {
@@ -81,9 +95,6 @@ public class NewAuto32k extends Module
             } else if (item == Item.getItemFromBlock(Blocks.REDSTONE_BLOCK))
             {
                 this.redstone = x;
-            } else if (item instanceof ItemShulkerBox)
-            {
-                this.shulker = x;
             } else if (item instanceof ItemBlock)
             {
                 block = x;
@@ -192,7 +203,7 @@ public class NewAuto32k extends Module
                 {
                     if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, gui.inventorySlots.getSlot(slot).getStack()) > 5)
                     {
-                        this.mc.player.inventory.currentItem = slot - 32;
+                        this.mc.player.inventory.currentItem = 0;
                         break;
                     }
                 }
@@ -210,26 +221,17 @@ public class NewAuto32k extends Module
                     this.timer = (double) this.timer >= this.getSetting(2).asSlider().getValue() ? 0 : this.timer + 1;
                 }
 
+                if (this.active && !this.moved1st){
+                    ClientChat.log("moved first item");
+                    this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, 0, 0, ClickType.PICKUP, this.mc.player);
+                    this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, 36, 0, ClickType.PICKUP, this.mc.player);
+                    this.moved1st = true;
+                }
+
+
                 if (!(gui.inventorySlots.inventorySlots.get(0).getStack().getItem() instanceof ItemAir) && this.active)
                 {
-                    slot = this.mc.player.inventory.currentItem;
-                    boolean pull = false;
-
-                    for (int i = 40; i >= 32; --i)
-                    {
-                        if (gui.inventorySlots.getSlot(i).getStack().isEmpty())
-                        {
-                            slot = i;
-                            pull = true;
-                            break;
-                        }
-                    }
-
-                    if (pull)
-                    {
-                        this.mc.playerController.windowClick(gui.inventorySlots.windowId, 0, 0, ClickType.PICKUP, this.mc.player);
-                        this.mc.playerController.windowClick(gui.inventorySlots.windowId, slot, 0, ClickType.PICKUP, this.mc.player);
-                    }
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 0, 0, ClickType.SWAP, mc.player);
                 }
             }
 
@@ -240,7 +242,7 @@ public class NewAuto32k extends Module
 
             if (this.openedDispenser && this.dispenserTicks == 0)
             {
-                this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, 36 + this.shulker, 0, ClickType.QUICK_MOVE, this.mc.player);
+                this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, this.shulker, 0, ClickType.QUICK_MOVE, this.mc.player);
             }
 
             if (this.dispenserTicks == 1)
