@@ -60,7 +60,7 @@ public class TestAutoTotem extends Module
 
                 if (this.getSettings().get(1).asToggle().state) {
 
-                    if (this.mc.player.inventory.getStackInSlot(0).getItem() == Items.TOTEM_OF_UNDYING) {
+                    if (this.mc.player.inventory.getStackInSlot(0).getItem() == Items.TOTEM_OF_UNDYING || this.mc.player.inventory.getStackInSlot(0).getItem() == Items.DIAMOND_SWORD) {
                         return;
                     }
 

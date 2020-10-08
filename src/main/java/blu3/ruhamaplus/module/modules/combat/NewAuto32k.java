@@ -221,16 +221,9 @@ public class NewAuto32k extends Module
                     this.timer = (double) this.timer >= this.getSetting(2).asSlider().getValue() ? 0 : this.timer + 1;
                 }
 
-                if (this.active && !this.moved1st){
-                    ClientChat.log("moved first item");
-                    this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, 0, 0, ClickType.PICKUP, this.mc.player);
-                    this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, 36, 0, ClickType.PICKUP, this.mc.player);
-                    this.moved1st = true;
-                }
-
-
                 if (!(gui.inventorySlots.inventorySlots.get(0).getStack().getItem() instanceof ItemAir) && this.active)
                 {
+                    if (this.mc.player.inventory.getStackInSlot(0).getItem() == Items.DIAMOND_SWORD) return;
                     mc.playerController.windowClick(mc.player.openContainer.windowId, 0, 0, ClickType.SWAP, mc.player);
                 }
             }
@@ -254,6 +247,9 @@ public class NewAuto32k extends Module
 
             if (this.mc.world.getBlockState(this.pos.add(this.rot[0], 1, this.rot[1])).getBlock() instanceof BlockShulkerBox && this.mc.world.getBlockState(this.pos.add(this.rot[0], 0, this.rot[1])).getBlock() != Blocks.HOPPER)
             {
+                this.mc.player.closeScreen();
+                this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, 36, 0, ClickType.QUICK_MOVE, this.mc.player);
+
                 WorldUtils.placeBlock(this.pos.add(this.rot[0], 0, this.rot[1]), this.hopper, this.getSetting(0).asToggle().state, false);
                 WorldUtils.openBlock(this.pos.add(this.rot[0], 0, this.rot[1]));
             }
