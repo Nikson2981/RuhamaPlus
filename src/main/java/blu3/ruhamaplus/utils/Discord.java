@@ -1,3 +1,4 @@
+/*
 package blu3.ruhamaplus.utils;
 
 import blu3.ruhamaplus.RuhamaPlus;
@@ -60,3 +61,4 @@ public class Discord {
         }
     }
 
+*/

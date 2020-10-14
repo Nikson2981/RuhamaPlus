@@ -1,21 +1,44 @@
 package blu3.ruhamaplus.utils;
 
+import blu3.ruhamaplus.module.ModuleManager;
+import blu3.ruhamaplus.utils.friendutils.FriendManager;
+import com.mojang.realmsclient.gui.ChatFormatting;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.Minecraft;
 
-public class RenderUtils
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+public class RenderUtils implements Util
 {
-    private static Minecraft mc;
+
 
     public static double[] rPos() {
         try {
-            return new double[] { (double)ReflectUtils.getField(RenderManager.class, "renderPosX", "field_78725_b").get(RenderUtils.mc.getRenderManager()), (double)ReflectUtils.getField(RenderManager.class, "renderPosY", "field_78726_c").get(RenderUtils.mc.getRenderManager()), (double)ReflectUtils.getField(RenderManager.class, "renderPosZ", "field_78723_d").get(RenderUtils.mc.getRenderManager()) };
+            return new double[] {
+                    (double)ReflectUtils.getField(RenderManager.class, "renderPosX", "field_78725_b").get(RenderUtils.mc.getRenderManager()),
+                    (double)ReflectUtils.getField(RenderManager.class, "renderPosY", "field_78726_c").get(RenderUtils.mc.getRenderManager()),
+                    (double)ReflectUtils.getField(RenderManager.class, "renderPosZ", "field_78723_d").get(RenderUtils.mc.getRenderManager())
+            };
         }
         catch (Exception e) {
             return new double[] { 0.0, 0.0, 0.0 };
@@ -56,10 +79,27 @@ public class RenderUtils
         GlStateManager.popMatrix();
     }
 
+    public static void drawNametag(final EntityPlayer player) {
+        final float x = (float)player.posX;
+        final float y = (float)player.posY;
+        final float z = (float)player.posZ;
+
+        GlStateManager.pushMatrix();
+        glBillboardDistanceScaled(x + 0.5f,  y + 0.5f, z + 0.5f, mc.player, 1.0f);
+        GlStateManager.disableDepth();
+        GlStateManager.translate(-(mc.fontRenderer.getStringWidth(player.getName()) / 2.0), 0.0, 0.0);
+        drawDetailedNametag(0.0f, 0.0f, player);
+        GlStateManager.popMatrix();
+    }
+
     public static void glBillboard(final float x, final float y, final float z) {
         final float scale = 0.02666667f;
+        final double[] rPos = rPos();
         try {
-            GlStateManager.translate(x - (double) ReflectUtils.getField(RenderManager.class, "renderPosX", "field_78725_b").get(RenderUtils.mc.getRenderManager()), y - (double)ReflectUtils.getField(RenderManager.class, "renderPosY", "field_78726_c").get(RenderUtils.mc.getRenderManager()), z - (double)ReflectUtils.getField(RenderManager.class, "renderPosZ", "field_78723_d").get(RenderUtils.mc.getRenderManager()));
+            GlStateManager.translate(
+                    x - rPos[0],
+                    y - rPos[1],
+                    z - rPos[2]);
         } catch (Exception e) {}
         GlStateManager.glNormal3f(0.0f, 1.0f, 0.0f);
         GlStateManager.rotate(-mc.player.rotationYaw, 0.0f, 1.0f, 0.0f);
@@ -94,8 +134,62 @@ public class RenderUtils
         GL11.glDisable(3042);
         GL11.glPopMatrix();
     }
+    public static void drawDetailedNametag(final float xxxx, final float yyyy, EntityPlayer l_Player){
 
-    static {
-        mc = Minecraft.getMinecraft();
+        final float x = xxxx - 20;
+        final float y = yyyy - 20;
+
+        int p;
+        if (mc.getConnection() == null || Objects.requireNonNull(ModuleManager.getModuleByName("FakePlayer")).isToggled()) {
+            p = -1;
+        } else {
+            p = mc.getConnection().getPlayerInfo(l_Player.getName()).getResponseTime();
+        }
+        final String Name = l_Player.getName();
+        final int Healt = Math.round(l_Player.getHealth() + l_Player.getAbsorptionAmount());
+        final String Health = "" + Healt;
+        final ItemStack inHand = l_Player.getHeldItemMainhand();
+        final String Ping = "" + p;
+        int colour = 0;
+        try {
+            colour = l_Player.getHealth() + l_Player.getAbsorptionAmount() > 20.0F ? 2158832 : MathHelper.hsvToRGB((l_Player.getHealth() + l_Player.getAbsorptionAmount()) / 20.0F / 3.0F, 1.0F, 1.0F);
+        } catch (Exception ignored) {}
+
+        if (FriendManager.Get().isFriend(l_Player.getName().toLowerCase())) {
+            mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + Name + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + ChatFormatting.RESET + Health, x + 20, y - 45, colour);
+        } else {
+            mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + Name + " | " + Ping + "ms" + " | " + ChatFormatting.RESET + Health, x + 20, y - 45, colour);
+        }
+
+
+        int i = 0;
+        final List<ItemStack> armor = new ArrayList<ItemStack>();
+        for (final ItemStack is : l_Player.getArmorInventoryList()) {
+            armor.add(is);
+        }
+        Collections.reverse(armor);
+        for (final ItemStack is : armor) {
+            final int yy = (int) (y - 35.0);
+            final int xx = (int) (x + i + 16.0);
+            RenderHelper.enableGUIStandardItemLighting();
+            mc.getRenderItem().renderItemAndEffectIntoGUI(is, xx, yy);
+            mc.getRenderItem().renderItemOverlays(mc.fontRenderer, is, xx, yy);
+            RenderHelper.disableStandardItemLighting();
+            i += 18;
+        }
+        final int yy2 = (int) (y - 35.0);
+        final int xx2 = (int) (x + 90.0);
+        RenderHelper.enableGUIStandardItemLighting();
+        mc.getRenderItem().renderItemAndEffectIntoGUI(inHand, xx2, yy2);
+        mc.getRenderItem().renderItemOverlays(mc.fontRenderer, inHand, xx2, yy2);
+        RenderHelper.disableStandardItemLighting();
+        final ItemStack inOffHand = l_Player.getHeldItemOffhand();
+        final int yyy = (int) (y + -35.0);
+        final int xxx = (int) (x + 110.0);
+        RenderHelper.enableGUIStandardItemLighting();
+        mc.getRenderItem().renderItemAndEffectIntoGUI(inOffHand, xxx, yyy);
+        mc.getRenderItem().renderItemOverlays(mc.fontRenderer, inOffHand, xxx, yyy);
+        RenderHelper.disableStandardItemLighting();
+
     }
 }

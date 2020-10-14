@@ -2,12 +2,15 @@ package blu3.ruhamaplus.module.modules.combat;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
+import blu3.ruhamaplus.module.ModuleManager;
+import blu3.ruhamaplus.module.modules.experimental.PacketMine;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.ClientChat;
 import blu3.ruhamaplus.utils.InventoryUtil;
 import blu3.ruhamaplus.utils.RenderUtils;
+import blu3.ruhamaplus.utils.TimeUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,14 +29,20 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class AnvilFucker extends Module {
 
-    public AnvilFucker() { super("AnvilFucker", 0, Category.COMBAT, "traps players in holes and packetmines their anvil", settings); }
+    public AnvilFucker() {
+        super("AnvilFucker", 0, Category.COMBAT, "traps players in holes and packetmines their anvil", settings);
+        this.manualTimer = new TimeUtils();}
     private static final List<SettingBase> settings = Arrays.asList(
             new SettingToggle(true, "Trap"),
             new SettingSlider(0, 7, 5, 0, "Range: ")
     );
+    private BlockPos mining = null;
+    private final TimeUtils manualTimer;
+    public String m;
 
     private boolean hit = false;
     private boolean switchCooldown = false;
@@ -46,9 +55,7 @@ public class AnvilFucker extends Module {
             return;
         }
         this.findClosestTarget();
-
-
-
+        this.doPacketMineShit();
         if (closestTarget != null) {
             BlockPos blockpos1 = new BlockPos(closestTarget.posX, closestTarget.posY + 2.0D, closestTarget.posZ);
             BlockPos checkPos = new BlockPos(closestTarget.posX, closestTarget.posY, closestTarget.posZ);
@@ -94,14 +101,45 @@ public class AnvilFucker extends Module {
                         if ((this.getBoolean("Trap") && this.mc.player.getHeldItemMainhand().getItem() == Item.getItemById(49) && this.mc.world.getBlockState(blockpos1).getMaterial().isReplaceable())) this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(blockpos1, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
                         if (this.mc.world.getBlockState(checkPos).getBlock() == Blocks.ANVIL) {
                             if (!hit) {
-                                this.mc.player.inventory.currentItem = InventoryUtil.findHotbarItem(ItemPickaxe.class);
-                            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, checkPos, EnumFacing.DOWN));
-                            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, checkPos, EnumFacing.DOWN));
-                            hit = true;
+                                //this.mc.player.inventory.currentItem = InventoryUtil.findHotbarItem(ItemPickaxe.class);
+                                this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                                if (mining == null) this.mining = checkPos;
+                                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, checkPos, EnumFacing.DOWN));
+                                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, checkPos, EnumFacing.DOWN));
+                                hit = true;
                         }
                     }
                 }
             }
+        }
+    }
+
+    public void doPacketMineShit(){
+        if (mining == null) {
+            return;
+        }
+        if (this.mc.world.getBlockState(mining).getBlock() == Blocks.AIR){
+            mining = null;
+        }
+        boolean a = false;
+        boolean b = false;
+        boolean c = false;
+
+        if (!a && manualTimer.passedMs(500)) {
+            m = "Mining";
+            a = true;
+        }
+        if (!b && manualTimer.passedMs(1000)) {
+            m = "Mining.";
+            b = true;
+        }
+        if (!c && manualTimer.passedMs(1500)) {
+            m = "Mining..";
+            c = true;
+        }
+        if (manualTimer.passedMs(2000)) {
+            m = "Mining...";
+            manualTimer.reset();
         }
     }
 

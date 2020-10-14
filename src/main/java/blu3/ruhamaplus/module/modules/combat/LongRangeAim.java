@@ -38,7 +38,7 @@ public class LongRangeAim extends Module {
         }
     }
 
-    public void onUpdate() {
+    public void fastUpdate() {
         if (this.getSetting(1).asMode().mode == 0) {
 
             Entity target = null;

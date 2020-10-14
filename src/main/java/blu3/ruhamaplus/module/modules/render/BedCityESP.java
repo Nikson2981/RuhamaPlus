@@ -2,10 +2,12 @@ package blu3.ruhamaplus.module.modules.render;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
+import blu3.ruhamaplus.utils.EntityListUtils;
 import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

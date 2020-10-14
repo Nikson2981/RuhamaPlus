@@ -1,6 +1,5 @@
 package blu3.ruhamaplus.mixin.mixins;
 
-import blu3.ruhamaplus.RuhamaPlus;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetworkPlayerInfo;

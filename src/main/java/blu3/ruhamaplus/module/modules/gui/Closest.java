@@ -2,6 +2,7 @@ package blu3.ruhamaplus.module.modules.gui;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
+import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
@@ -103,7 +104,7 @@ public class Closest extends Module {
 
             //l_Player = this.mc.player;
             int p;
-            if (this.mc.getConnection() == null) {
+            if (this.mc.getConnection() == null || Objects.requireNonNull(ModuleManager.getModuleByName("FakePlayer")).isToggled()) {
                 p = -1;
             } else {
                 p = this.mc.getConnection().getPlayerInfo(l_Player.getName()).getResponseTime();

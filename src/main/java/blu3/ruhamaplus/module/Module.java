@@ -53,6 +53,12 @@ public class Module
         this.toggled = false;
     }
 
+    public boolean nullCheck() {
+        return (mc.player == null || mc.world == null);
+        //returns true if if the world is null or the player is null
+        //so use -> if(nullCheck()) return;
+    }
+
     public int getBind(){
         return bind;
     }
@@ -105,6 +111,11 @@ public class Module
     public void onOverlay()
     {
     }
+
+    public void fastUpdate()
+    {
+    }
+
 
     public boolean onPacketRead(Packet<?> packet)
     {

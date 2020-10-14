@@ -33,6 +33,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import org.apache.commons.lang3.tuple.MutableTriple;
@@ -63,16 +64,16 @@ public class RuhamaPlus
     private static blu3.ruhamaplus.irc.IRCClient ircClient;
 
     private static FriendManager m_FriendManager = new FriendManager();
-    private static Discord m_Discord = new Discord();
+    //private static Discord m_Discord = new Discord();
 
     public static blu3.ruhamaplus.irc.IRCClient getIRCClient() {
         return ircClient;
     }
 
-    public static Discord GetDiscord()
-    {
-        return m_Discord;
-    }
+    //public static Discord GetDiscord()
+   // {
+   //     return m_Discord;
+   // }
 
     public static String version = "1.0";
 
@@ -283,6 +284,14 @@ public class RuhamaPlus
                 } catch (Exception ignored)
                 {
                 }
+            }
+        }
+    }
+    @SubscribeEvent
+    public void onFrame(TickEvent event) {
+        if (event.phase == Phase.START && mc.player != null && mc.world != null) {
+            if (mc.world.isBlockLoaded(new BlockPos(mc.player.posX, 0.0D, mc.player.posZ))) {
+                ModuleManager.fastUpdate();
             }
         }
     }

@@ -20,7 +20,7 @@ public class Anti32kLog extends Module {
 
 
     public Anti32kLog() {
-        super("Anti32kLog", Keyboard.KEY_NONE, Category.EXPERIMENTAL, "bruh crash test dont use", null);
+        super("Anti32kLog", Keyboard.KEY_NONE, Category.EXPERIMENTAL, "d dsxvgedgf gsfz", null);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class Anti32kLog extends Module {
         {
             Entity e =  (Entity) entityIter.next();
             if (e == this.mc.player) continue;
-            //if (e instanceof EntityPlayer) {
+            if (e instanceof EntityPlayer) {
                 if (mc.player.getDistance(e) < 10) {
                     check32k((EntityPlayer) e);
                     return;
                 }
-           // }
+            }
         }
     }
 

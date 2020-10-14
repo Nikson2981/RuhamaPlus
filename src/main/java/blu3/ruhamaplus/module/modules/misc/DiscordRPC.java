@@ -1,3 +1,4 @@
+/*
 package blu3.ruhamaplus.module.modules.misc;
 
 import blu3.ruhamaplus.module.Category;
@@ -20,7 +21,7 @@ public class DiscordRPC extends Module{
 
     private static final List<SettingBase> settings = Arrays.asList(
             new SettingMode("Details: ","ServerIP", "Username"),
-            new SettingMode("Else: ","blu3", "Private LMAO")
+            new SettingMode("Else: ","blu3", "Private LMAO", "Currently Gaming")
 
 
     );
@@ -58,14 +59,14 @@ public class DiscordRPC extends Module{
             result = (Wrapper.GetMC().getCurrentServerData() != null ? Wrapper.GetMC().getCurrentServerData().serverIP : "Offline") + " " + result;
 
         if (this.getSetting(0).asMode().mode == 1)
-            result = Wrapper.GetMC().getSession().getUsername() + " | " + result;
+            result = Wrapper.GetMC().getSession().getUsername();
 
         return result;
     }
     public String generateState()
     {
         if (mc.player == null)
-            return "Loading...";
+            return "Currently choosing where to game";
 
         if (this.getSetting(1).asMode().mode == 0)
         {
@@ -76,8 +77,13 @@ public class DiscordRPC extends Module{
         {
             return "the client is private LMAO";
         }
+        if (this.getSetting(1).asMode().mode == 2)
+        {
+            return "Currently gaming";
+        }
 
         String result = "";
         return result;
     }
 }
+*/

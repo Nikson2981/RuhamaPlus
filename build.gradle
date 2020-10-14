@@ -19,7 +19,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = '1.0.1'
+version = '1.0.3'
 group = 'gg.ruhamaplus'
 archivesBaseName = 'RuhamaPlus'
 
@@ -31,7 +31,7 @@ compileJava {
 minecraft {
     version = project.forgeVersion
     runDir = 'run'
-    coreMod = 'blu3.ruhamaplus.mixin.MixinLoader'
+    coreMod = 'blu3.ruhamaplus.mixin.mixins.LoadingPlugin'
     makeObfSourceJar = false
     mappings = project.mcpVersion
 }
@@ -60,8 +60,14 @@ dependencies {
         exclude module: 'log4j-core'
     }
     compile "com.github.ionar2:Alpine:1.9f"
-    //compile 'com.github.ZeroMemes:Alpine:1.7'
-    compile 'club.minnced:java-discord-rpc:2.0.2'
+    compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
+
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.19'
+    compile(group: 'org.reflections', name: 'reflections', version: '0.9.11') {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    //compile 'club.minnced:java-discord-rpc:2.0.2'
     compile 'com.github.MrPowerGamerBR:TemmieWebhook:-SNAPSHOT'
 
 }
@@ -73,11 +79,9 @@ mixin {
 shadowJar {
     dependencies {
         include(dependency('org.spongepowered:mixin'))
-        //include(dependency('com.github.ZeroMemes:Alpine'))
-        include(dependency('com.github.ionar2:Alpine'))
-        include(dependency('club.minnced:java-discord-rpc:2.0.2'))
-        include(dependency('net.jodah:typetools'))
         include(dependency('com.github.MrPowerGamerBR:TemmieWebhook'))
+        //include(dependency('club.minnced:java-discord-rpc'))
+        include(dependency('com.github.ionar2:Alpine'))
     }
     exclude 'dummyThing'
     exclude 'LICENSE.txt'

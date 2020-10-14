@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Collections;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class ObsidianTrap extends Module
 {
-    private static final List<SettingBase> settings = Collections.singletonList(new SettingToggle(false, "2b Bypass"));
+    private static final List<SettingBase> settings = Collections.singletonList(new SettingToggle(false, "Rotate"));
 
     BlockPos blockpos1;
     BlockPos blockpos2;
@@ -131,51 +132,71 @@ public class ObsidianTrap extends Module
                     if (this.mc.world.getBlockState(this.blockpos3).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos3, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos4).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos4, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos5).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos5, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos6).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos6, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos7).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos7, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos8).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos8, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos9).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos9, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos10).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos10, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos2).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos2, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, false);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable())
                     {
                         WorldUtils.placeBlock(this.blockpos1, this.mc.player.inventory.currentItem, this.getSetting(0).asToggle().state, this.getSetting(0).asToggle().state);
+                        this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                        return;
                     }
 
                     this.mc.player.inventory.currentItem = oldSlot;

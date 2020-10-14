@@ -8,7 +8,9 @@ import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.ClientChat;
 import blu3.ruhamaplus.utils.WorldUtils;
+import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.block.BlockShulkerBox;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.client.gui.GuiHopper;
 import net.minecraft.client.gui.inventory.GuiDispenser;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -24,7 +26,11 @@ import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemShulkerBox;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayerAbilities;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 
@@ -40,6 +46,7 @@ public class NewAuto32k extends Module
     private int shulker;
 
     private int[] rot;
+    private float[] oldRot;
 
     private boolean active;
     private boolean openedDispenser;
@@ -50,14 +57,17 @@ public class NewAuto32k extends Module
     private int ticksPassed;
 
     private int timer = 0;
+    private int stage = 0;
 
     public NewAuto32k()
     {
         super("Dispenser32k", 0, Category.COMBAT, "Dispenser Auto32k", settings);
     }
 
+
     public void onEnable()
     {
+        this.stage = 0;
         this.ticksPassed = 0;
         this.hopper = -1;
         int dispenser = -1;
@@ -131,18 +141,18 @@ public class NewAuto32k extends Module
 
                 this.rot = Math.abs(xPos) > Math.abs(zPos) ? (xPos > 0.0D ? new int[] {-1, 0} : new int[] {1, 0}) : (zPos > 0.0D ? new int[] {0, -1} : new int[] {0, 1});
 
+
                 if (WorldUtils.canPlaceBlock(this.pos) && WorldUtils.isBlockEmpty(this.pos) && WorldUtils.isBlockEmpty(this.pos.add(this.rot[0], 0, this.rot[1])) && WorldUtils.isBlockEmpty(this.pos.add(0, 1, 0)) && WorldUtils.isBlockEmpty(this.pos.add(0, 2, 0)) && WorldUtils.isBlockEmpty(this.pos.add(this.rot[0], 1, this.rot[1])))
                 {
                     boolean rotate = this.getSetting(0).asToggle().state;
 
                     WorldUtils.placeBlock(this.pos, block, rotate, false);
                     WorldUtils.rotatePacket((double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getX() + 0.5D, this.pos.getY() + 1, (double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getZ() + 0.5D);
-                    this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY + 10, this.mc.player.posZ, true));
-                    this.mc.player.setPosition(this.mc.player.posX, this.mc.player.posY + 10, this.mc.player.posZ);
+                    if (this.mc.player.onGround) this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY + 1, this.mc.player.posZ, true));
                     WorldUtils.placeBlock(this.pos.add(0, 1, 0), dispenser, false, false);
                 } else
                 {
-                    ClientChat.log("Unable to place 32k");
+                    ClientChat.warn("Unable to place 32k");
 
                     this.setToggled(false);
                 }
@@ -155,6 +165,10 @@ public class NewAuto32k extends Module
                         for (int z = -2; z <= 2; ++z)
                         {
                             this.rot = Math.abs(x) > Math.abs(z) ? (x > 0 ? new int[] {-1, 0} : new int[] {1, 0}) : (z > 0 ? new int[] {0, -1} : new int[] {0, 1});
+
+                            boolean up = false;
+                            if (y == 1) up = true;
+
                             this.pos = this.mc.player.getPosition().add(x, y, z);
 
                             if (this.mc.player.getPositionEyes(this.mc.getRenderPartialTicks()).distanceTo(this.mc.player.getPositionVector().add(x - this.rot[0] / 2, (double) y + 0.5D, z + this.rot[1] / 2)) <= 4.5D && this.mc.player.getPositionEyes(this.mc.getRenderPartialTicks()).distanceTo(this.mc.player.getPositionVector().add((double) x + 0.5D, (double) y + 2.5D, (double) z + 0.5D)) <= 4.5D && WorldUtils.canPlaceBlock(this.pos) && WorldUtils.isBlockEmpty(this.pos) && WorldUtils.isBlockEmpty(this.pos.add(this.rot[0], 0, this.rot[1])) && WorldUtils.isBlockEmpty(this.pos.add(0, 1, 0)) && WorldUtils.isBlockEmpty(this.pos.add(0, 2, 0)) && WorldUtils.isBlockEmpty(this.pos.add(this.rot[0], 1, this.rot[1])))
@@ -162,16 +176,16 @@ public class NewAuto32k extends Module
                                 boolean rotate = this.getSetting(0).asToggle().state;
 
                                 WorldUtils.placeBlock(this.pos, block, rotate, false);
-                                WorldUtils.rotatePacket((double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getX() + 0.5D, this.pos.getY() + 1, (double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getZ() + 0.5D);
+                                WorldUtils.rotatePacket((double) this.pos.add(-this.rot[0], 0, -this.rot[1]).getX() + 0.5D, this.pos.getY() + 1, (double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getZ() + 0.5D);
+                                if (up) this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY + 1, this.mc.player.posZ, true));
                                 WorldUtils.placeBlock(this.pos.add(0, 1, 0), dispenser, false, false);
-
                                 return;
                             }
                         }
                     }
                 }
 
-                ClientChat.log("Unable to place 32k");
+                ClientChat.warn("Unable to place 32k");
                 this.setToggled(false);
             }
         } else
@@ -241,15 +255,20 @@ public class NewAuto32k extends Module
             if (this.dispenserTicks == 1)
             {
                 this.mc.displayGuiScreen(null);
-               WorldUtils.placeBlock(this.pos.add(0, 2, 0), this.redstone, this.getSetting(0).asToggle().state, false);
+               if (!(this.mc.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.pos.add(this.rot[0], 1, this.rot[1]))).isEmpty())) {
+                   return;
+               }
+                WorldUtils.placeBlock(this.pos.add(0, 2, 0), this.redstone, this.getSetting(0).asToggle().state, false);
+               this.stage = 1;
                 //WorldUtils.placeBlock(this.pos.add(this.rot[1], 1, this.rot[0]), this.redstone, this.getSetting(0).toToggle().state, false);
             }
 
-            if (this.mc.world.getBlockState(this.pos.add(this.rot[0], 1, this.rot[1])).getBlock() instanceof BlockShulkerBox && this.mc.world.getBlockState(this.pos.add(this.rot[0], 0, this.rot[1])).getBlock() != Blocks.HOPPER)
+            if (this.mc.world.getBlockState(this.pos.add(this.rot[0], 0, this.rot[1])).getBlock() != Blocks.HOPPER & this.stage == 1)
             {
                 this.mc.player.closeScreen();
-                this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, 36, 0, ClickType.QUICK_MOVE, this.mc.player);
+                if(mc.currentScreen == null) this.mc.playerController.windowClick(this.mc.player.openContainer.windowId, 36, 0, ClickType.QUICK_MOVE, this.mc.player);
 
+                oldRot = new float[]{mc.player.rotationYaw, mc.player.rotationPitch};
                 WorldUtils.placeBlock(this.pos.add(this.rot[0], 0, this.rot[1]), this.hopper, this.getSetting(0).asToggle().state, false);
                 WorldUtils.openBlock(this.pos.add(this.rot[0], 0, this.rot[1]));
             }
@@ -262,9 +281,16 @@ public class NewAuto32k extends Module
             ++this.ticksPassed;
         } else
         {
+            if (this.mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD) {
+                this.mc.playerController.windowClick(mc.player.inventoryContainer.windowId, 36, 0, ClickType.PICKUP, mc.player);
+                this.mc.playerController.windowClick(mc.player.inventoryContainer.windowId, -999, 0, ClickType.PICKUP, mc.player);
+            }
+            mc.player.connection.sendPacket(new CPacketPlayer.Rotation(oldRot[0], oldRot[1], mc.player.onGround));
             this.setToggled(false);
+            return;
         }
     }
+
 
     public void killAura()
     {
@@ -282,6 +308,10 @@ public class NewAuto32k extends Module
 
                     if (!(e instanceof EntityLivingBase))
                     {
+                        players.remove(e);
+                    }
+
+                    if (FriendManager.Get().isFriend(e.getName().toLowerCase())){
                         players.remove(e);
                     }
 
@@ -314,11 +344,13 @@ public class NewAuto32k extends Module
             {
                 return;
             }
+
+
+            if (!(this.mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD)) return;
             
 
             this.mc.playerController.attackEntity(this.mc.player, target);
             this.mc.player.swingArm(EnumHand.MAIN_HAND);
         }
-
     }
 }

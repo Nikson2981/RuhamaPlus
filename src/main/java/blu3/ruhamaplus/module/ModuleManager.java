@@ -32,7 +32,6 @@ public class ModuleManager
             new BetterChat(),
             //new blu3BedAura(),
             new blu3CrystalAura(),
-            new BoxESP(),
             new Capes(),
             new ChatSuffix(),
             new ChestSwap(),
@@ -42,8 +41,9 @@ public class ModuleManager
             new Crasher(),
             new Criticals(),
             new CrystalAura(),
-            new DiscordRPC(),
+            //new DiscordRPC(),
             new DispenserAura(),
+            new DispenserAuto32k(),
             new Dropper32k(),
             new ElytraFly(),
             new ElytraReplace(),
@@ -63,6 +63,7 @@ public class ModuleManager
             new InvSorter(),
             //new IRC(),
             new LongRangeAim(),
+            //new Nametags(),
             new NBTViewer(),
             new NewAuto32k(),
             new NewChunks(),
@@ -76,6 +77,7 @@ public class ModuleManager
             new SelfTrap(),
             new ShulkerAura(),
             new StashFinder(),
+            new Strafe(),
             new StrengthESP(),
             new Surround(),
             new SwingArm(),
@@ -125,6 +127,22 @@ public class ModuleManager
         }
 
         return ms;
+    }
+
+    public static void fastUpdate(){
+        for (Module m : mods)
+        {
+            try
+            {
+                if (m.isToggled())
+                {
+                    m.fastUpdate();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void onUpdate()

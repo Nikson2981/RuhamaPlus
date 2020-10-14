@@ -4,6 +4,7 @@ import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.utils.ClientChat;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
@@ -30,6 +31,11 @@ public class EnhancedMovement extends Module {
             return true;
         }
         return false;
+    }
+
+
+    public void onUpdate() {
+        if (mc.gameSettings.keyBindSprint.isPressed()) mc.player.setSprinting(true);
     }
 
     public boolean collision(Entity e){
