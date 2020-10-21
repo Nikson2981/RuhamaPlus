@@ -1,6 +1,6 @@
 package blu3.ruhamaplus.command;
 
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.FileMang;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -34,7 +34,7 @@ public class SaveConfigCmd extends CommandBase implements IClientCommand {
         FileMang.saveModules();
         FileMang.saveBinds();
 
-        ClientChat.log("Saved Configurations.");
+        ChatUtils.log("Saved Configurations.");
     }
     public boolean checkPermission(MinecraftServer server, ICommandSender sender)
     {

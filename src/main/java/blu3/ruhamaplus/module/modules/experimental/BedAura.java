@@ -3,20 +3,17 @@ package blu3.ruhamaplus.module.modules.experimental;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
-import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.*;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
-import net.minecraft.block.BlockBed;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemAppleGold;
 import net.minecraft.item.ItemBed;
-import net.minecraft.item.ItemEndCrystal;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -29,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class blu3BedAura extends Module {
+public class BedAura extends Module {
 
     private boolean switchCooldown = false;
     private BlockPos renderTarget = null;
@@ -46,16 +43,16 @@ public class blu3BedAura extends Module {
 
     );
 
-    public blu3BedAura() { super("blu3BA", 0, Category.EXPERIMENTAL, "absolute shit i say part 2", settings); }
+    public BedAura() { super("blu3BA", 0, Category.EXPERIMENTAL, "absolute shit i say part 2", settings); }
 
     public void onDisable(){
-        ClientChat.log("blu3BA: " + ChatFormatting.RED + "OFF");
+        ChatUtils.log("blu3BA: " + ChatFormatting.RED + "OFF");
         ezplayers.clear();
         targetPlayers.clear();
         renderTarget = null;
     }
     public void onEnable(){
-        ClientChat.log("blu3BA: " + ChatFormatting.AQUA + "ON");
+        ChatUtils.log("blu3BA: " + ChatFormatting.AQUA + "ON");
     }
 
     @Override
@@ -69,7 +66,7 @@ public class blu3BedAura extends Module {
 
         if (this.mc.getDebugFPS() < 5) {
             this.setToggled(false);
-            ClientChat.warn("FPS dropped below 5, disbling for safety");
+            ChatUtils.warn("FPS dropped below 5, disbling for safety");
         }
     }
 
@@ -97,7 +94,7 @@ public class blu3BedAura extends Module {
         ezplayers.remove(this.mc.player);
         for (Object o : new ArrayList<>(ezplayers)) {
             Entity e = (EntityPlayer) o;
-            if (FriendManager.Get().isFriend(e.getName().toLowerCase())){
+            if (FriendManager.get().isFriend(e.getName().toLowerCase())){
                 ezplayers.remove(e);
             }
         }

@@ -6,21 +6,17 @@ import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
-import blu3.ruhamaplus.utils.WorldUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class Aura extends Module
 {
@@ -46,7 +42,7 @@ public class Aura extends Module
                 if (!this.mc.player.canEntityBeSeen((Entity)e) && !this.getSetting(2).asToggle().state) {
                     continue;
                 }
-                if (FriendManager.Get().isFriend(e.getName().toLowerCase())){
+                if (FriendManager.get().isFriend(e.getName().toLowerCase())){
                     continue;
                 }
                 if (((this.delay <= reqDelay && reqDelay != 0) || this.getSetting(1).asToggle().state) && (this.mc.player.getCooledAttackStrength(this.mc.getRenderPartialTicks()) < 1.0f || !this.getSetting(1).asToggle().state)) {

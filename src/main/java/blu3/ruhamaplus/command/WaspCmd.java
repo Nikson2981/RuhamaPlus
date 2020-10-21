@@ -2,7 +2,7 @@ package blu3.ruhamaplus.command;
 
 import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.module.modules.combat.LongRangeAim;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -35,7 +35,7 @@ WaspCmd extends CommandBase implements IClientCommand {
     {
         if (args.length != 1)
         {
-            ClientChat.testError(this,"one word retard");
+            ChatUtils.testError(this,"one word retard");
         } else
         {
             try
@@ -44,15 +44,15 @@ WaspCmd extends CommandBase implements IClientCommand {
 
                 if (Objects.requireNonNull(ModuleManager.getModuleByName("LongRangeAim")).getSetting(1).asMode().mode == 1) {
                     ModuleManager.getModuleByName("LongRangeAim").setToggled(true);
-                    ClientChat.log("Set target as " + args[0]);
+                    ChatUtils.log("Set target as " + args[0]);
                 }
                 else if (Objects.requireNonNull(ModuleManager.getModuleByName("WaspAim")).getSetting(1).asMode().mode == 0) {
-                    ClientChat.warn("Set target as " + args[0] + ", however LongRangeAim is set to Closest.");
+                    ChatUtils.warn("Set target as " + args[0] + ", however LongRangeAim is set to Closest.");
                 }
 
             } catch (Exception e)
             {
-                ClientChat.testError(this, "incorrect, /.aim [target]");
+                ChatUtils.testError(this, "incorrect, /.aim [target]");
             }
         }
     }

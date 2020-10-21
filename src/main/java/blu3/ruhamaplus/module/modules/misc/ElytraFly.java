@@ -6,7 +6,7 @@ import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.Blocks;
@@ -27,7 +27,7 @@ public class ElytraFly extends Module
 
     public void onDisable()
     {
-        ClientChat.log("Elytrafly Disabled");
+        ChatUtils.log("Elytrafly Disabled");
         this.mc.player.capabilities.isFlying = false;
         this.mc.player.capabilities.setFlySpeed(0.05F);
 
@@ -38,7 +38,7 @@ public class ElytraFly extends Module
     }
 
     public void onEnable() {
-        ClientChat.log("Elytrafly Enabled");
+        ChatUtils.log("Elytrafly Enabled");
     }
 
     public void onUpdate()

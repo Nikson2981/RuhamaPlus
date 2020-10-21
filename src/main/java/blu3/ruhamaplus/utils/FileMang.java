@@ -1,8 +1,8 @@
 package blu3.ruhamaplus.utils;
 
-import blu3.ruhamaplus.gui.ModuleWindow;
-import blu3.ruhamaplus.gui.NewRuhamaGui;
-import blu3.ruhamaplus.gui.TextWindow;
+import blu3.ruhamaplus.gui.ruhama.ModuleWindow;
+import blu3.ruhamaplus.gui.ruhama.NewRuhamaGui;
+import blu3.ruhamaplus.gui.ruhama.TextWindow;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.module.modules.gui.ClickGui;
@@ -10,12 +10,10 @@ import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
+import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.tuple.MutableTriple;
-import org.lwjgl.input.Keyboard;
 
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,6 +41,10 @@ public class FileMang
     public static Path getDir()
     {
         return dir;
+    }
+
+    public static void loadFriends(){
+        FriendManager.get().load();
     }
 
     public static List<String> readFileLines(String... file)

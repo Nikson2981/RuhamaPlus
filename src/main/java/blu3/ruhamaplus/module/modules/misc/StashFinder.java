@@ -9,7 +9,7 @@ import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.FileMang;
 import blu3.ruhamaplus.utils.RenderUtils;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -129,7 +129,7 @@ public class StashFinder extends Module
     {
         if (this.startChunk != null)
         {
-            ClientChat.log("StashFinder: Starting from " + this.startChunk.getXStart() + ", " + this.startChunk.getZStart());
+            ChatUtils.log("StashFinder: Starting from " + this.startChunk.getXStart() + ", " + this.startChunk.getZStart());
 
             this.range = ((int) Math.max(Math.abs(this.mc.player.posX - (double) this.startChunk.getXStart()), Math.abs(this.mc.player.posZ - (double) this.startChunk.getZStart())) >> 4) - 1;
         } else if (this.getSetting(0).asMode().mode == 1)

@@ -3,7 +3,7 @@ package blu3.ruhamaplus.mixin.mixins;
 import blu3.ruhamaplus.RuhamaPlus;
 import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.module.modules.combat.Criticals;
-import blu3.ruhamaplus.module.modules.experimental.FeetXp;
+import blu3.ruhamaplus.module.modules.player.FeetXp;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.init.Blocks;
@@ -44,18 +44,6 @@ public class MixinPacketSend
                 RuhamaPlus.friendBlocks.put(pos, 300);
             }
         }
-        if (Objects.requireNonNull(ModuleManager.getModuleByName("FootXP").isToggled())){
-            try {
-                if (!(Minecraft.getMinecraft().player == null) && !(Minecraft.getMinecraft().world == null)) {
-                    if (packetIn instanceof CPacketPlayerTryUseItem && Minecraft.getMinecraft().player.getHeldItemMainhand().getItem() == Items.EXPERIENCE_BOTTLE) {
-                        (((FeetXp)Objects.requireNonNull(ModuleManager.getModuleByName("FootXP")))).rotate();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
         if (Objects.requireNonNull(ModuleManager.getModuleByName("Criticals").isToggled())){
             try {
                 if (!(Minecraft.getMinecraft().player == null) && !(Minecraft.getMinecraft().world == null)) {

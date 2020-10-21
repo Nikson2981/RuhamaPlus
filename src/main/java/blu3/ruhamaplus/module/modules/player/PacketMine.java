@@ -1,4 +1,4 @@
-package blu3.ruhamaplus.module.modules.experimental;
+package blu3.ruhamaplus.module.modules.player;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class PacketMine extends Module {
 
-    public PacketMine() { super("PacketMine", 0, Category.EXPERIMENTAL, "fysgdtvubfh", null);
+    public PacketMine() { super("PacketMine", 0, Category.PLAYER, "fysgdtvubfh", null);
     this.manualTimer = new TimeUtils();
     }
 
@@ -44,7 +44,7 @@ public class PacketMine extends Module {
         boolean b = false;
         boolean c = false;
 
-        if (!a && manualTimer.passedMs(500)) {
+        if (!a && manualTimer.passedMs(500)) { //these are not always false, fuck you intellij
             m = "Mining";
             a = true;
         }

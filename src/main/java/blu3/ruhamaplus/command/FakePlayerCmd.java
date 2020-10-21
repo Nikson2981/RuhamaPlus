@@ -2,8 +2,7 @@ package blu3.ruhamaplus.command;
 
 import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.module.modules.exploits.FakePlayer;
-import blu3.ruhamaplus.utils.ClientChat;
-import blu3.ruhamaplus.utils.friendutils.FriendManager;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -43,16 +42,16 @@ public class FakePlayerCmd extends CommandBase implements IClientCommand {
 
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 
-        if (!(args.length == 1)) ClientChat.warn("/.fakeplayer [name]");
+        if (!(args.length == 1)) ChatUtils.warn("/.fakeplayer [name]");
 
 
         else try {
             if (args.length == 1) {
                 (((FakePlayer) Objects.requireNonNull(ModuleManager.getModuleByName("FakePlayer")))).name = args[0];
-                ClientChat.log("FakePlayer set to " + args[0]);
+                ChatUtils.log("FakePlayer set to " + args[0]);
             }
         } catch (Exception e){
-            ClientChat.testError(this, "no");
+            ChatUtils.testError(this, "no");
         }
 
 

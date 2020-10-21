@@ -1,6 +1,6 @@
 package blu3.ruhamaplus.module;
 
-import blu3.ruhamaplus.gui.TextWindow;
+import blu3.ruhamaplus.gui.ruhama.TextWindow;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
@@ -9,8 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import org.lwjgl.input.Keyboard;
-import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +112,13 @@ public class Module
 
     public void fastUpdate()
     {
+    }
+
+    public void disable(){
+        this.setToggled(false);
+    }
+    public void enable(){
+        this.setToggled(true);
     }
 
 

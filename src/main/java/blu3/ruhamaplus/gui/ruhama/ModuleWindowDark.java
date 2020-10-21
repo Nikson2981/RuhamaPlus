@@ -1,4 +1,4 @@
-package blu3.ruhamaplus.gui;
+package blu3.ruhamaplus.gui.ruhama;
 
 import blu3.ruhamaplus.utils.Rainbow;
 import blu3.ruhamaplus.module.Module;

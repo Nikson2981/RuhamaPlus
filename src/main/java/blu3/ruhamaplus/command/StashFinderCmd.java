@@ -2,7 +2,7 @@ package blu3.ruhamaplus.command;
 
 import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.module.modules.misc.StashFinder;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -29,16 +29,16 @@ public class StashFinderCmd extends CommandBase implements IClientCommand
     {
         if (args.length != 2)
         {
-            ClientChat.error("StashFinderCmd", "Invalid number of arguments, use /.stashfinder x z");
+            ChatUtils.error("StashFinderCmd", "Invalid number of arguments, use /.stashfinder x z");
         } else
         {
             try
             {
                 ((StashFinder) Objects.requireNonNull(ModuleManager.getModuleByName("StashFinder"))).startChunk = new ChunkPos(Integer.parseInt(args[0]) >> 4, Integer.parseInt(args[1]) >> 4);
-                ClientChat.log("Set stashfinder start to: " + args[0] + ", " + args[1]);
+                ChatUtils.log("Set stashfinder start to: " + args[0] + ", " + args[1]);
             } catch (Exception e)
             {
-                ClientChat.error("StashFinderCmd", "wrong, /.stashfinder x z");
+                ChatUtils.error("StashFinderCmd", "wrong, /.stashfinder x z");
             }
         }
     }

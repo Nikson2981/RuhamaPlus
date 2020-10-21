@@ -21,7 +21,7 @@ public class FastUse extends Module {
             new SettingToggle(true, "Everything")
             );
 
-    public void onUpdate() {
+    public void fastUpdate() {
         if (this.mc.player != null) {
             if (this.getBoolean("XP") && this.mc.player.getHeldItemMainhand().getItem() == Items.EXPERIENCE_BOTTLE) this.mc.rightClickDelayTimer = 0;
             if (this.getBoolean("Crystals") && this.mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL) this.mc.rightClickDelayTimer = 0;

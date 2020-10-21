@@ -1,7 +1,7 @@
 package blu3.ruhamaplus.command;
 
 import blu3.ruhamaplus.utils.FileMang;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -39,7 +39,7 @@ public class InvSorterCmd extends CommandBase implements IClientCommand
         FileMang.createEmptyFile("invsorter.txt");
         FileMang.appendFile(s, "invsorter.txt");
 
-        ClientChat.log("Saved Inventory");
+        ChatUtils.log("Saved Inventory");
     }
 
     public boolean checkPermission(MinecraftServer server, ICommandSender sender)

@@ -1,7 +1,7 @@
 package blu3.ruhamaplus.mixin.mixins;
 
 import blu3.ruhamaplus.module.ModuleManager;
-import blu3.ruhamaplus.module.modules.experimental.PacketMine;
+import blu3.ruhamaplus.module.modules.player.PacketMine;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

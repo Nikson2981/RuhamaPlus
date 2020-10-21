@@ -4,7 +4,7 @@ import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.WorldUtils;
 import net.minecraft.entity.Entity;
 import java.util.ArrayList;
@@ -30,10 +30,10 @@ public class LongRangeAim extends Module {
 
         if (this.getSetting(1).asMode().mode == 1) {
             if (this.cmdTarget == null) {
-                ClientChat.warn("No Target Set");
+                ChatUtils.warn("No Target Set");
                 return;
             } else {
-                ClientChat.log("Target: " + this.cmdTarget);
+                ChatUtils.log("Target: " + this.cmdTarget);
             }
         }
     }

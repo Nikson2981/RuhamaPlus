@@ -1,22 +1,17 @@
 package blu3.ruhamaplus;
 
 import blu3.ruhamaplus.command.*;
-import blu3.ruhamaplus.gui.AdvancedText;
-import blu3.ruhamaplus.gui.NewRuhamaGui;
-import blu3.ruhamaplus.gui.TextWindow;
-import blu3.ruhamaplus.module.Module;
-import blu3.ruhamaplus.module.ModuleManager;
-import blu3.ruhamaplus.module.modules.exploits.FakePlayer;
-import blu3.ruhamaplus.module.modules.gui.ClickGui;
-import blu3.ruhamaplus.settings.SettingBase;
-import blu3.ruhamaplus.settings.SettingMode;
-import blu3.ruhamaplus.settings.SettingSlider;
+import blu3.ruhamaplus.gui.ruhama.*;
+import blu3.ruhamaplus.module.*;
+import blu3.ruhamaplus.module.modules.gui.*;
+import blu3.ruhamaplus.settings.*;
 import blu3.ruhamaplus.utils.*;
-import blu3.ruhamaplus.utils.friendutils.FriendManager;
-import blu3.ruhamaplus.utils.friendutils.Friends;
-import me.nrubin29.pastebinapi.PastebinException;
+import blu3.ruhamaplus.utils.friendutils.*;
+import me.zero.alpine.fork.bus.EventBus;
+import me.zero.alpine.fork.bus.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -28,22 +23,16 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.eventhandler.*;
+import net.minecraftforge.fml.common.gameevent.*;
+import net.minecraftforge.fml.common.gameevent.TickEvent.*;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 @Mod(
         modid = "ruhamaplus",
@@ -56,19 +45,16 @@ public class RuhamaPlus
     public static Minecraft mc = Minecraft.getMinecraft();
     public static HashMap<BlockPos, Integer> friendBlocks = new HashMap<>();
 
+    public static final EventBus EVENT_BUS = new EventManager();
+
     private long timer = 0L;
     private boolean timerStart = false;
 
     public CapeUtils capeUtils;
 
-    private static blu3.ruhamaplus.irc.IRCClient ircClient;
 
-    private static FriendManager m_FriendManager = new FriendManager();
+    private static FriendManager m_friendManager = new FriendManager();
     //private static Discord m_Discord = new Discord();
-
-    public static blu3.ruhamaplus.irc.IRCClient getIRCClient() {
-        return ircClient;
-    }
 
     //public static Discord GetDiscord()
    // {
@@ -79,7 +65,7 @@ public class RuhamaPlus
 
     public static FriendManager GetFriendManager()
     {
-        return m_FriendManager;
+        return m_friendManager;
     }
 
     @Mod.Instance private static RuhamaPlus INSTANCE;
@@ -99,7 +85,6 @@ public class RuhamaPlus
                 "| \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ |\n" +
                 "|  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\|\n\n");
 
-
         Friends.tryValidateHwid();
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -115,7 +100,7 @@ public class RuhamaPlus
         FileMang.readSettings();
         FileMang.readClickGui();
         FileMang.readBinds();
-
+        FileMang.loadFriends();
 
         for (Module m : ModuleManager.getModules())
         {
@@ -154,6 +139,8 @@ public class RuhamaPlus
         addCommand(new ToggleCmd());
         addCommand(new FakePlayerCmd());
 
+        ChatUtils.loadWords();
+
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
         System.out.println("Commands initialized!");
 
@@ -189,6 +176,7 @@ public class RuhamaPlus
             if (!(mc.currentScreen instanceof NewRuhamaGui))
             {
                 Iterator textIter = NewRuhamaGui.textWins.iterator();
+
 
                 label41:
 

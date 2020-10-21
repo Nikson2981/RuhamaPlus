@@ -24,9 +24,9 @@ public class Hud extends Module {
             new SettingToggle(true, "ServerIP"),
             new SettingToggle(true, "Ping"),
             new SettingToggle(true, "Username"),
-            new SettingToggle(true, "Dimension"));
+            new SettingToggle(true, "Dimension "));
 
-    public Hud() {super("Hud", Keyboard.KEY_NONE, Category.GUI, "Show stuff on screen.", settings);}
+    public Hud() {super("Hud", Keyboard.KEY_NONE, Category.GUI, "Show stuff on screen. ", settings);}
 
     public int getPing() {
         int p = -1;

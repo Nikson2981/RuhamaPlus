@@ -20,7 +20,7 @@ public class MixinGuiPlayerTabOverlay {
 
     public String getPlayerName(NetworkPlayerInfo networkPlayerInfoIn) {
         String dname = networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName());
-        if (FriendManager.Get().isFriend(dname.toLowerCase())) return TextFormatting.AQUA + dname;
+        if (FriendManager.get().isFriend(dname.toLowerCase())) return TextFormatting.AQUA + dname;
         else return dname;
     }
 

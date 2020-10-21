@@ -4,9 +4,7 @@ import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingToggle;
-import blu3.ruhamaplus.utils.ClientChat;
-import blu3.ruhamaplus.utils.WorldUtils;
-import net.minecraft.block.BlockObsidian;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -122,8 +120,6 @@ public class BedObsidianTrap extends Module
                     {
                         this.mc.player.inventory.currentItem = i - 36;
 
-
-
                         if (this.mc.world.getBlockState(this.blockpos1).getMaterial().isReplaceable())
                         {
                             this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(this.blockpos1, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
@@ -139,11 +135,11 @@ public class BedObsidianTrap extends Module
 
 
     public void onEnable() {
-        ClientChat.log("BedAutoTrap:" + TextFormatting.GREEN + " ENABLED!");
+        ChatUtils.log("BedAutoTrap:" + TextFormatting.GREEN + " ENABLED!");
     }
 
     public void onDisable() {
-        ClientChat.log("BedAutoTrap:" + TextFormatting.RED + " DISABLED!");
+        ChatUtils.log("BedAutoTrap:" + TextFormatting.RED + " DISABLED!");
         this.target = null;
     }
 

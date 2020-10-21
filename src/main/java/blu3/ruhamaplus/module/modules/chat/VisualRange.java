@@ -2,7 +2,7 @@ package blu3.ruhamaplus.module.modules.chat;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -24,7 +24,7 @@ public class VisualRange extends Module {
                 if (e instanceof EntityPlayer && !e.getName().equalsIgnoreCase(mc.player.getName())) {
                     if (!knownPlayers.contains(e)) {
                         knownPlayers.add(e);
-                        ClientChat.log(e.getName() + " entered visual range.");
+                        ChatUtils.log(e.getName() + " entered visual range.");
                     }
                 }
             }
@@ -34,7 +34,7 @@ public class VisualRange extends Module {
                 if (e instanceof EntityPlayer && !e.getName().equalsIgnoreCase(mc.player.getName())) {
                     if (!players.contains(e)) {
                         knownPlayers.remove(e);;
-                        ClientChat.log(e.getName() + " left visual range.");
+                        ChatUtils.log(e.getName() + " left visual range.");
                     }
                 }
             }

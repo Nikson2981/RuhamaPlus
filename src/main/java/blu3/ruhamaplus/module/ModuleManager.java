@@ -7,31 +7,35 @@ import blu3.ruhamaplus.module.modules.exploits.*;
 import blu3.ruhamaplus.module.modules.gui.*;
 import blu3.ruhamaplus.module.modules.misc.*;
 import blu3.ruhamaplus.module.modules.player.*;
-import blu3.ruhamaplus.module.modules.player.Timer;
 import blu3.ruhamaplus.module.modules.render.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import org.lwjgl.input.Keyboard;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 
 public class ModuleManager
 {
     private static final List<Module> mods = Arrays.asList(
             new Annoyer(),
-            new Anti32kLog(),
+            new Anti32k(),
             new AntiChunkBan(),
             new AnvilFucker(),
             new Aura(),
             new Auto32k(),
+            new AutoCrystal(),
             new AutoLog(),
             new AutoWither(),
             new BedCityESP(),
+            new BedAura(),
             new BedAuraECME(),
             new BedObsidianTrap(),
             new BetterChat(),
-            //new blu3BedAura(),
-            new blu3CrystalAura(),
             new Capes(),
             new ChatSuffix(),
             new ChestSwap(),
@@ -40,14 +44,10 @@ public class ModuleManager
             new CoordHud(),
             new Crasher(),
             new Criticals(),
-            new CrystalAura(),
             //new DiscordRPC(),
             new DispenserAura(),
-            new DispenserAuto32k(),
-            new Dropper32k(),
             new ElytraFly(),
             new ElytraReplace(),
-            new EnderChestBackpack(),
             new EnhancedMovement(),
             new FakePlayer(),
             new FastUse(),
@@ -61,11 +61,9 @@ public class ModuleManager
             new HopperRadius(),
             new Hud(),
             new InvSorter(),
-            //new IRC(),
             new LongRangeAim(),
             //new Nametags(),
             new NBTViewer(),
-            new NewAuto32k(),
             new NewChunks(),
             new ObsidianTrap(),
             new PacketMine(),
@@ -84,14 +82,12 @@ public class ModuleManager
             new TabNames(),
             new TestAutoTotem(),
             new ThunderHack(),
-            new Timer(),
             new TotemPopCounter(),
             new TreeAura(),
             new TunnelESP(),
-            new VisualRange(),
-            new WurstPlusBedAura());
+            new VisualRange());
 
-   public static List<Module> getModules()
+    public static List<Module> getModules()
     {
         return new ArrayList<>(mods);
     }

@@ -1,4 +1,4 @@
-package blu3.ruhamaplus.gui;
+package blu3.ruhamaplus.gui.ruhama;
 
 public class AdvancedText
 {

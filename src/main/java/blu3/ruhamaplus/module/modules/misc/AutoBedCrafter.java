@@ -2,13 +2,9 @@ package blu3.ruhamaplus.module.modules.misc;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.WorldUtils;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreenWorking;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiCrafting;
-import net.minecraft.client.gui.inventory.GuiDispenser;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
@@ -52,9 +48,9 @@ public class AutoBedCrafter extends Module {
                     }
             }
 
-            if (tableSlot != -1) ClientChat.log("Crafting table slot: " + tableSlot);
-            if (woodSlot != -1) ClientChat.log("Wooden planks slot: " + woodSlot);
-            if (woolSlot != -1) ClientChat.log("Wool slot: " + woolSlot);
+            if (tableSlot != -1) ChatUtils.log("Crafting table slot: " + tableSlot);
+            if (woodSlot != -1) ChatUtils.log("Wooden planks slot: " + woodSlot);
+            if (woolSlot != -1) ChatUtils.log("Wool slot: " + woolSlot);
 
             RayTraceResult ray = this.mc.player.rayTrace(5.0D, this.mc.getRenderPartialTicks());
             BlockPos pos = Objects.requireNonNull(ray).getBlockPos().up();

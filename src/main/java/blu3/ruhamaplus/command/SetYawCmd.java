@@ -1,6 +1,6 @@
 package blu3.ruhamaplus.command;
 
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.WorldUtils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -28,16 +28,16 @@ public class SetYawCmd extends CommandBase implements IClientCommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         if (args.length != 2)
         {
-            ClientChat.error("SetYawCmd", "Invalid number of arguments, use /.setyaw x z");
+            ChatUtils.error("SetYawCmd", "Invalid number of arguments, use /.setyaw x z");
         } else
         {
             try
             {
                 WorldUtils.facePos(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-                ClientChat.log("Set yaw to look at: " + args[0] + ", " + args[1]);
+                ChatUtils.log("Set yaw to look at: " + args[0] + ", " + args[1]);
             } catch (Exception e)
             {
-                ClientChat.error("SetYawCmd", "not letters you retard");
+                ChatUtils.error("SetYawCmd", "not letters you retard");
             }
         }
     }

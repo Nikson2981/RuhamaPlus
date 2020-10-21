@@ -7,7 +7,7 @@ import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.RenderUtils;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
@@ -64,7 +64,7 @@ public class TreeAura extends Module
 
         if (sapling == -1)
         {
-            ClientChat.log("No sapling");
+            ChatUtils.log("No sapling");
 
             this.setToggled(false);
         } else
@@ -187,7 +187,7 @@ public class TreeAura extends Module
 
             if (this.getSetting(0).asMode().mode == 0)
             {
-                ClientChat.log("Nowhere to place sapling");
+                ChatUtils.log("Nowhere to place sapling");
 
                 this.setToggled(false);
             } else
@@ -243,7 +243,7 @@ public class TreeAura extends Module
             if (sapling == -1)
             {
 
-                ClientChat.log("No sapling");
+                ChatUtils.log("No sapling");
                 this.setToggled(false);
             } else
             {

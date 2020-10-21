@@ -2,23 +2,16 @@ package blu3.ruhamaplus.module.modules.combat;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
-import blu3.ruhamaplus.module.ModuleManager;
-import blu3.ruhamaplus.module.modules.experimental.PacketMine;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
-import blu3.ruhamaplus.utils.ClientChat;
-import blu3.ruhamaplus.utils.InventoryUtil;
-import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.TimeUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
@@ -29,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class AnvilFucker extends Module {
 
@@ -166,7 +158,7 @@ public class AnvilFucker extends Module {
             if (target == mc.player) {
                 continue;
             }
-            if (FriendManager.Get().isFriend(target.getName().toLowerCase())) {
+            if (FriendManager.get().isFriend(target.getName().toLowerCase())) {
                 continue;
             }
             if (!isLiving(target)) {

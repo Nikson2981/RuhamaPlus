@@ -6,21 +6,17 @@ import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
-import blu3.ruhamaplus.utils.ClientChat;
 import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
@@ -129,7 +125,7 @@ public class Closest extends Module {
 
 
             mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + Name, x + 20, y - 55, 0);
-            if (FriendManager.Get().isFriend(l_Player.getName().toLowerCase())) {
+            if (FriendManager.get().isFriend(l_Player.getName().toLowerCase())) {
                 if(this.getBoolean("Background")) GuiScreen.drawRect(x - 20, y - 65, x + 165, y + 25, 1879048192);
                 mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + "Verified Cool" + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + Distance + "m", x + 20, y - 45, 0);
             } else if (helm2.equals("Diamond Helmet") && body2.equals("Diamond Chestplate") && leggings2.equals("Diamond Leggings") && boots2.equals("Diamond Boots")) {
@@ -163,6 +159,7 @@ public class Closest extends Module {
         }
 
             GuiInventory.drawEntityOnScreen(x, y - 55 + 62, 30, (float)x + (float)51.0 - ((float)x +(float) 50.0), (float)y + (float)75.0 - (float)50.0 - (float)y + (float)12.0, (EntityLivingBase)l_Player);
+            GuiInventory.drawEntityOnScreen(x, y - 55 + 6200, 30, (float)x + (float)51.0 - ((float)x +(float) 50.0), (float)y + (float)75.0 - (float)50.0 - (float)y + (float)12.0, (EntityLivingBase)l_Player);
 
             int i = 0;
             final List<ItemStack> armor = new ArrayList<ItemStack>();

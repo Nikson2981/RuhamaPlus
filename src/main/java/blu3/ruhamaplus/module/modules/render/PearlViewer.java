@@ -6,7 +6,7 @@ import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
 import blu3.ruhamaplus.utils.RenderUtils;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.util.math.Vec3d;
@@ -69,7 +69,7 @@ public class PearlViewer extends Module
                         {
                             if (entityPlayer.getDistance(e) < 4.0F && ((Entity) entityPlayer).getName() != this.mc.player.getName())
                             {
-                                ClientChat.warn(((Entity) entityPlayer).getName() + " Threw a pearl");
+                                ChatUtils.warn(((Entity) entityPlayer).getName() + " Threw a pearl");
 
                                 break;
                             }

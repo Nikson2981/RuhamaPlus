@@ -2,17 +2,10 @@ package blu3.ruhamaplus.module.modules.combat;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
-import blu3.ruhamaplus.settings.SettingBase;
-import blu3.ruhamaplus.utils.ClientChat;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketExplosion;
-import net.minecraft.world.Explosion;
-
-import java.util.List;
 
 
 public class EnhancedMovement extends Module {

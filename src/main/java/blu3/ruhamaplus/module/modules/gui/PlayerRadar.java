@@ -1,7 +1,7 @@
 package blu3.ruhamaplus.module.modules.gui;
 
-import blu3.ruhamaplus.gui.AdvancedText;
-import blu3.ruhamaplus.gui.TextWindow;
+import blu3.ruhamaplus.gui.ruhama.AdvancedText;
+import blu3.ruhamaplus.gui.ruhama.TextWindow;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;

@@ -2,15 +2,12 @@ package blu3.ruhamaplus.module.modules.render;
 
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
-import blu3.ruhamaplus.utils.EntityListUtils;
 import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
@@ -57,7 +54,7 @@ public class BedCityESP extends Module {
             for (Object o : new ArrayList<>(entities)) {
                 Entity e = (EntityPlayer) o;
 
-                if (FriendManager.Get().isFriend(e.getName().toLowerCase())){
+                if (FriendManager.get().isFriend(e.getName().toLowerCase())){
                     entities.remove(e);
                 }
             }

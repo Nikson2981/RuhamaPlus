@@ -3,7 +3,7 @@ package blu3.ruhamaplus.command;
 import com.mojang.authlib.Agent;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.ReflectUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -38,10 +38,10 @@ public class  LoginCmd extends CommandBase implements IClientCommand
         {
             if (this.login(args[0], args[1]).equals("success"))
             {
-                ClientChat.log("Logged in");
+                ChatUtils.log("Logged in");
             } else
             {
-                ClientChat.error("LoginCmd", "Invalid login");
+                ChatUtils.error("LoginCmd", "Invalid login");
             }
         } catch (Exception ignored)
         {
@@ -65,7 +65,7 @@ public class  LoginCmd extends CommandBase implements IClientCommand
         {
             e.printStackTrace();
 
-            ClientChat.error("LoginCmd", "Failed to authenticate session");
+            ChatUtils.error("LoginCmd", "Failed to authenticate session");
 
             return "ï¿½4ï¿½loops!";
         }

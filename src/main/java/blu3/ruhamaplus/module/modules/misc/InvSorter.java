@@ -3,7 +3,7 @@ package blu3.ruhamaplus.module.modules.misc;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.utils.FileMang;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 
@@ -27,7 +27,7 @@ public class InvSorter extends Module
 
         if (this.items.size() < 9)
         {
-            ClientChat.log("No Inventory Saved, Use /invsorter to save your hotbar");
+            ChatUtils.log("No Inventory Saved, Use /invsorter to save your hotbar");
 
             this.setToggled(false);
         }

@@ -9,9 +9,15 @@ import blu3.ruhamaplus.utils.*;
 import blu3.ruhamaplus.utils.TimeUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
+import jdk.nashorn.internal.ir.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.item.*;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityEndermite;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -32,51 +38,49 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.*;
 import java.util.stream.Collectors;
-public class blu3CrystalAura extends Module {
+public class AutoCrystal extends Module {
     private static final List<SettingBase> settings = Arrays.asList(
-            new SettingMode("Logic: ", "BreakPlace", "PlaceBreak"), //0
-            new SettingMode("Rotate: ", "Never", "Place", "Break", "Always"), //1
-            new SettingMode("BreakHand: ", "Mainhand", "Offhand", "BothHands"), // 2
-            new SettingMode("PlaceMode: ", "1.12", "1.13+"), //3
-            new SettingMode("BreakMode: ", "All", "Smart"), //4
-            new SettingSlider(0.0D, 6.0D, 5.0D, 0, "Range: "), //5
-            new SettingSlider(0.0D, 20.0D, 0, 0, "Hit Delay: "), //6
-            new SettingSlider(0.0D, 20.0D, 0, 0, "Place Delay: "), //7
-            new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: "), //8
-            new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: "), //9
-            new SettingSlider(1.0D, 36.0D, 10.0D, 0, "FacePlace HP: "), //10
-            new SettingToggle(false, "auto backdoor"), //11
-            new SettingToggle(false, "RenderTarget"), //12
-            new SettingToggle(true, "AutoSwitch"), //13
-            new SettingToggle(true, "Chat Alert"), //14
-            new SettingToggle(true, "speedi"), //15
+            new SettingMode("Logic: ", "BreakPlace", "PlaceBreak"),
+            new SettingMode("Rotate: ", "Never", "Place", "Break", "Always"),
+            new SettingMode("BreakHand: ", "Mainhand", "Offhand", "BothHands"),
+            new SettingMode("PlaceMode: ", "1.12", "1.13+"),
+            new SettingMode("BreakMode: ", "All", "Smart"),
+            new SettingSlider(0.0D, 6.0D, 5.0D, 0, "Range: "),
+            new SettingSlider(0.0D, 20.0D, 0, 0, "Hit Delay: "),
+            new SettingSlider(0.0D, 20.0D, 0, 0, "Place Delay: "),
+            new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: "),
+            new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: "),
+            new SettingSlider(1.0D, 36.0D, 10.0D, 0, "FacePlace HP: "),
+            new SettingToggle(false, "Multiplace"),
+            new SettingToggle(false, "RenderTarget"),
+            new SettingToggle(true, "AutoSwitch"),
+            new SettingToggle(true, "Chat Alert"),
+            new SettingToggle(true, "speedi"),
             new SettingToggle(false, "DamageText")
     );
     private final TimeUtils placeTimer;
     private final TimeUtils breakTimer;
     private double renderDamage = 0;
 
-
     private boolean switchCooldown = false;
     private BlockPos renderTarget = null;
     private final List<EntityPlayer> ezplayers = new ArrayList<>();
     private final List<EntityPlayer> targetPlayers = new ArrayList<>();
-    public blu3CrystalAura() { super("blu3CA", 0, Category.EXPERIMENTAL, "absolute shit i say", settings);
+
+    public AutoCrystal() { super("blu3CA", 0, Category.EXPERIMENTAL, "absolute shit i say", settings);
         this.placeTimer = new TimeUtils();
         this.breakTimer = new TimeUtils();
     }
     public void onDisable(){
-        if (this.getBoolean("Chat Alert")) ClientChat.log("blu3CA: " + ChatFormatting.RED + "OFF");
+        if (this.getBoolean("Chat Alert")) ChatUtils.log("blu3CA: " + ChatFormatting.RED + "OFF");
         renderTarget = null;
         ezplayers.clear();
         targetPlayers.clear();
     }
     public void onEnable(){
-        if (this.getBoolean("Chat Alert")) ClientChat.log("blu3CA: " + ChatFormatting.AQUA + "ON");
+        if (this.getBoolean("Chat Alert")) ChatUtils.log("blu3CA: " + ChatFormatting.AQUA + "ON");
     }
-    public void onUpdate() {
-        this.doStuff();
-    }
+    public void onUpdate() { this.doStuff(); }
     public void doStuff(){
         switch (this.getMode("Logic: ")){
             case 0: {
@@ -106,7 +110,6 @@ public class blu3CrystalAura extends Module {
 
     private void placeCrystal(){
         ezplayers.clear();
-        int crystalLimit = 1;
         int crystalSlot;
         crystalSlot = this.mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL ? this.mc.player.inventory.currentItem : -1;
         if (crystalSlot == -1)
@@ -127,11 +130,12 @@ public class blu3CrystalAura extends Module {
         List<BlockPos> blocks = this.findCrystalBlocks();
         ezplayers.addAll(this.mc.world.playerEntities);
         ezplayers.remove(this.mc.player);
-        for (Object o : new ArrayList<>(ezplayers)) {
-            Entity e = (EntityPlayer) o;
-            if (FriendManager.Get().isFriend(e.getName().toLowerCase())){
+        for (EntityPlayer o : new ArrayList<>(ezplayers)) {
+            EntityPlayer e = o;
+            if (FriendManager.get().isFriend(e.getName().toLowerCase())){
                 ezplayers.remove(e);
             }
+            if (e.getHealth() <= 0) ezplayers.remove(e);
         }
         BlockPos placeTarget = null;
         float highDamage = 0.5f;
@@ -152,15 +156,16 @@ public class blu3CrystalAura extends Module {
                    highDamage = damage;
                    placeTarget = pos;
                    renderTarget = pos;
+                   // double for() loop in a ca? :flushed:
                }
            }
        }
-       if (placeTarget != null){
-               if (this.getBoolean("AutoSwitch") && this.mc.player.inventory.currentItem != crystalSlot && !eatingGap()) {
-                   this.mc.player.inventory.currentItem = crystalSlot;
-                   this.switchCooldown = true;
-                   return;
-               }
+        if (placeTarget != null){
+           if (this.getBoolean("AutoSwitch") && this.mc.player.inventory.currentItem != crystalSlot && !eatingGap()) {
+               this.mc.player.inventory.currentItem = crystalSlot;
+               this.switchCooldown = true;
+               return;
+           }
            if (this.switchCooldown)
            {
                this.switchCooldown = false;
@@ -184,11 +189,16 @@ public class blu3CrystalAura extends Module {
         players.clear();
         players.addAll(this.mc.world.playerEntities);
         players.remove(this.mc.player);
-        for (Object o : new ArrayList<>(players)) {
-            Entity e = (EntityPlayer) o;
-            if (FriendManager.Get().isFriend(e.getName().toLowerCase())){
+        for (EntityPlayer o : new ArrayList<>(players)) {
+            EntityPlayer e =  o;
+            if (FriendManager.get().isFriend(e.getName().toLowerCase())){
                 players.remove(e);
             }
+            if (e.getHealth() <= 0) {
+                players.remove(e);
+            }
+
+
         }
         switch (this.getMode("BreakMode: ")){
             case 0: {
@@ -280,14 +290,39 @@ public class blu3CrystalAura extends Module {
     {
         return new BlockPos(Math.floor(this.mc.player.posX), Math.floor(this.mc.player.posY), Math.floor(this.mc.player.posZ));
     }
+
+    private boolean getIsEmpty(boolean multiPlace, BlockPos pos){
+        if (multiPlace) {
+            return this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos)).isEmpty();
+        }
+        else return this.mc.world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityCreature.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityExpBottle.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityEnderEye.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityZombie.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityPigZombie.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityEnderPearl.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityEnderman.class, new AxisAlignedBB(pos)).isEmpty()
+                && this.mc.world.getEntitiesWithinAABB(EntityEndermite.class, new AxisAlignedBB(pos)).isEmpty();
+        //works lmfao someone tell me a better way
+    }
+
     private boolean canPlaceCrystal(BlockPos blockPos){
         if (this.getMode("PlaceMode: ") == 0) {
             BlockPos boost = blockPos.add(0, 1, 0);
             BlockPos boost2 = blockPos.add(0, 2, 0);
-            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK
+                    || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN)
+                    && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR
+                    && this.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR
+                    && getIsEmpty(this.getBoolean("MultiPlace"), boost);
         } else {
             BlockPos boost = blockPos.add(0, 1, 0);
-            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK
+                    || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN)
+                    && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR
+                    && getIsEmpty(this.getBoolean("MultiPlace"), boost);
         }
     }
     public void onRender() {
@@ -296,6 +331,7 @@ public class blu3CrystalAura extends Module {
            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(renderTarget), 0, 1, 1, 0.3F);
            if (this.getBoolean("DamageText"))RenderUtils.drawText(renderTarget, ((Math.floor(this.renderDamage) == this.renderDamage) ? Integer.valueOf((int)this.renderDamage) : String.format("%.1f", this.renderDamage)) + "");
        }
+
         if (this.getBoolean("RenderTarget")) {
             for (EntityPlayer e : targetPlayers)
                 RenderUtils.drawBlockBox(e.getEntityBoundingBox(), 0.0F, 1.0F, 1.0F, 0.3F);

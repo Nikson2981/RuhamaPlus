@@ -2,7 +2,7 @@ package blu3.ruhamaplus.utils.friendutils;
 
 import blu3.ruhamaplus.RuhamaPlus;
 import blu3.ruhamaplus.module.ModuleManager;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class FriendManager {
 
-    public static FriendManager Get()
+    public static FriendManager get()
     {
         return RuhamaPlus.GetFriendManager();
     }
@@ -30,7 +30,7 @@ public class FriendManager {
     public FriendManager()
     {
     }
-    public void LoadFriends()
+    public void loadFriends()
     {
         File l_Exists = new File("blu3/ruhama+/Friendlist.json");
         if (!l_Exists.exists())
@@ -57,7 +57,7 @@ public class FriendManager {
         }
     }
 
-    public void SaveFriends()
+    public void saveFriends()
     {
         GsonBuilder builder = new GsonBuilder();
 
@@ -80,7 +80,7 @@ public class FriendManager {
 
     private LinkedTreeMap<String, Friend> FriendList = new LinkedTreeMap<>();
 
-    public boolean IsFriend(Entity p_Entity)
+    public boolean isFriend(Entity p_Entity)
     {
         return p_Entity instanceof EntityPlayer && FriendList.containsKey(p_Entity.getName().toLowerCase());
     }
@@ -88,26 +88,26 @@ public class FriendManager {
     public boolean addFriend(String p_Name)
     {
         if (FriendList.containsKey(p_Name.toLowerCase())) {
-            ClientChat.log(p_Name.toLowerCase() + " is already a friend");
+            ChatUtils.log(p_Name.toLowerCase() + " is already a friend");
             return false;
         }
         Friend l_Friend = new Friend(p_Name.toLowerCase(), p_Name.toLowerCase());
 
         FriendList.put(p_Name.toLowerCase(), l_Friend);
-        ClientChat.log(p_Name.toLowerCase() + " has been added as a friend");
-        SaveFriends();
+        ChatUtils.log(p_Name.toLowerCase() + " has been added as a friend");
+        saveFriends();
         return true;
     }
 
     public boolean removeFriend(String p_Name)
     {
         if (!FriendList.containsKey(p_Name.toLowerCase())) {
-            ClientChat.log(p_Name.toLowerCase() + " is not a friend");
+            ChatUtils.log(p_Name.toLowerCase() + " is not a friend");
             return false;
         }
         FriendList.remove(p_Name.toLowerCase());
-        SaveFriends();
-        ClientChat.log(p_Name.toLowerCase() + " removed from friends");
+        saveFriends();
+        ChatUtils.log(p_Name.toLowerCase() + " removed from friends");
         return true;
     }
 
@@ -125,7 +125,7 @@ public class FriendManager {
         //FriendManager.Get().isFriend(e.toLowerCase())
     }
 
-    public Friend GetFriend(Entity e)
+    public Friend getFriend(Entity e)
     {
         if ((!Objects.requireNonNull(ModuleManager.getModuleByName("Friends")).isToggled()))
             return null;
@@ -136,8 +136,8 @@ public class FriendManager {
         return FriendList.get(e.getName().toLowerCase());
     }
 
-    public void Load()
+    public void load()
     {
-        LoadFriends();
+        loadFriends();
     }
 }

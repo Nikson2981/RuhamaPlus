@@ -1,12 +1,9 @@
 package blu3.ruhamaplus.module.modules.gui;
 
-import blu3.ruhamaplus.gui.AdvancedText;
-import blu3.ruhamaplus.gui.TextWindow;
+import blu3.ruhamaplus.gui.ruhama.AdvancedText;
+import blu3.ruhamaplus.gui.ruhama.TextWindow;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;

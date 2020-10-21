@@ -1,6 +1,6 @@
 package blu3.ruhamaplus.command;
 
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -37,11 +37,11 @@ public class FriendCommand extends CommandBase implements IClientCommand {
 
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         if (args.length == 0) {
-            ClientChat.warn("/.friend [name]");
+            ChatUtils.warn("/.friend [name]");
         }
 
         if(args.length == 1){
-            FriendManager.Get().addFriend(args[0]);
+            FriendManager.get().addFriend(args[0]);
         }
     }
     public boolean checkPermission(MinecraftServer server, ICommandSender sender)

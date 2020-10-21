@@ -4,7 +4,7 @@ import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingMode;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
@@ -30,7 +30,7 @@ public class TotemPopCounter extends Module {
             popList.put(e.getName(), 1);
 
             if (this.getSettings().get(0).asMode().mode == 0){
-                ClientChat.log(e.getName() + " popped " + 1 + " totem");
+                ChatUtils.log(e.getName() + " popped " + 1 + " totem");
             } else {
                 this.mc.player.sendChatMessage(e.getName() + " popped " + 1 + " totem");
             }
@@ -39,7 +39,7 @@ public class TotemPopCounter extends Module {
             int newPopCounter = popCounter += 1;
             popList.put(e.getName(), newPopCounter);
             if (this.getSettings().get(0).asMode().mode == 0) {
-                ClientChat.log(e.getName() + " popped " + newPopCounter + " totems");
+                ChatUtils.log(e.getName() + " popped " + newPopCounter + " totems");
             } else {
                 this.mc.player.sendChatMessage(e.getName() + " popped " + newPopCounter + " totems");
             }
@@ -52,7 +52,7 @@ public class TotemPopCounter extends Module {
                 if (player.getHealth() <= 0) {
                     if (popList.containsKey(player.getName())) {
                         if (this.getSettings().get(0).asMode().mode == 0) {
-                            ClientChat.log(player.getName() + " died after popping " + popList.get(player.getName()) + " totems");
+                            ChatUtils.log(player.getName() + " died after popping " + popList.get(player.getName()) + " totems");
                         } else {
                             this.mc.player.sendChatMessage(player.getName() + " died after popping " + popList.get(player.getName()) + " totems");
                         }

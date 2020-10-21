@@ -3,26 +3,17 @@ package blu3.ruhamaplus.utils;
 import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.Minecraft;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -155,7 +146,7 @@ public class RenderUtils implements Util
             colour = l_Player.getHealth() + l_Player.getAbsorptionAmount() > 20.0F ? 2158832 : MathHelper.hsvToRGB((l_Player.getHealth() + l_Player.getAbsorptionAmount()) / 20.0F / 3.0F, 1.0F, 1.0F);
         } catch (Exception ignored) {}
 
-        if (FriendManager.Get().isFriend(l_Player.getName().toLowerCase())) {
+        if (FriendManager.get().isFriend(l_Player.getName().toLowerCase())) {
             mc.fontRenderer.drawStringWithShadow(ChatFormatting.AQUA + Name + ChatFormatting.WHITE + " | " + Ping + "ms" + " | " + ChatFormatting.RESET + Health, x + 20, y - 45, colour);
         } else {
             mc.fontRenderer.drawStringWithShadow(ChatFormatting.WHITE + Name + " | " + Ping + "ms" + " | " + ChatFormatting.RESET + Health, x + 20, y - 45, colour);

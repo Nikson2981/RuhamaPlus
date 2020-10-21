@@ -1,6 +1,7 @@
 package blu3.ruhamaplus.mixin.mixins;
 
 import blu3.ruhamaplus.module.ModuleManager;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiNewChat;

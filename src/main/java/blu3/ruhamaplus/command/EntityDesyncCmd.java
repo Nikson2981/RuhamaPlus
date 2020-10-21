@@ -1,6 +1,6 @@
 package blu3.ruhamaplus.command;
 
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -52,7 +52,7 @@ public class EntityDesyncCmd extends CommandBase implements IClientCommand
             {
                 if (this.mc.player.getRidingEntity() == null)
                 {
-                    ClientChat.warn("No entity to dismount");
+                    ChatUtils.warn("No entity to dismount");
                     return;
                 }
 
@@ -62,12 +62,12 @@ public class EntityDesyncCmd extends CommandBase implements IClientCommand
                 this.mc.world.removeEntity(this.entity);
 
                 MinecraftForge.EVENT_BUS.register(this);
-                ClientChat.log("Dismounted");
+                ChatUtils.log("Dismounted");
             } else
             {
                 if (this.entity == null)
                 {
-                    ClientChat.warn("No entity to remount");
+                    ChatUtils.warn("No entity to remount");
                     return;
                 }
 
@@ -78,11 +78,11 @@ public class EntityDesyncCmd extends CommandBase implements IClientCommand
                 this.entity = null;
 
                 MinecraftForge.EVENT_BUS.unregister(this);
-                ClientChat.log("Remounted");
+                ChatUtils.log("Remounted");
             }
         } else
         {
-            ClientChat.error("EntityDesyncCmd","Invalid syntax, /.entitydesync (dismount/remount)");
+            ChatUtils.error("EntityDesyncCmd","Invalid syntax, /.entitydesync (dismount/remount)");
         }
     }
 

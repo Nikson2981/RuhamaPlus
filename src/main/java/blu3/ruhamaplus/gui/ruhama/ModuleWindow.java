@@ -1,4 +1,4 @@
-package blu3.ruhamaplus.gui;
+package blu3.ruhamaplus.gui.ruhama;
 
 import blu3.ruhamaplus.module.Module;
 import net.minecraft.client.gui.FontRenderer;

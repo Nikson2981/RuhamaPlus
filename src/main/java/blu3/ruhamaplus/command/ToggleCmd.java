@@ -2,7 +2,7 @@ package blu3.ruhamaplus.command;
 
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.module.ModuleManager;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -40,15 +40,15 @@ public class ToggleCmd extends CommandBase implements IClientCommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 
         if (args.length == 0) {
-            ClientChat.warn("module? bruh");
+            ChatUtils.warn("module? bruh");
             return;
         }
         Module m = ModuleManager.getModuleByName(args[0]);
         if (m == null) {
-            ClientChat.warn("what ths fuck is '" + args[0] + "'");
+            ChatUtils.warn("what ths fuck is '" + args[0] + "'");
             return;
         }
         m.toggle();
-        ClientChat.log(m.getName() + (m.isToggled() ? ChatFormatting.GREEN + " enabled" : ChatFormatting.RED + " disabled"));
+        ChatUtils.log(m.getName() + (m.isToggled() ? ChatFormatting.GREEN + " enabled" : ChatFormatting.RED + " disabled"));
     }
 }

@@ -6,263 +6,399 @@ import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
+import blu3.ruhamaplus.utils.BlockUtil;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.WorldUtils;
+import blu3.ruhamaplus.utils.friendutils.FriendManager;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockShulkerBox;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiHopper;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiDispenser;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemAir;
-import net.minecraft.item.ItemShulkerBox;
-import net.minecraft.network.play.client.CPacketPlayer.Rotation;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketEntityAction;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Auto32k extends Module
-{
-    private static final List<SettingBase> settings = Arrays.asList(new SettingMode("Mode: ", "Auto", "Looking"), new SettingMode("Protect: ", "Off", "Hopper", "Obby"), new SettingToggle(true, "Aura"), new SettingSlider(0.0D, 20.0D, 10.0D, 0, "CPS: "), new SettingMode("CPS: ", "Clicks/Sec", "Clicks/Tick", "Tick Delay"), new SettingToggle(false, "SafeShuker"), new SettingToggle(false, "AntiAim"), new SettingToggle(true, "2b Bypass"));
-
-    private BlockPos placedHopperPos;
-
-    private boolean ready;
-    private boolean active;
-    private boolean tickPassed;
-
-
-    private int timer = 0;
-
-    public Auto32k()
-    {
-        super("Auto32k", 0, Category.COMBAT, "Automatically places 32ks", settings);
+public class Auto32k extends Module {
+    public Auto32k() {
+        super("DispenserAuto32k", 0, Category.COMBAT, "Automatically dispenses a 32k.", settings);
     }
 
-    public void onEnable()
-    {
-        this.tickPassed = false;
+    private static final List<SettingBase> settings = Arrays.asList(
+            new SettingSlider(0, 20, 10, 0, "Clicks/Tick"),
+            new SettingSlider(0, 10, 6, 1, "Range"),
+            new SettingToggle(false, "Fill Hopper"),
+            new SettingToggle(false, "Drop Sword"),
+            new SettingMode("Rotate: ", "Hard", "Soft"),
+            new SettingToggle(true, "Aura Timeout"),
+            new SettingSlider(500, 2000, 1000, 10, "Timeout After: ")
+    );
 
-        int obsidian = -1;
-        int shulker = -1;
-        int hopper = -1;
+    private int stage;
+    private int obsidian;
+    private int dispenser;
+    private int redstone;
+    private int shulker;
+    private int hopper;
+    private int ticksEnabled;
 
-        int cap2;
+    private BlockPos target;
+    private BlockPos targetFront;
+    private Material targetFrontBlock;
+    private Material targetBlock;
 
-        for (cap2 = 0; cap2 < 9; ++cap2)
+    private boolean skippedStageOne = false;
+    private boolean isAirPlacing = false;
+
+    private int clicks;
+
+    public void fastUpdate(){
+        if (stage == 6) //really fucking fast killaura rofl
         {
-            if (this.mc.player.inventory.getStackInSlot(cap2).getItem() == Item.getItemFromBlock(Blocks.HOPPER))
-            {
-                hopper = cap2;
+            if (this.getBoolean("Aura Timeout") && clicks >= this.getSlider("Timeout After: ")){
+                ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Reached click limit, disabling.");
+                this.disable();
+                return;
             }
-
-            if (this.mc.player.inventory.getStackInSlot(cap2).getItem() instanceof ItemShulkerBox)
-            {
-                shulker = cap2;
-            }
-
-            if (this.mc.player.inventory.getStackInSlot(cap2).getItem() == Item.getItemFromBlock(Blocks.OBSIDIAN))
-            {
-                obsidian = cap2;
-            }
-        }
-
-        if (shulker != -1 && hopper != -1)
-        {
-            int y;
-            int x;
-
-            if (this.getSetting(0).asMode().mode == 1)
-            {
-                RayTraceResult ray = this.mc.player.rayTrace(4.25D, this.mc.getRenderPartialTicks());
-                if (WorldUtils.isBlockEmpty(Objects.requireNonNull(ray).getBlockPos()))
-                {
-                    return;
-                }
-
-                WorldUtils.placeBlock(ray.getBlockPos().up(), hopper, this.getSetting(7).asToggle().state, false);
-                WorldUtils.placeBlock(ray.getBlockPos().up(2), shulker, this.getSetting(7).asToggle().state, false);
-                WorldUtils.openBlock(ray.getBlockPos().up());
-
-                this.placedHopperPos = ray.getBlockPos().up();
-                this.ready = true;
-            } else
-            {
-                fernflowerMoment:
-
-                for (cap2 = -2; cap2 <= 2; ++cap2)
-                {
-                    for (y = -1; y <= 2; ++y)
-                    {
-                        for (x = -2; x <= 2; ++x)
-                        {
-                            if ((cap2 != 0 || y != 0 || x != 0) && (cap2 != 0 || y != 1 || x != 0) && WorldUtils.isBlockEmpty(this.mc.player.getPosition().add(cap2, y, x)) && this.mc.player.getPositionEyes(this.mc.getRenderPartialTicks()).distanceTo(this.mc.player.getPositionVector().add((double) cap2 + 0.5D, (double) y + 0.5D, (double) x + 0.5D)) < 4.5D && WorldUtils.isBlockEmpty(this.mc.player.getPosition().add(cap2, y + 1, x)) && this.mc.player.getPositionEyes(this.mc.getRenderPartialTicks()).distanceTo(this.mc.player.getPositionVector().add((double) cap2 + 0.5D, (double) y + 1.5D, (double) x + 0.5D)) < 4.5D)
-                            {
-                                boolean r = this.getSetting(7).asToggle().state;
-
-                                WorldUtils.placeBlock(this.mc.player.getPosition().add(cap2, y, x), hopper, r, false);
-                                WorldUtils.placeBlock(this.mc.player.getPosition().add(cap2, y + 1, x), shulker, r, false);
-                                //WorldUtils.placeBlock(this.mc.player.getPosition().add(cap2, y + 2, x), obsidian, r, false);
-                                WorldUtils.openBlock(this.mc.player.getPosition().add(cap2, y, x));
-
-                                this.placedHopperPos = this.mc.player.getPosition().add(cap2, y, x);
-                                this.ready = true;
-
-                                break fernflowerMoment;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (this.getSetting(1).asMode().mode != 2 || obsidian != -1)
-            {
-                if (this.getSetting(1).asMode().mode != 0)
-                {
-                    cap2 = 0;
-
-                    this.mc.player.inventory.currentItem = this.getSetting(1).asMode().mode == 1 ? hopper : obsidian;
-
-                    for (y = -1; y <= 1; ++y)
-                    {
-                        for (x = -1; x <= 1; ++x)
-                        {
-                            for (int z = -1; z <= 1; ++z)
-                            {
-                                if ((x != 0 || z != 0) && (x == 0 || z == 0) && WorldUtils.placeBlock(this.placedHopperPos.add(x, y, z), this.mc.player.inventory.currentItem, this.getSetting(7).asToggle().state, false))
-                                {
-                                    ++cap2;
-
-                                    if (cap2 > (this.getSetting(1).asMode().mode == 1 ? 1 : 2))
-                                    {
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }
+             if (this.killAura()) clicks++;
         }
     }
 
-    public void onUpdate()
-    {
-        if (!this.active && !this.ready)
-        {
-            this.setToggled(false);
+
+    public void onEnable() {
+        if (nullCheck()) {
+            this.disable();
+            return;
         }
 
-        if (this.active && this.getSetting(2).asToggle().state)
-        {
-            this.killAura();
-        }
+        this.clicks = 0;
 
-        if (this.active && this.getSetting(6).asToggle().state)
-        {
-            this.mc.player.connection.sendPacket(new Rotation(this.mc.player.rotationYaw, 90.0F, this.mc.player.onGround));
-        }
+        skippedStageOne = false;
+        isAirPlacing = false;
 
-        int obsidian = -1;
+        ticksEnabled = 0;
+        stage = 0;
+        obsidian = -1;
+        dispenser = -1;
+        redstone = -1;
+        shulker = -1;
+        hopper = -1;
 
-        for (int i = 0; i < 9; ++i)
-        {
-            if (this.mc.player.inventory.getStackInSlot(i).getItem() == Item.getItemFromBlock(Blocks.OBSIDIAN))
-            {
+        target = null; //lets hope this doesnt fuck us later
+
+        for (int i = 0; i < 9; i++) {
+
+            if (obsidian != -1
+                    && dispenser != -1
+                    && redstone != -1
+                    && shulker != -1
+                    && hopper != -1) break;
+
+            ItemStack stack = mc.player.inventory.getStackInSlot(i);
+
+            if (stack == ItemStack.EMPTY || !(stack.getItem() instanceof ItemBlock)) continue;
+
+            Block block = ((ItemBlock) stack.getItem()).getBlock();
+
+            if (block == Blocks.OBSIDIAN) {
                 obsidian = i;
+            } else if (block == Blocks.DISPENSER) {
+                dispenser = i;
+            } else if (block == Blocks.REDSTONE_BLOCK) {
+                redstone = i;
+            } else if (block == Blocks.HOPPER) {
+                hopper = i;
+            } else if (BlockUtil.shulkers.contains(block)) {
+                shulker = i;
+            }
+
+        }
+
+        if (obsidian == -1) {
+            ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Missing Obsidian!");
+            this.disable();
+            return;
+        } else if (dispenser == -1) {
+            ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Missing Dispenser!");
+            this.disable();
+            return;
+        } else if (redstone == -1) {
+            ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Missing Redstone Block!");
+            this.disable();
+            return;
+        } else if (hopper == -1) {
+            ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Missing Hopper!");
+            this.disable();
+            return;
+        } else if (shulker == -1) {
+            ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Missing Shulker Box!");
+            this.disable();
+            return;
+        }
+
+        if (mc.objectMouseOver == null || mc.objectMouseOver.getBlockPos() == null || mc.objectMouseOver.getBlockPos().up() == null) {
+            ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Not a valid target!");
+            this.disable();
+            return;
+        }
+
+
+        RayTraceResult ray = this.mc.player.rayTrace(4.0D, this.mc.getRenderPartialTicks());
+        BlockPos pos = Objects.requireNonNull(ray).getBlockPos();
+
+        target = pos;
+        targetFront = target.offset(mc.player.getHorizontalFacing().getOpposite());
+        targetFrontBlock = mc.world.getBlockState(targetFront).getMaterial();
+        targetBlock = mc.world.getBlockState(target).getMaterial();
+    }
+
+    public void onDisable() {
+        if (nullCheck()) return;
+    }
+
+
+    public void onUpdate() {
+        ticksEnabled++;
+
+       if (ticksEnabled >= 600 && stage != 6){
+           this.disable();
+           return;
+       }
+
+        if (nullCheck()) {
+            this.disable();
+            return;
+        }
+        if (stage == 6)
+        {
+            if (!(mc.currentScreen instanceof GuiHopper) && this.getBoolean("Drop Sword")) {
+                this.mc.playerController.windowClick(mc.player.inventoryContainer.windowId, mc.player.inventory.currentItem + 36, 0, ClickType.PICKUP, mc.player);
+                this.mc.playerController.windowClick(mc.player.inventoryContainer.windowId, -999, 0, ClickType.PICKUP, mc.player);
+                this.disable();
+                return;
             }
         }
 
-        if (this.tickPassed && this.getSetting(5).asToggle().state && obsidian != -1)
-        {
-            WorldUtils.placeBlock(this.placedHopperPos.add(0, 2, 0), obsidian, this.getSetting(7).asToggle().state, false);
+        if (stage == 0) {
+            if(targetFrontBlock.isReplaceable() && !(targetBlock .isReplaceable())) {
+                target = target.add(0, -1, 0);
+                skippedStageOne = true;
+                stage = 1;
+                return;
+            }
+
+            if(targetFrontBlock.isReplaceable() && targetBlock.isReplaceable()) {
+                isAirPlacing = true;
+                skippedStageOne = false;
+            }
+
+            mc.player.inventory.currentItem = obsidian;
+            placeBlock(target.add(0, 1, 0), EnumFacing.DOWN);
+            stage = 1;
+            return;
         }
 
-        this.tickPassed = true;
+        if (stage == 1) {
+            mc.player.inventory.currentItem = dispenser;
+            placeBlock(target.add(0, 2, 0), EnumFacing.DOWN);
+            if(!isAirPlacing) {
+                WorldUtils.openBlock(target.add(0, 2, 0));
+            } else {
+                WorldUtils.openBlock(target.add(0, 1, 0));
+            }
+            stage = 2;
+            return;
+        }
 
-        if (this.mc.currentScreen instanceof GuiHopper)
+        if (stage == 2) {
+
+            if (!(mc.currentScreen instanceof GuiDispenser)) {
+                return;
+            }
+
+            mc.playerController.windowClick(mc.player.openContainer.windowId, 4, shulker, ClickType.SWAP, mc.player);
+            mc.player.closeScreen();
+            stage = 3;
+            return;
+        }
+
+        if (stage == 3) //wow, this was a lot of work just for placing a redstone block
         {
-            GuiHopper gui = (GuiHopper) this.mc.currentScreen;
+            BlockPos attempt0 = target.add(0, 3, 0);
+            BlockPos attempt1 = target.add(0, 2, 0).offset(mc.player.getHorizontalFacing().rotateY());
+            BlockPos attempt2 = target.add(0, 2, 0).offset(mc.player.getHorizontalFacing().rotateYCCW());
+            BlockPos attempt3 = target.add(0, 2, 0).offset(mc.player.getHorizontalFacing());
+            EnumFacing towardplayer = mc.player.getHorizontalFacing().getOpposite();
+            EnumFacing rightside = mc.player.getHorizontalFacing().rotateY().getOpposite();
+            EnumFacing leftside = mc.player.getHorizontalFacing().rotateYCCW().getOpposite();
 
-            if (this.ready)
-            {
-                this.active = true;
-                this.ready = false;
+            mc.player.inventory.currentItem = redstone;
+            Material block1 = mc.world.getBlockState(attempt0).getMaterial();
+            Material block2 = mc.world.getBlockState(attempt1).getMaterial();
+            Material block3 = mc.world.getBlockState(attempt2).getMaterial();
+            Material block4 = mc.world.getBlockState(attempt3).getMaterial();
+            Material[] blockall = {block1, block2, block3, block4};
+            if (block1.isReplaceable()) {
+                placeBlock(attempt0, EnumFacing.DOWN);
+                stage = 4;
             }
 
-            int slot;
+            if ((block2.isReplaceable()) && !(block1.isReplaceable())) {
+                placeBlock(attempt1, rightside);
+                stage = 4;
+            }
 
-            for (slot = 32; slot <= 40; ++slot)
-            {
-                if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, gui.inventorySlots.getSlot(slot).getStack()) > 5)
-                {
-                    this.mc.player.inventory.currentItem = slot - 32;
-                    break;
+            if ((block3.isReplaceable()) && !(block1.isReplaceable()) && !(block2.isReplaceable())) {
+                placeBlock(attempt2, leftside);
+                stage = 4;
+            }
+
+            if ((block4.isReplaceable()) && !(block1.isReplaceable()) && !(block2.isReplaceable()) && !(block3.isReplaceable())) {
+                placeBlock(attempt3, towardplayer);
+                stage = 4;
+            }
+
+            if (!(block1.isReplaceable()) && !(block2.isReplaceable()) && !(block3.isReplaceable()) && !(block4.isReplaceable())) {
+                ChatUtils.log("No viable redstone place targets!");
+                this.disable();
+                return;
+            }
+
+        }
+
+        if (stage == 4) {
+
+            mc.player.inventory.currentItem = hopper;
+            if(skippedStageOne && didShulkPlaceAir()) {
+                placeBlock(targetFront, mc.player.getHorizontalFacing());
+                WorldUtils.openBlock(targetFront);
+            } else if(isAirPlacing && didShulkPlaceAir()){
+                placeBlock(targetFront, mc.player.getHorizontalFacing());
+                WorldUtils.openBlock(targetFront);
+            } else if(didShulkPlace()){
+                placeBlock(targetFront.add(0, 1, 0), mc.player.getHorizontalFacing());
+                WorldUtils.openBlock(targetFront.up());
+            } else {
+                return;
+            }
+            mc.player.inventory.currentItem = shulker;
+
+            stage = 5;
+            return;
+        }
+
+        if (stage == 5) {
+            if (!(mc.currentScreen instanceof GuiHopper)) {
+                return;
+            }
+
+            if (((GuiContainer) mc.currentScreen).inventorySlots.getSlot(1).getStack().isEmpty()) {
+                if (this.getBoolean("Fill Hopper")) {
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 4, obsidian, ClickType.SWAP, mc.player);
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 4, 0, ClickType.PICKUP, mc.player);
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 4, 1, ClickType.PICKUP, mc.player);
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 3, 1, ClickType.PICKUP, mc.player);
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 2, 1, ClickType.PICKUP, mc.player);
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 1, 1, ClickType.PICKUP, mc.player);
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 0, 0, ClickType.PICKUP, mc.player);
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 0, obsidian, ClickType.SWAP, mc.player);
                 }
             }
 
-            if (this.active)
-            {
-                if (this.getSetting(4).asMode().mode == 0)
-                {
-                    this.timer = (long) this.timer >= Math.round(20.0D / this.getSetting(3).asSlider().getValue()) ? 0 : this.timer + 1;
-                } else if (this.getSetting(4).asMode().mode == 1)
-                {
-                    this.timer = 0;
-                } else if (this.getSetting(4).asMode().mode == 2)
-                {
-                    this.timer = (double) this.timer >= this.getSetting(3).asSlider().getValue() ? 0 : this.timer + 1;
-                }
+
+            if (((GuiContainer) mc.currentScreen).inventorySlots.getSlot(0).getStack().isEmpty()) {
+                return;
             }
 
-            if (!(gui.inventorySlots.inventorySlots.get(0).getStack().getItem() instanceof ItemAir) && this.active)
-            {
-                slot = this.mc.player.inventory.currentItem;
+            stage = 6;
+            return;
+        }
 
-                boolean pull = false;
-
-                for (int i = 40; i >= 32; --i)
-                {
-                    if (gui.inventorySlots.getSlot(i).getStack().isEmpty())
-                    {
-                        slot = i;
-                        pull = true;
-
-                        break;
-                    }
-                }
-
-                if (pull)
-                {
-                    this.mc.playerController.windowClick(gui.inventorySlots.windowId, 0, 0, ClickType.PICKUP, this.mc.player);
-                    this.mc.playerController.windowClick(gui.inventorySlots.windowId, slot, 0, ClickType.PICKUP, this.mc.player);
-                }
-            }
-        } else
+        if (stage == 6) //this stage will run every tick until the gui is closed
         {
-            this.active = false;
-            this.timer = 0;
+            if (!(mc.currentScreen instanceof GuiHopper)) {
+                this.disable();
+                return;
+            }
+
+            boolean isHandEmpty = mc.player.inventory.getCurrentItem().isEmpty();
+
+            if (isHandEmpty) {
+                mc.playerController.windowClick(mc.player.openContainer.windowId, 0, mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
+            }
         }
 
     }
 
-    public void killAura()
+    private boolean didShulkPlace() {
+        return mc.world.getBlockState(targetFront.add(0, 2, 0)).getBlock() instanceof BlockShulkerBox;
+    }
+
+    private boolean didShulkPlaceAir() {
+        return mc.world.getBlockState(targetFront.add(0, 1, 0)).getBlock() instanceof BlockShulkerBox;
+    }
+
+    private void placeBlock(BlockPos pos, EnumFacing face) {
+        BlockPos adj = pos.offset(face);
+        EnumFacing opposite = face.getOpposite();
+        mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
+        Vec3d hitVec = new Vec3d(adj).add(0.5, 0.5, 0.5).add(new Vec3d(opposite.getDirectionVec()).scale(0.5));
+        mc.playerController.processRightClickBlock(mc.player, mc.world, adj, opposite, hitVec, EnumHand.MAIN_HAND);
+        mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+        mc.player.swingArm(EnumHand.MAIN_HAND);
+        rotate(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public boolean killAura()
     {
-        for (int i = 0; (double) i < (this.getSetting(4).asMode().mode == 1 ? this.getSetting(4).asSlider().getValue() : 1.0D); ++i)
+        for (int i = 0; (double) i < (this.getSlider("Clicks/Tick")); ++i)
         {
             Entity target = null;
 
             try
             {
-                List<Entity> players = new ArrayList<>(this.mc.world.playerEntities);
-                players.remove(this.mc.player);
+                List<Entity> players = new ArrayList<>(this.mc.world.loadedEntityList);
 
+                for (Object o : new ArrayList<>(players))
+                {
+                    Entity e = (Entity) o;
+
+                    if (!(e instanceof EntityLivingBase))
+                    {
+                        players.remove(e);
+                    }
+
+                    if (FriendManager.get().isFriend(e.getName().toLowerCase())){
+                        players.remove(e);
+                    }
+
+                    if (e instanceof EntityLivingBase && ((EntityLivingBase) e).getHealth() <= 0)
+                    {
+                        players.remove(e);
+                    }
+
+                }
+
+                players.remove(this.mc.player);
                 players.sort((a, b) -> Float.compare(a.getDistance(this.mc.player), b.getDistance(this.mc.player)));
 
                 if (players.get(0).getDistance(this.mc.player) < 8.0F)
@@ -275,18 +411,35 @@ public class Auto32k extends Module
 
             if (target == null)
             {
-                return;
+                return false;
             }
 
-            WorldUtils.rotateClient(target.posX, target.posY + 1.0D, target.posZ);
+            //rotate(target.posX, target.posY + 1.0D, target.posZ);
 
-            if (target.getDistance(this.mc.player) > 6.0F)
+            if (target.getDistance(this.mc.player) > this.getSlider("Range"))
             {
-                return;
+                return false;
             }
+
+
+            if (!(this.mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD)) return false;
+
 
             this.mc.playerController.attackEntity(this.mc.player, target);
             this.mc.player.swingArm(EnumHand.MAIN_HAND);
+            return true;
+        }
+        return false;
+    }
+
+    void rotate(double x, double y, double z){
+        switch (this.getMode("Rotate: ")) {
+            case 0: {
+                WorldUtils.rotateClient(x, y, z);
+            }
+            case 1: {
+                WorldUtils.rotatePacket(x, y, z);
+            }
         }
     }
 }

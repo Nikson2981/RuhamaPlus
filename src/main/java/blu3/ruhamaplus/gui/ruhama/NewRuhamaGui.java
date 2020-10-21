@@ -1,10 +1,12 @@
-package blu3.ruhamaplus.gui;
+package blu3.ruhamaplus.gui.ruhama;
 
 import blu3.ruhamaplus.RuhamaPlus;
+
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.module.ModuleManager;
 import blu3.ruhamaplus.utils.Rainbow;
+
 import net.minecraft.client.gui.GuiScreen;
 import org.apache.commons.lang3.tuple.MutableTriple;
 

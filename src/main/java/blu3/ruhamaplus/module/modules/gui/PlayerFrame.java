@@ -22,8 +22,7 @@ public class PlayerFrame extends Module {
 
     private static final List<SettingBase> settings = Arrays.asList(
             new SettingSlider(0.0D, 1920.0D, 400.0D, 10, "X"),
-            new SettingSlider(0.0D, 1080.0D, 400.0D, 10, "Y"),
-            new SettingToggle(false, "Background")
+            new SettingSlider(0.0D, 1080.0D, 400.0D, 10, "Y")
 );
 
     public PlayerFrame()
@@ -42,6 +41,7 @@ public class PlayerFrame extends Module {
         final ItemStack inHand = me.getHeldItemMainhand();
         final ItemStack inOffHand = me.getHeldItemOffhand();
 
+        GuiInventory.drawEntityOnScreen(x, y - 55 + 620000, 30, (float)x + (float)51.0 - ((float)x +(float) 50.0), (float)y + (float)75.0 - (float)50.0 - (float)y + (float)12.0, me);
         GuiInventory.drawEntityOnScreen(x, y - 55 + 62, 30, (float)x + (float)51.0 - ((float)x +(float) 50.0), (float)y + (float)75.0 - (float)50.0 - (float)y + (float)12.0, me);
 
         int i = 0;

@@ -6,7 +6,7 @@ import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
-import blu3.ruhamaplus.utils.ClientChat;
+import blu3.ruhamaplus.utils.ChatUtils;
 import blu3.ruhamaplus.utils.InventoryUtil;
 import blu3.ruhamaplus.utils.RenderUtils;
 import blu3.ruhamaplus.utils.WorldUtils;
@@ -82,7 +82,7 @@ public class BedAuraECME extends Module {
             for (Object o : new ArrayList<>(entities)) {
                 Entity e = (EntityPlayer) o;
 
-                if (FriendManager.Get().isFriend(e.getName().toLowerCase())){
+                if (FriendManager.get().isFriend(e.getName().toLowerCase())){
                     entities.remove(e);
                 }
             }
@@ -117,11 +117,11 @@ public class BedAuraECME extends Module {
     }
 
     public void onEnable() {
-        ClientChat.log("BedAura:" + TextFormatting.GREEN + " ENABLED!");
+        ChatUtils.log("BedAura:" + TextFormatting.GREEN + " ENABLED!");
     }
 
     public void onDisable() {
-        ClientChat.log("BedAura:" + TextFormatting.RED + " DISABLED!");
+        ChatUtils.log("BedAura:" + TextFormatting.RED + " DISABLED!");
         this.target = null;
         this.beds.clear();
     }
