@@ -162,8 +162,14 @@ public class Auto32k extends Module {
         }
 
 
-        RayTraceResult ray = this.mc.player.rayTrace(4.0D, this.mc.getRenderPartialTicks());
+        RayTraceResult ray = this.mc.player.rayTrace(5.0D, this.mc.getRenderPartialTicks());
         BlockPos pos = Objects.requireNonNull(ray).getBlockPos();
+
+        if (!mc.world.getBlockState(pos.up()).getMaterial().isReplaceable()) {
+            ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Not a valid target!");
+            this.disable();
+            return;
+        }
 
         target = pos;
         targetFront = target.offset(mc.player.getHorizontalFacing().getOpposite());

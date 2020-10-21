@@ -21,16 +21,19 @@ public class NewRuhamaGui extends GuiScreen
     public static List<MutableTriple<Module, Integer, TextWindow>> textWins = new ArrayList<>();
     public List<ModuleWindow> tabs = new ArrayList<>();
 
+    private int windowLength = 100;
+
     public void initWindows()
     {
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.COMBAT), "Combat", 120, 30, 35));
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.RENDER), "Render", 120, 105, 35));
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.MISC), "Misc", 120, 180, 35));
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.EXPLOITS), "Exploits", 120, 255, 35));
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.CHAT), "Chat", 120, 330, 35));
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.GUI), "GUI", 120, 405, 35));
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.EXPERIMENTAL), "Experimental", 120, 480, 35));
-        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.PLAYER), "Player", 1200, 555, 35));
+        int spacing = 30;
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.COMBAT), "Combat", windowLength, spacing, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.RENDER), "Render", windowLength, spacing + windowLength + 5, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.MISC), "Misc", windowLength, spacing + (windowLength * 2) + 10, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.EXPLOITS), "Exploits", windowLength, spacing + (windowLength * 3) + 15, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.CHAT), "Chat", windowLength, spacing + (windowLength * 4) + 20, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.GUI), "GUI", windowLength, spacing + (windowLength * 5) + 25, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.EXPERIMENTAL), "Experimental", windowLength, spacing + (windowLength * 6) + 30, 35));
+        this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.PLAYER), "Player", windowLength, spacing + (windowLength * 7) + 35, 35));
 
         for (Module m : ModuleManager.getModules())
         {
@@ -55,7 +58,7 @@ public class NewRuhamaGui extends GuiScreen
         while (tabsIter.hasNext())
         {
             ModuleWindow w = (ModuleWindow) tabsIter.next();
-            w.draw(mouseX, mouseY, 70);
+            w.draw(mouseX, mouseY, windowLength);
         }
 
         tabsIter = textWins.iterator();

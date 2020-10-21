@@ -35,6 +35,7 @@ import java.util.List;
 
 /**
  **  @author blu3 LMAO
+ **  this WILL be rewritten
  **/
 
 public class BedAuraECME extends Module {
