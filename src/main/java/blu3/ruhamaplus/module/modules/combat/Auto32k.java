@@ -32,6 +32,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +46,7 @@ public class Auto32k extends Module {
     }
 
     private static final List<SettingBase> settings = Arrays.asList(
-            new SettingSlider(0, 20, 10, 0, "Clicks/Tick"),
+            new SettingSlider(1, 20, 10, 0, "Clicks/Tick"),
             new SettingSlider(0, 10, 6, 1, "Range"),
             new SettingToggle(false, "Fill Hopper"),
             new SettingToggle(false, "Drop Sword"),
@@ -71,15 +73,16 @@ public class Auto32k extends Module {
 
     private int clicks;
 
-    public void fastUpdate(){
-        if (stage == 6) //really fucking fast killaura rofl
+
+    public void fastUpdate() {
+        if (stage == 6 && !getBoolean("1000CPS")) //decent killaura but we can go faster
         {
-            if (this.getBoolean("Aura Timeout") && clicks >= this.getSlider("Timeout After: ")){
+            if (this.getBoolean("Aura Timeout") && clicks >= this.getSlider("Timeout After: ")) {
                 ChatUtils.log(TextFormatting.BLUE + "[Auto32k] " + TextFormatting.RESET + "Reached click limit, disabling.");
                 this.disable();
                 return;
             }
-             if (this.killAura()) clicks++;
+            if (this.killAura()) clicks++;
         }
     }
 
@@ -185,17 +188,16 @@ public class Auto32k extends Module {
     public void onUpdate() {
         ticksEnabled++;
 
-       if (ticksEnabled >= 600 && stage != 6){
-           this.disable();
-           return;
-       }
+        if (ticksEnabled >= 600 && stage != 6) {
+            this.disable();
+            return;
+        }
 
         if (nullCheck()) {
             this.disable();
             return;
         }
-        if (stage == 6)
-        {
+        if (stage == 6) {
             if (!(mc.currentScreen instanceof GuiHopper) && this.getBoolean("Drop Sword")) {
                 this.mc.playerController.windowClick(mc.player.inventoryContainer.windowId, mc.player.inventory.currentItem + 36, 0, ClickType.PICKUP, mc.player);
                 this.mc.playerController.windowClick(mc.player.inventoryContainer.windowId, -999, 0, ClickType.PICKUP, mc.player);
@@ -205,14 +207,14 @@ public class Auto32k extends Module {
         }
 
         if (stage == 0) {
-            if(targetFrontBlock.isReplaceable() && !(targetBlock .isReplaceable())) {
+            if (targetFrontBlock.isReplaceable() && !(targetBlock.isReplaceable())) {
                 target = target.add(0, -1, 0);
                 skippedStageOne = true;
                 stage = 1;
                 return;
             }
 
-            if(targetFrontBlock.isReplaceable() && targetBlock.isReplaceable()) {
+            if (targetFrontBlock.isReplaceable() && targetBlock.isReplaceable()) {
                 isAirPlacing = true;
                 skippedStageOne = false;
             }
@@ -226,7 +228,7 @@ public class Auto32k extends Module {
         if (stage == 1) {
             mc.player.inventory.currentItem = dispenser;
             placeBlock(target.add(0, 2, 0), EnumFacing.DOWN);
-            if(!isAirPlacing) {
+            if (!isAirPlacing) {
                 WorldUtils.openBlock(target.add(0, 2, 0));
             } else {
                 WorldUtils.openBlock(target.add(0, 1, 0));
@@ -294,13 +296,13 @@ public class Auto32k extends Module {
         if (stage == 4) {
 
             mc.player.inventory.currentItem = hopper;
-            if(skippedStageOne && didShulkPlaceAir()) {
+            if (skippedStageOne && didShulkPlaceAir()) {
                 placeBlock(targetFront, mc.player.getHorizontalFacing());
                 WorldUtils.openBlock(targetFront);
-            } else if(isAirPlacing && didShulkPlaceAir()){
+            } else if (isAirPlacing && didShulkPlaceAir()) {
                 placeBlock(targetFront, mc.player.getHorizontalFacing());
                 WorldUtils.openBlock(targetFront);
-            } else if(didShulkPlace()){
+            } else if (didShulkPlace()) {
                 placeBlock(targetFront.add(0, 1, 0), mc.player.getHorizontalFacing());
                 WorldUtils.openBlock(targetFront.up());
             } else {
@@ -374,31 +376,25 @@ public class Auto32k extends Module {
         rotate(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public boolean killAura()
-    {
-        for (int i = 0; (double) i < (this.getSlider("Clicks/Tick")); ++i)
-        {
+    public boolean killAura() {
+        for (int i = 0; (double) i < (this.getSlider("Clicks/Tick")); ++i) {
             Entity target = null;
 
-            try
-            {
+            try {
                 List<Entity> players = new ArrayList<>(this.mc.world.loadedEntityList);
 
-                for (Object o : new ArrayList<>(players))
-                {
+                for (Object o : new ArrayList<>(players)) {
                     Entity e = (Entity) o;
 
-                    if (!(e instanceof EntityLivingBase))
-                    {
+                    if (!(e instanceof EntityLivingBase)) {
                         players.remove(e);
                     }
 
-                    if (FriendManager.get().isFriend(e.getName().toLowerCase())){
+                    if (FriendManager.get().isFriend(e.getName().toLowerCase())) {
                         players.remove(e);
                     }
 
-                    if (e instanceof EntityLivingBase && ((EntityLivingBase) e).getHealth() <= 0)
-                    {
+                    if (e instanceof EntityLivingBase && ((EntityLivingBase) e).getHealth() <= 0) {
                         players.remove(e);
                     }
 
@@ -407,23 +403,19 @@ public class Auto32k extends Module {
                 players.remove(this.mc.player);
                 players.sort((a, b) -> Float.compare(a.getDistance(this.mc.player), b.getDistance(this.mc.player)));
 
-                if (players.get(0).getDistance(this.mc.player) < 8.0F)
-                {
+                if (players.get(0).getDistance(this.mc.player) < 8.0F) {
                     target = players.get(0);
                 }
-            } catch (Exception ignored)
-            {
+            } catch (Exception ignored) {
             }
 
-            if (target == null)
-            {
+            if (target == null) {
                 return false;
             }
 
             //rotate(target.posX, target.posY + 1.0D, target.posZ);
 
-            if (target.getDistance(this.mc.player) > this.getSlider("Range"))
-            {
+            if (target.getDistance(this.mc.player) > this.getSlider("Range")) {
                 return false;
             }
 
@@ -438,7 +430,7 @@ public class Auto32k extends Module {
         return false;
     }
 
-    void rotate(double x, double y, double z){
+    void rotate(double x, double y, double z) {
         switch (this.getMode("Rotate: ")) {
             case 0: {
                 WorldUtils.rotateClient(x, y, z);

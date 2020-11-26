@@ -87,7 +87,7 @@ public class Surround extends Module
 
             for (BlockPos b : poses)
             {
-                if (WorldUtils.placeBlock(b, obsidian, rotate, false))
+                if (WorldUtils.placeBlock(b, obsidian, rotate, false) == 1)
                 {
                     this.mc.player.swingArm(EnumHand.MAIN_HAND);
                     ++cap;

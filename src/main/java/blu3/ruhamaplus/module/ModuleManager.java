@@ -1,5 +1,6 @@
 package blu3.ruhamaplus.module;
 
+import blu3.ruhamaplus.errors.NoModuleFoundException;
 import blu3.ruhamaplus.module.modules.chat.*;
 import blu3.ruhamaplus.module.modules.combat.*;
 import blu3.ruhamaplus.module.modules.experimental.*;
@@ -8,15 +9,11 @@ import blu3.ruhamaplus.module.modules.gui.*;
 import blu3.ruhamaplus.module.modules.misc.*;
 import blu3.ruhamaplus.module.modules.player.*;
 import blu3.ruhamaplus.module.modules.render.*;
+import net.minecraft.client.*;
+import net.minecraft.network.*;
+import org.lwjgl.input.*;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.Packet;
-import org.lwjgl.input.Keyboard;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 public class ModuleManager
@@ -44,7 +41,7 @@ public class ModuleManager
             new CoordHud(),
             new Crasher(),
             new Criticals(),
-            //new DiscordRPC(),
+        /*    new DiscordRPC(),*/
             new DispenserAura(),
             new ElytraFly(),
             new ElytraReplace(),
@@ -54,6 +51,7 @@ public class ModuleManager
             new FeetXp(),
             new FOVSlider(),
             new FogColour(),
+            new GreenText(),
             new Gui(),
             new HoleFiller(),
             new HoleFinderESP(),
@@ -62,9 +60,11 @@ public class ModuleManager
             new Hud(),
             new InvSorter(),
             new LongRangeAim(),
-            //new Nametags(),
+            new Nametags(),
             new NBTViewer(),
             new NewChunks(),
+            //new NewHoleESP(),
+            new NoRender(),
             new ObsidianTrap(),
             new PacketMine(),
             new PearlViewer(),
@@ -72,6 +72,7 @@ public class ModuleManager
             new PlayerFrame(),
             new PlayerRadar(),
             new PvpInfo(),
+            new Reach(),
             new SelfTrap(),
             new ShulkerAura(),
             new StashFinder(),
@@ -94,17 +95,17 @@ public class ModuleManager
 
     public static Module getModuleByName(String name)
     {
-        Iterator<Module> modsIter = mods.iterator();
+        Iterator<Module> modsIterator = mods.iterator();
         Module m;
 
         do
         {
-            if (!modsIter.hasNext())
+            if (!modsIterator.hasNext())
             {
-                return null;
+                throw new NoModuleFoundException();
             }
 
-            m = modsIter.next();
+            m = modsIterator.next();
         } while (!name.equalsIgnoreCase(m.getName()));
 
         return m;
@@ -247,14 +248,14 @@ public class ModuleManager
                         m.keyActive = false;
                     }
                 } catch (Exception ignored) {
-                    System.out.println("qwaeszrdxtfcygvuhbijnokmpl,[;.]'/");
+                    System.out.println("fuck fuck fuck shit that didn't work oh god");
                 }
             }
         }
     }
 
     public static void onBind(int key) {
-        if (key == 0 || key == Keyboard.KEY_NONE) return;
+        if (key == Keyboard.KEY_NONE) return;
         mods.forEach(module -> {
             if(module.getBind() == key){
                 module.toggle();

@@ -28,8 +28,8 @@ public class PvpInfo extends Module {
 
         this.getWindows().add(new TextWindow(2, 150, "BedAura"));
         this.getWindows().add(new TextWindow(32, 150, "AutoTrap"));
-        this.getWindows().add(new TextWindow(62, 150, "TotemCount"));
         this.getWindows().add(new TextWindow(92, 150, "BedCount"));
+        this.getWindows().add(new TextWindow(62, 150, "TotemCount"));
     }
 
 

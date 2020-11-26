@@ -1,280 +1,303 @@
 package blu3.ruhamaplus.module.modules.experimental;
-import blu3.ruhamaplus.module.Category;
-import blu3.ruhamaplus.module.Module;
-import blu3.ruhamaplus.settings.SettingBase;
-import blu3.ruhamaplus.settings.SettingMode;
-import blu3.ruhamaplus.settings.SettingSlider;
-import blu3.ruhamaplus.settings.SettingToggle;
+
+import blu3.ruhamaplus.event.events.*;
+import blu3.ruhamaplus.module.*;
+import blu3.ruhamaplus.settings.*;
 import blu3.ruhamaplus.utils.*;
-import blu3.ruhamaplus.utils.TimeUtils;
-import blu3.ruhamaplus.utils.friendutils.FriendManager;
-import com.mojang.realmsclient.gui.ChatFormatting;
-import jdk.nashorn.internal.ir.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
+import blu3.ruhamaplus.utils.friendutils.*;
+import com.mojang.realmsclient.gui.*;
+import net.minecraft.client.*;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityEndermite;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemAppleGold;
-import net.minecraft.item.ItemEndCrystal;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
-import net.minecraft.network.play.server.SPacketSoundEffect;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
+import net.minecraft.network.play.client.*;
+import net.minecraft.network.play.server.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import net.minecraftforge.fml.common.eventhandler.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
+
+/**
+ * * Tired of optimizing imports? Simply use `import *;` to instantly fix all your life's problems!
+ **/
+
 public class AutoCrystal extends Module {
+
+    public static SettingMode logic = new SettingMode("Logic: ", "BreakPlace", "PlaceBreak");
+    public static SettingMode rotate = new SettingMode("Rotate: ", "Never", "Place", "Break", "Always");
+    public static SettingMode breakHand = new SettingMode("BreakHand: ", "Mainhand", "Offhand", "BothHands");
+    public static SettingMode placeMode = new SettingMode("PlaceMode: ", "1.12", "1.13+");
+    public static SettingMode breakMode = new SettingMode("BreakMode: ", "All", "Smart");
+
+    public static SettingSlider range = new SettingSlider(0.0D, 6.0D, 5.0D, 0, "Range: ");
+    public static SettingSlider hitDelay = new SettingSlider(0.0D, 20.0D, 0, 0, "Hit Delay: ");
+    public static SettingSlider placeDelay = new SettingSlider(0.0D, 20.0D, 0, 0, "Place Delay: ");
+    public static SettingSlider minDmgS = new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: ");
+    public static SettingSlider maxSelfDmg = new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: ");
+    public static SettingSlider facePlaceHp = new SettingSlider(1.0D, 36.0D, 10.0D, 0, "FacePlace HP: ");
+
+    public static SettingToggle multiplace = new SettingToggle(false, "Multiplace");
+    public static SettingToggle renderPlayer = new SettingToggle(false, "RenderTarget");
+    public static SettingToggle autoSwitch = new SettingToggle(true, "AutoSwitch");
+    public static SettingToggle chatAlert = new SettingToggle(true, "Chat Alert");
+    public static SettingToggle speedi = new SettingToggle(true, "speedi");
+    public static SettingToggle damageText = new SettingToggle(false, "DamageText");
+    public static SettingToggle place = new SettingToggle(true, "Place");
+    public static SettingToggle explode = new SettingToggle(true, "Explode");
+
     private static final List<SettingBase> settings = Arrays.asList(
-            new SettingMode("Logic: ", "BreakPlace", "PlaceBreak"),
-            new SettingMode("Rotate: ", "Never", "Place", "Break", "Always"),
-            new SettingMode("BreakHand: ", "Mainhand", "Offhand", "BothHands"),
-            new SettingMode("PlaceMode: ", "1.12", "1.13+"),
-            new SettingMode("BreakMode: ", "All", "Smart"),
-            new SettingSlider(0.0D, 6.0D, 5.0D, 0, "Range: "),
-            new SettingSlider(0.0D, 20.0D, 0, 0, "Hit Delay: "),
-            new SettingSlider(0.0D, 20.0D, 0, 0, "Place Delay: "),
-            new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: "),
-            new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: "),
-            new SettingSlider(1.0D, 36.0D, 10.0D, 0, "FacePlace HP: "),
-            new SettingToggle(false, "Multiplace"),
-            new SettingToggle(false, "RenderTarget"),
-            new SettingToggle(true, "AutoSwitch"),
-            new SettingToggle(true, "Chat Alert"),
-            new SettingToggle(true, "speedi"),
-            new SettingToggle(false, "DamageText")
+            logic, rotate, breakHand, placeMode, breakMode, range, hitDelay, placeDelay, minDmgS, maxSelfDmg, facePlaceHp, multiplace, renderPlayer, autoSwitch, chatAlert, speedi, damageText, place, explode
     );
     private final TimeUtils placeTimer;
     private final TimeUtils breakTimer;
     private double renderDamage = 0;
+    private boolean isSpoofingAngles;
+    private boolean togglePitch;
 
     private boolean switchCooldown = false;
     private BlockPos renderTarget = null;
     private final List<EntityPlayer> ezplayers = new ArrayList<>();
     private final List<EntityPlayer> targetPlayers = new ArrayList<>();
 
-    public AutoCrystal() { super("blu3CA", 0, Category.EXPERIMENTAL, "absolute shit i say", settings);
-        this.placeTimer = new TimeUtils();
-        this.breakTimer = new TimeUtils();
+
+    public AutoCrystal() {
+        super("blu3CA", 0, Category.EXPERIMENTAL, "absolute shit i say", settings);
+        placeTimer = new TimeUtils();
+        breakTimer = new TimeUtils();
     }
-    public void onDisable(){
-        if (this.getBoolean("Chat Alert")) ChatUtils.log("blu3CA: " + ChatFormatting.RED + "OFF");
+
+    @Override
+    public void onDisable() {
+        if (getBoolean("Chat Alert")) ChatUtils.log("blu3CA: " + ChatFormatting.RED + "OFF");
         renderTarget = null;
         ezplayers.clear();
         targetPlayers.clear();
+        resetRotation();
+        super.onDisable();
     }
-    public void onEnable(){
-        if (this.getBoolean("Chat Alert")) ChatUtils.log("blu3CA: " + ChatFormatting.AQUA + "ON");
+
+    @Override
+    public void onEnable() {
+        if (getBoolean("Chat Alert")) ChatUtils.log("blu3CA: " + ChatFormatting.AQUA + "ON");
+        super.onEnable();
     }
-    public void onUpdate() { this.doStuff(); }
-    public void doStuff(){
-        switch (this.getMode("Logic: ")){
+
+
+    public void onUpdate() {
+        if (nullCheck()) return;
+        doStuff();
+        fuckWithRotations();
+    }
+
+    public void fuckWithRotations() {
+        if (isSpoofingAngles) { // constantly sending packets so rotation spoofing works properly.
+            if (togglePitch) {
+                mc.player.rotationPitch += (float) 4.0E-4;
+                togglePitch = false;
+            } else {
+                mc.player.rotationPitch -= (float) 4.0E-4;
+                togglePitch = true;
+            }
+        }
+    }
+
+    public void doStuff() {
+        switch (getMode("Logic: ")) {
             case 0: {
-                if (this.breakTimer.passedDms(this.getSlider("Hit Delay: ") * 5)) {
-                    this.breakCrystal();
-                    this.breakTimer.reset();
+                if (breakTimer.passedDms(getSlider("Hit Delay: ") * 5)) {
+                    if (explode.state) breakCrystal();
+                    breakTimer.reset();
                 }
-                if (this.placeTimer.passedDms(this.getSlider("Place Delay: ") * 5)) {
-                    this.placeCrystal();
-                    this.placeTimer.reset();
+                if (placeTimer.passedDms(getSlider("Place Delay: ") * 5)) {
+                    if (place.state) placeCrystal();
+                    placeTimer.reset();
                 }
                 break;
             }
             case 1: {
-                if (this.placeTimer.passedDms(this.getSlider("Place Delay: ") * 5)) {
-                    this.placeCrystal();
-                    this.placeTimer.reset();
+                if (placeTimer.passedDms(getSlider("Place Delay: ") * 5)) {
+                    if (place.state) placeCrystal();
+                    placeTimer.reset();
                 }
-                if (this.breakTimer.passedDms(this.getSlider("Hit Delay: ") * 5)) {
-                    this.breakCrystal();
-                    this.breakTimer.reset();
+                if (breakTimer.passedDms(getSlider("Hit Delay: ") * 5)) {
+                    if (explode.state) breakCrystal();
+                    breakTimer.reset();
                 }
                 break;
             }
         }
     }
 
-    private void placeCrystal(){
+    private void placeCrystal() {
         ezplayers.clear();
         int crystalSlot;
-        crystalSlot = this.mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL ? this.mc.player.inventory.currentItem : -1;
-        if (crystalSlot == -1)
-        {
-            for (int l = 0; l < 9; ++l)
-            {
-                if (this.mc.player.inventory.getStackInSlot(l).getItem() == Items.END_CRYSTAL)
-                {
+        crystalSlot = mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL ? mc.player.inventory.currentItem : -1;
+        if (crystalSlot == -1) {
+            for (int l = 0; l < 9; ++l) {
+                if (mc.player.inventory.getStackInSlot(l).getItem() == Items.END_CRYSTAL) {
                     crystalSlot = l;
                     break;
                 }
             }
         }
-        if (crystalSlot == -1) { return; }
-        int minDmg;
-        minDmg = (int)this.getSlider("MinDMG: ");
-        this.renderTarget = null;
-        List<BlockPos> blocks = this.findCrystalBlocks();
-        ezplayers.addAll(this.mc.world.playerEntities);
-        ezplayers.remove(this.mc.player);
-        for (EntityPlayer o : new ArrayList<>(ezplayers)) {
-            EntityPlayer e = o;
-            if (FriendManager.get().isFriend(e.getName().toLowerCase())){
-                ezplayers.remove(e);
-            }
-            if (e.getHealth() <= 0) ezplayers.remove(e);
+        if (crystalSlot == -1) {
+            return;
         }
+        int minDmg;
+        minDmg = (int) minDmgS.getValue();
+        renderTarget = null;
+        List<BlockPos> blocks = findCrystalBlocks();
+        ezplayers.addAll(mc.world.playerEntities);
+        ezplayers.remove(mc.player);
+        ezplayers.removeIf(o -> FriendManager.get().isFriend(o.getName().toLowerCase()) || o.getHealth() <= 0); // god im happy i found this
         BlockPos placeTarget = null;
         float highDamage = 0.5f;
         for (BlockPos pos : blocks) {
-           final float selfDmg = DamageUtil.calculateDamage(pos, this.mc.player);
-           if (selfDmg + 0.5D >= this.mc.player.getHealth() || selfDmg > this.getSlider("MaxSelfDMG: ")) {
-               continue;
-           }
-           for (EntityPlayer player : ezplayers) {
-               if (player.getHealth() <= this.getSlider("FacePlace HP: ")) minDmg = 2;
-               targetPlayers.remove(player);
-               if (player.getDistanceSq(pos) < square(this.getSlider("Range: "))){
-                   if (!targetPlayers.contains(player)) targetPlayers.add(player);
-                   float damage = DamageUtil.calculateDamage(pos, player);
-                   if (damage <= selfDmg) continue;
-                   if (damage <= minDmg || damage <= highDamage) continue;
-                   this.renderDamage = damage;
-                   highDamage = damage;
-                   placeTarget = pos;
-                   renderTarget = pos;
-                   // double for() loop in a ca? :flushed:
-               }
-           }
-       }
-        if (placeTarget != null){
-           if (this.getBoolean("AutoSwitch") && this.mc.player.inventory.currentItem != crystalSlot && !eatingGap()) {
-               this.mc.player.inventory.currentItem = crystalSlot;
-               this.switchCooldown = true;
-               return;
-           }
-           if (this.switchCooldown)
-           {
-               this.switchCooldown = false;
-               return;
-           }
-               if (this.mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal) {
-                   if (this.getMode("Rotate: ") == 1 || this.getMode("Rotate: ") == 3) WorldUtils.rotatePacket(placeTarget.getX(), placeTarget.getY(), placeTarget.getZ());
-                   this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placeTarget, EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
-               }
-           }
-       }
-    private void breakCrystal(){
-        List <EntityEnderCrystal> crystals = new ArrayList<>();
-        crystals.clear();
-        for (Entity e : this.mc.world.loadedEntityList) {
-            if (e instanceof EntityEnderCrystal){
+            final float selfDmg = DamageUtil.calculateDamage(pos, mc.player);
+            if (selfDmg + 0.5D >= mc.player.getHealth() + mc.player.getAbsorptionAmount() || selfDmg > maxSelfDmg.getValue())
+                continue;
+            for (EntityPlayer player : ezplayers) {
+                if (player.getHealth() <= facePlaceHp.getValue()) minDmg = 2;
+                targetPlayers.remove(player);
+                if (player.getDistanceSq(pos) < 169) {
+                    if (!targetPlayers.contains(player)) targetPlayers.add(player);
+                    float damage = DamageUtil.calculateDamage(pos, player);
+                    if (damage <= selfDmg) continue;
+                    if (damage < minDmg || damage <= highDamage) continue;
+                    renderDamage = damage;
+                    placeTarget = pos;
+                    renderTarget = pos;
+                }
+            }
+            break;
+        }
+        if (placeTarget != null) {
+            if (getBoolean("AutoSwitch") && mc.player.inventory.currentItem != crystalSlot && !eatingGap()) {
+                mc.player.inventory.currentItem = crystalSlot;
+                switchCooldown = true;
+                return;
+            }
+            if (switchCooldown) {
+                switchCooldown = false;
+                return;
+            }
+            if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal) {
+                if (getMode("Rotate: ") == 1 || getMode("Rotate: ") == 3)
+                    lookAtPacket(placeTarget.getX() + 0.5, placeTarget.getY() - 0.5, placeTarget.getZ() + 0.5, mc.player);
+                mc.playerController.processRightClickBlock(mc.player, mc.world, placeTarget, EnumFacing.UP, new Vec3d(placeTarget), EnumHand.MAIN_HAND);
+                // someone tell me the difference between processRightClickBlock and CPacketPlayerTryUseItemOnBlock
+            }
+        } else resetRotation();
+    }
+
+    private void breakCrystal() {
+        List<EntityEnderCrystal> crystals = new ArrayList<>();
+        for (Entity e : mc.world.loadedEntityList) {
+            if (e instanceof EntityEnderCrystal) {
                 crystals.add((EntityEnderCrystal) e);
             }
         }
-        List<EntityPlayer> players = new ArrayList<>();
-        players.clear();
-        players.addAll(this.mc.world.playerEntities);
-        players.remove(this.mc.player);
+        List<EntityPlayer> players = new ArrayList<>(mc.world.playerEntities);
+        players.remove(mc.player);
         for (EntityPlayer o : new ArrayList<>(players)) {
-            EntityPlayer e =  o;
-            if (FriendManager.get().isFriend(e.getName().toLowerCase())){
-                players.remove(e);
+            if (FriendManager.get().isFriend(o.getName().toLowerCase())) {
+                players.remove(o);
             }
-            if (e.getHealth() <= 0) {
-                players.remove(e);
+            if (o.getHealth() <= 0) {
+                players.remove(o);
             }
-
-
         }
-        switch (this.getMode("BreakMode: ")){
+        switch (getMode("BreakMode: ")) {
             case 0: {
-                EntityEnderCrystal crystal = this.mc.world.loadedEntityList.stream().filter((entityx) -> entityx instanceof EntityEnderCrystal).map((entityx) -> (EntityEnderCrystal) entityx).min(Comparator.comparing((c) -> this.mc.player.getDistance(c))).orElse(null);
-                if (crystal != null && (double)this.mc.player.getDistance(crystal) <= this.getSlider("Range: ")) {
-                    if (this.getMode("Rotate: ") == 2 || this.getMode("Rotate: ") == 3) WorldUtils.rotatePacket(crystal.posX, crystal.posY, crystal.posZ);
-                    this.mc.playerController.attackEntity(this.mc.player, crystal);
+                EntityEnderCrystal crystal = mc.world.loadedEntityList.stream().filter((entityx) -> entityx instanceof EntityEnderCrystal).map((entityx) -> (EntityEnderCrystal) entityx).min(Comparator.comparing((c) -> mc.player.getDistance(c))).orElse(null);
+                if (crystal != null && (double) mc.player.getDistance(crystal) <= getSlider("Range: ")) {
+                    if (getMode("Rotate: ") == 2 || getMode("Rotate: ") == 3)
+                        lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, mc.player);
+                    mc.playerController.attackEntity(mc.player, crystal);
                     swing();
+                } else {
+                    resetRotation();
                 }
                 break;
             }
             case 1: {
                 int minDmg;
-                minDmg = (int)this.getSlider("MinDMG: ");
+                float damage = 0.5f;
+                minDmg = (int) minDmgS.getValue();
                 for (EntityPlayer player : players) {
                     for (EntityEnderCrystal crystal : crystals) {
-                        final float selfDmg = DamageUtil.calculateDamage(crystal, this.mc.player);
-                        if (player.getHealth() <= this.getSlider("FacePlace HP: ")) {
+                        if (crystal.isDead) continue;
+                        if (player.getDistance(mc.player) >= 12) continue;
+
+
+                        damage = DamageUtil.calculateDamage(crystal, player);
+                        final float selfDmg = DamageUtil.calculateDamage(crystal, mc.player);
+                        if (player.getHealth() <= getSlider("FacePlace HP: ")) {
                             minDmg = 2;
                         }
-                        if (selfDmg + 0.5D >= this.mc.player.getHealth() || selfDmg > this.getSlider("MaxSelfDMG: ")) {
+                        if (selfDmg + 0.5D >= mc.player.getHealth() || selfDmg > maxSelfDmg.getValue()) {
                             continue;
                         }
-                        if (DamageUtil.calculateDamage(crystal, player) >= minDmg && (double)this.mc.player.getDistance(crystal) <= this.getSlider("Range: ")) {
-                            if (this.getMode("Rotate: ") == 2 || this.getMode("Rotate: ") == 3) WorldUtils.rotatePacket(crystal.posX, crystal.posY, crystal.posZ);
-                            this.mc.playerController.attackEntity(this.mc.player, crystal);
+                        if (damage >= minDmg && (double) mc.player.getDistance(crystal) <= getSlider("Range: ")) {
+                            if (getMode("Rotate: ") == 2 || getMode("Rotate: ") == 3)
+                                lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, mc.player);
+                            mc.playerController.attackEntity(mc.player, crystal);
                             swing();
                         }
                     }
+                    if (damage == .5) {
+                        resetRotation();
+                    }
                 }
-                        break;
+                break;
             }
         }
     }
-    public void swing(){
-        switch (this.getMode("BreakHand: ")) {
+
+    public void swing() {
+        switch (getMode("BreakHand: ")) {
             case 0: {
-                this.mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
                 break;
             }
             case 1: {
-                this.mc.player.swingArm(EnumHand.OFF_HAND);
+                mc.player.swingArm(EnumHand.OFF_HAND);
                 break;
             }
             case 2: {
-                this.mc.player.swingArm(EnumHand.MAIN_HAND);
-                this.mc.player.swingArm(EnumHand.OFF_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.OFF_HAND);
                 break;
             }
         }
     }
+
     public static double square(final double input) {
         return input * input;
     }
-    private List<BlockPos> findCrystalBlocks()
-    {
+
+    private List<BlockPos> findCrystalBlocks() {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(this.getSphere(this.getPlayerPos(), (float) this.getSlider("Range: "), (int) this.getSlider("Range: "), false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
+        positions.addAll(getSphere(getPlayerPos(), (float) getSlider("Range: "), (int) getSlider("Range: "), false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
 
         return positions;
     }
-    public List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y)
-    {
+
+    public List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y) {
         List<BlockPos> circleblocks = new ArrayList<>();
         int cx = loc.getX();
         int cy = loc.getY();
         int cz = loc.getZ();
-        for (int x = cx - (int) r; (float) x <= (float) cx + r; ++x)
-        {
-            for (int z = cz - (int) r; (float) z <= (float) cz + r; ++z)
-            {
-                for (int y = sphere ? cy - (int) r : cy; (float) y < (sphere ? (float) cy + r : (float) (cy + h)); ++y)
-                {
+        for (int x = cx - (int) r; (float) x <= (float) cx + r; ++x) {
+            for (int z = cz - (int) r; (float) z <= (float) cz + r; ++z) {
+                for (int y = sphere ? cy - (int) r : cy; (float) y < (sphere ? (float) cy + r : (float) (cy + h)); ++y) {
                     double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
-                    if (dist < (double) (r * r) && (!hollow || dist >= (double) ((r - 1.0F) * (r - 1.0F))))
-                    {
+                    if (dist < (double) (r * r) && (!hollow || dist >= (double) ((r - 1.0F) * (r - 1.0F)))) {
                         BlockPos l = new BlockPos(x, y + plus_y, z);
                         circleblocks.add(l);
                     }
@@ -283,67 +306,60 @@ public class AutoCrystal extends Module {
         }
         return circleblocks;
     }
-    private boolean eatingGap(){
+
+    private boolean eatingGap() {
         return mc.player.getHeldItemMainhand().getItem() instanceof ItemAppleGold && mc.player.isHandActive();
     }
-    public BlockPos getPlayerPos()
-    {
-        return new BlockPos(Math.floor(this.mc.player.posX), Math.floor(this.mc.player.posY), Math.floor(this.mc.player.posZ));
+
+    public BlockPos getPlayerPos() {
+        return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
     }
 
-    private boolean getIsEmpty(boolean multiPlace, BlockPos pos){
+    private boolean getIsEmpty(boolean multiPlace, BlockPos pos) {
         if (multiPlace) {
-            return this.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos)).isEmpty();
-        }
-        else return this.mc.world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityCreature.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityExpBottle.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityEnderEye.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityZombie.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityPigZombie.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityEnderPearl.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityEnderman.class, new AxisAlignedBB(pos)).isEmpty()
-                && this.mc.world.getEntitiesWithinAABB(EntityEndermite.class, new AxisAlignedBB(pos)).isEmpty();
-        //works lmfao someone tell me a better way
+            return mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos)).isEmpty();
+        } else
+            return mc.world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos)).isEmpty()
+                    && mc.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos)).isEmpty()
+                    && mc.world.getEntitiesWithinAABB(EntityPigZombie.class, new AxisAlignedBB(pos)).isEmpty();
     }
 
-    private boolean canPlaceCrystal(BlockPos blockPos){
-        if (this.getMode("PlaceMode: ") == 0) {
+    private boolean canPlaceCrystal(BlockPos blockPos) {
+        if (getMode("PlaceMode: ") == 0) {
             BlockPos boost = blockPos.add(0, 1, 0);
             BlockPos boost2 = blockPos.add(0, 2, 0);
-            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK
-                    || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN)
-                    && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR
-                    && this.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR
-                    && getIsEmpty(this.getBoolean("MultiPlace"), boost);
+            return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK
+                    || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN)
+                    && mc.world.getBlockState(boost).getBlock() == Blocks.AIR
+                    && mc.world.getBlockState(boost2).getBlock() == Blocks.AIR
+                    && getIsEmpty(getBoolean("MultiPlace"), boost);
         } else {
             BlockPos boost = blockPos.add(0, 1, 0);
-            return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK
-                    || this.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN)
-                    && this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR
-                    && getIsEmpty(this.getBoolean("MultiPlace"), boost);
+            return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK
+                    || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN)
+                    && mc.world.getBlockState(boost).getBlock() == Blocks.AIR
+                    && getIsEmpty(getBoolean("MultiPlace"), boost);
         }
     }
+
     public void onRender() {
 
-       if (this.renderTarget != null){
-           RenderUtils.drawFilledBlockBox(new AxisAlignedBB(renderTarget), 0, 1, 1, 0.3F);
-           if (this.getBoolean("DamageText"))RenderUtils.drawText(renderTarget, ((Math.floor(this.renderDamage) == this.renderDamage) ? Integer.valueOf((int)this.renderDamage) : String.format("%.1f", this.renderDamage)) + "");
-       }
+        if (renderTarget != null) {
+            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(renderTarget), 0, 1, 1, 0.3F);
+            if (getBoolean("DamageText"))
+                RenderUtils.drawText(renderTarget, ((Math.floor(renderDamage) == renderDamage) ? Integer.valueOf((int) renderDamage) : String.format("%.1f", renderDamage)) + "");
+        }
 
-        if (this.getBoolean("RenderTarget")) {
+        if (getBoolean("RenderTarget")) {
             for (EntityPlayer e : targetPlayers)
                 RenderUtils.drawBlockBox(e.getEntityBoundingBox(), 0.0F, 1.0F, 1.0F, 0.3F);
         }
     }
 
-
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-    public boolean onPacketRead(Packet<?> packet){
-        if (packet instanceof SPacketSoundEffect && this.getBoolean("speedi")) {
-            final SPacketSoundEffect explosion = (SPacketSoundEffect) packet;
+    @SubscribeEvent
+    public void removeExploded(EventReadPacket event) {
+        if (event.getPacket() instanceof SPacketSoundEffect && speedi.getValue()) {
+            final SPacketSoundEffect explosion = (SPacketSoundEffect) event.getPacket();
             if (explosion.getCategory() == SoundCategory.BLOCKS && explosion.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
                 for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
                     if (e instanceof EntityEnderCrystal) {
@@ -354,6 +370,61 @@ public class AutoCrystal extends Module {
                 }
             }
         }
-        return false;
     }
+
+    @SubscribeEvent
+    public void spoofRotations(EventSendPacket event) {
+        if (event.getPacket() instanceof CPacketPlayer) {
+            if (isSpoofingAngles) {
+                ((CPacketPlayer) event.getPacket()).yaw = (float) yaw;
+                ((CPacketPlayer) event.getPacket()).pitch = (float) pitch; //this is sexy
+            }
+        }
+    }
+
+ /*   @SubscribeEvent
+    public void renderRotations(OnUpdateWalkingPlayerEvent event) {
+        if (isSpoofingAngles) {
+            event.rotation = new Vec2f((float) yaw, (float) pitch);
+        }
+    }*/
+
+    private void lookAtPacket(final double px, final double py, final double pz, final EntityPlayer me) {
+        final double[] v = calculateLookAt(px, py, pz, me);
+        setYawAndPitch((float) v[0], (float) v[1]);
+    }
+
+    private static double yaw;
+    private static double pitch;
+
+    private void setYawAndPitch(final float yaw1, final float pitch1) {
+        isSpoofingAngles = true;
+        yaw = yaw1;
+        pitch = pitch1;
+    }
+
+    private void resetRotation() {
+        if (isSpoofingAngles) {
+            yaw = mc.player.rotationYaw;
+            pitch = mc.player.rotationPitch;
+            isSpoofingAngles = false;
+        }
+    }
+
+    public double[] calculateLookAt(final double px, final double py, final double pz, final EntityPlayer me) {
+        double dirx = me.posX - px;
+        double diry = me.posY - py;
+        double dirz = me.posZ - pz;
+        final double len = Math.sqrt(dirx * dirx + diry * diry + dirz * dirz);
+        dirx /= len;
+        diry /= len;
+        dirz /= len;
+        double pitch = Math.asin(diry);
+        double yaw = Math.atan2(dirz, dirx);
+        pitch = pitch * 180.0 / 3.141592653589793;
+        yaw = yaw * 180.0 / 3.141592653589793;
+        yaw += 90.0;
+        return new double[]{yaw, pitch};
+    }
+
 }

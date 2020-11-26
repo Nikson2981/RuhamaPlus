@@ -62,7 +62,7 @@ public class HelpCmd extends CommandBase implements IClientCommand {
 
         } else {
            // ClientChat.error("HelpCmd","/.help [wasp/entitydesync/invsorter/peek/login/stashfinder/setyaw/help]");
-            ChatUtils.testError(this,"/.help [wasp/entitydesync/invsorter/peek/login/stashfinder/setyaw/help]");
+            ChatUtils.error(this,"/.help [wasp/entitydesync/invsorter/peek/login/stashfinder/setyaw/help]");
         }
     }
     public boolean checkPermission(MinecraftServer server, ICommandSender sender)

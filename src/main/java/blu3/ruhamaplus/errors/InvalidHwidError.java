@@ -1,10 +1,10 @@
-package blu3.ruhamaplus.settings;
+package blu3.ruhamaplus.errors;
 
-public class BlacklistedHwidError extends Error{
+public class InvalidHwidError extends Error{
     private static final long serialVersionUID = 6969696969L;
     private String hwid;
 
-    public BlacklistedHwidError(final String hwid) {
+    public InvalidHwidError(final String hwid) {
         super(hwid);
         this.setStackTrace(new StackTraceElement[0]);
         this.hwid = hwid;
@@ -12,7 +12,7 @@ public class BlacklistedHwidError extends Error{
 
     @Override
     public String toString() {
-        return "Blacklisted HWID.";
+        return "Invaild HWID or outdated release.";
     }
 
     @Override

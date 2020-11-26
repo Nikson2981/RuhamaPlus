@@ -20,6 +20,9 @@ public class SettingMode extends SettingBase
         return this.mode + 1 >= this.modes.length ? 0 : this.mode + 1;
     }
 
+    public boolean is(String bruh){
+        return (this.modes[this.mode].equals(bruh));
+    }
 
     public static String getHwid() {
         try {

@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class FOVSlider extends Module {
-    private static final List<SettingBase> settings = Collections.singletonList(new SettingSlider(0, 360, 130, 5, "FOV: "));
+    private static final List<SettingBase> settings = Collections.singletonList(new SettingSlider(0, 360, 140, 10, "FOV: "));
     public FOVSlider()
     {
         super("FOVSlider", 0, Category.RENDER, "chanje eff oh vee", settings);

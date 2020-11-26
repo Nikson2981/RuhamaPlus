@@ -5,11 +5,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class InventoryUtil {
+public class InventoryUtil implements Util {
 
     public static int findHotbarBlock(final Class clazz) {
         for (int i = 0; i < 9; ++i) {
-            final ItemStack stack = Wrapper.GetMC().player.inventory.getStackInSlot(i);
+            final ItemStack stack = Wrapper.getMc().player.inventory.getStackInSlot(i);
             if (stack != ItemStack.EMPTY) {
                 if (clazz.isInstance(stack.getItem())) {
                     return i;
@@ -27,7 +27,7 @@ public class InventoryUtil {
 
     public static int findHotbarItem(final Class clazz) {
         for (int i = 0; i < 9; ++i) {
-            final ItemStack stack = Wrapper.GetMC().player.inventory.getStackInSlot(i);
+            final ItemStack stack = Wrapper.getMc().player.inventory.getStackInSlot(i);
             if (stack != ItemStack.EMPTY) {
                 if (clazz.isInstance(stack.getItem())) {
                     return i;
@@ -40,6 +40,6 @@ public class InventoryUtil {
                 }
             }
         }
-        return -1;
+        return mc.player.inventory.currentItem;
     }
 }

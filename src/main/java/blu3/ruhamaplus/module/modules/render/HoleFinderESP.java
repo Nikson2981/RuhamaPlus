@@ -57,7 +57,7 @@ public class HoleFinderESP extends Module
 
     public void onRender() {
         try {
-            this.rPos = new double[] { (double)ReflectUtils.getField(RenderManager.class, "renderPosX", "field_78725_b").get(this.mc.getRenderManager()), (double)ReflectUtils.getField(RenderManager.class, "renderPosY", "field_78726_c").get(this.mc.getRenderManager()), (double)ReflectUtils.getField(RenderManager.class, "renderPosZ", "field_78723_d").get(this.mc.getRenderManager()) };
+            this.rPos = new double[] { (double) Objects.requireNonNull(ReflectUtils.getField(RenderManager.class, "renderPosX", "field_78725_b")).get(this.mc.getRenderManager()), (double) Objects.requireNonNull(ReflectUtils.getField(RenderManager.class, "renderPosY", "field_78726_c")).get(this.mc.getRenderManager()), (double) Objects.requireNonNull(ReflectUtils.getField(RenderManager.class, "renderPosZ", "field_78723_d")).get(this.mc.getRenderManager()) };
         }
         catch (Exception e) {
             this.rPos = new double[] { 0.0, 0.0, 0.0 };
@@ -69,8 +69,8 @@ public class HoleFinderESP extends Module
         GL11.glDisable(2929);
         GL11.glDepthMask(false);
         GL11.glLineWidth(2.0f);
-        float blue = System.currentTimeMillis() / 10L % 512L / 255.0f;
-        float red = System.currentTimeMillis() / 16L % 512L / 255.0f;
+        float blue = System.currentTimeMillis() / 10F % 512L / 255.0f;
+        float red = System.currentTimeMillis() / 16F % 512L / 255.0f;
         if (blue > 1.0f) {
             blue = 1.0f - blue;
         }
@@ -158,6 +158,9 @@ public class HoleFinderESP extends Module
                 }
             }
         }
-        catch (Exception ex) {}
+        catch (Exception retard) {
+            log("fuck");
+            disable();
+        }
     }
 }

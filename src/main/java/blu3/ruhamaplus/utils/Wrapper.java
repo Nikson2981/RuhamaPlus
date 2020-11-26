@@ -7,12 +7,12 @@ public class Wrapper
 {
     final static Minecraft mc = Minecraft.getMinecraft();
     
-    public static Minecraft GetMC()
+    public static Minecraft getMc()
     {
         return mc;
     }
 
-    public static EntityPlayerSP GetPlayer()
+    public static EntityPlayerSP getPlayer()
     {
         return mc.player;
     }

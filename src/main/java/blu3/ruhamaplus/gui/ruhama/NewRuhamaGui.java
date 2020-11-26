@@ -25,6 +25,7 @@ public class NewRuhamaGui extends GuiScreen
 
     public void initWindows()
     {
+        this.tabs.clear();
         int spacing = 30;
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.COMBAT), "Combat", windowLength, spacing, 35));
         this.tabs.add(new ModuleWindowDark(ModuleManager.getModulesInCat(Category.RENDER), "Render", windowLength, spacing + windowLength + 5, 35));

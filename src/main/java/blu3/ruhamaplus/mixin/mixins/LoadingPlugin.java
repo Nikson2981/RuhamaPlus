@@ -1,6 +1,8 @@
 package blu3.ruhamaplus.mixin.mixins;
 
+import blu3.ruhamaplus.utils.friendutils.Friends;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.lwjgl.opengl.Display;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
@@ -18,7 +20,10 @@ public class LoadingPlugin implements IFMLLoadingPlugin
         Mixins.addConfiguration("mixins.blu3.json");
         MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
         MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
+        Display.setTitle("Ruhama+ Coremod Initializing");
     }
+
+    // no idea what any of this does LOL
 
     public String[] getASMTransformerClass()
     {

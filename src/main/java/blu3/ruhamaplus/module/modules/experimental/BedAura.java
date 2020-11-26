@@ -5,7 +5,10 @@ import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
-import blu3.ruhamaplus.utils.*;
+import blu3.ruhamaplus.utils.ChatUtils;
+import blu3.ruhamaplus.utils.DamageUtil;
+import blu3.ruhamaplus.utils.RenderUtils;
+import blu3.ruhamaplus.utils.WorldUtils;
 import blu3.ruhamaplus.utils.friendutils.FriendManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.entity.Entity;
@@ -30,17 +33,22 @@ public class BedAura extends Module {
 
     private boolean switchCooldown = false;
     private BlockPos renderTarget = null;
-    private BlockPos playerPos = null;
     private final List<EntityPlayer> ezplayers = new ArrayList<>();
     private final List<EntityPlayer> targetPlayers = new ArrayList<>();
+    private EntityPlayer targetPlayer = null;
+
+    public static SettingSlider range = new SettingSlider(0.0D, 6.0D, 5.0D, 0, "Range: ");
+    public static SettingSlider placeDelay = new SettingSlider(0.0D, 20.0D, 3.0D, 0, "Place Delay: ");
+    public static SettingSlider minDmg = new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: ");
+    public static SettingSlider maxSelfDmg = new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: ");
+    public static SettingToggle autoSwitch = new SettingToggle(true, "AutoSwitch");
 
     private static final List<SettingBase> settings = Arrays.asList(
-            new SettingSlider(0.0D, 6.0D, 5.0D, 0, "Range: "), //0
-            new SettingSlider(0.0D, 20.0D, 3.0D, 0, "Place Delay: "), //1
-            new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: "), //2
-            new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: "), //3
-            new SettingToggle(true, "AutoSwitch") //4
-
+            range,
+            placeDelay,
+            minDmg,
+            maxSelfDmg,
+            autoSwitch
     );
 
     public BedAura() { super("blu3BA", 0, Category.EXPERIMENTAL, "absolute shit i say part 2", settings); }
@@ -50,23 +58,16 @@ public class BedAura extends Module {
         ezplayers.clear();
         targetPlayers.clear();
         renderTarget = null;
+        targetPlayer = null;
     }
     public void onEnable(){
         ChatUtils.log("blu3BA: " + ChatFormatting.AQUA + "ON");
     }
 
-    @Override
     public void onUpdate() {
-        super.onUpdate();
-
-        if (this.mc.player.ticksExisted % this.getSetting(1).asSlider().getValue() == 0) {
+        if (this.mc.player.ticksExisted % placeDelay.getValue() == 0) {
             this.placeBed();
             this.breakBed();
-        }
-
-        if (this.mc.getDebugFPS() < 5) {
-            this.setToggled(false);
-            ChatUtils.warn("FPS dropped below 5, disbling for safety");
         }
     }
 
@@ -86,10 +87,10 @@ public class BedAura extends Module {
             }
         }
         if (bedSlot == -1) { return; }
-        int minDmg;
-        minDmg = (int)this.getSetting(2).asSlider().getValue();
+        int leastDmg;
+        leastDmg = (int)minDmg.getValue();
 
-        List<BlockPos> blocks = this.findCrystalBlocks();
+        List<BlockPos> blocks = this.findBedBlocks();
         ezplayers.addAll(this.mc.world.playerEntities);
         ezplayers.remove(this.mc.player);
         for (Object o : new ArrayList<>(ezplayers)) {
@@ -99,31 +100,30 @@ public class BedAura extends Module {
             }
         }
 
-        //if (blocks.isEmpty()) return;
-        //if (ezplayers.isEmpty()) return;
         BlockPos placeTarget = null;
         float highDamage = 0.5f;
         for (BlockPos pos : blocks) {
             final float selfDmg = DamageUtil.calculateDamage(pos, this.mc.player);
-            if (selfDmg + 0.5D >= this.mc.player.getHealth() || selfDmg > this.getSetting(3).asSlider().getValue()) {
+            if (selfDmg + 0.5D >= this.mc.player.getHealth() || selfDmg > maxSelfDmg.getValue()) {
                 continue;
             }
             for (EntityPlayer player : ezplayers) {
                 targetPlayers.remove(player);
-                if (player.getDistanceSq(pos) < square(this.getSetting(0).asSlider().getValue())){
+                if (player.getDistanceSq(pos) < square(range.getValue())){
                     if (!targetPlayers.contains(player)) targetPlayers.add(player);
                     float damage = DamageUtil.calculateDamage(pos, player);
                     if (damage <= selfDmg) continue;
-                    if (damage <= minDmg || damage <= highDamage) continue;
-                    highDamage = damage;
+                    if (damage <= leastDmg || damage <= highDamage) continue;
                     placeTarget = pos;
                     renderTarget = pos.up();
-                    playerPos = new BlockPos(player.posX, player.posY, player.posZ);
+                    targetPlayer = player;
+                    break;
                 }
             }
+            break;
         }
         if (placeTarget != null){
-            if (this.getSetting(4).asToggle().state && this.mc.player.inventory.currentItem != bedSlot && !eatingGap()) {
+            if (autoSwitch.state && this.mc.player.inventory.currentItem != bedSlot && !eatingGap()) {
                 this.mc.player.inventory.currentItem = bedSlot;
                 this.switchCooldown = true;
                 return;
@@ -134,30 +134,41 @@ public class BedAura extends Module {
                 return;
             }
             if (this.mc.player.getHeldItemMainhand().getItem() instanceof ItemBed) {
-                WorldUtils.smartBedRotation(placeTarget);
-                this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placeTarget.up(), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
+                WorldUtils.rotateBedPacket(placeTarget, targetPlayer);
+                this.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placeTarget.up(), EnumFacing.DOWN, EnumHand.MAIN_HAND, 0, 0, 0));
             }
         }
     }
 
     public void breakBed(){
-
+        for (BlockPos pos : findBeds()){
+            WorldUtils.openBlock(pos);
+            break;
+        }
     }
 
     public void onRender() {
         if (this.renderTarget != null){
             RenderUtils.drawFilledBlockBox(new AxisAlignedBB(renderTarget), 0, 1, 1, 0.3F);
-            RenderUtils.drawFilledBlockBox(new AxisAlignedBB(WorldUtils.getNextSmartPos(renderTarget.down())), 0, 1, 1, 0.3F);
         }
     }
 
-    private List<BlockPos> findCrystalBlocks()
+    private List<BlockPos> findBedBlocks()
     {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(this.getSphere(this.getPlayerPos(), (float) this.getSetting(0).asSlider().getValue(), (int) this.getSetting(0).asSlider().getValue(), false, true, 0).stream().filter(this::canPlaceBed).collect(Collectors.toList()));
+        positions.addAll(this.getSphere(this.getPlayerPos(), (float) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(this::canPlaceBed).collect(Collectors.toList()));
 
         return positions;
     }
+
+    private List<BlockPos> findBeds()
+    {
+        NonNullList<BlockPos> positions = NonNullList.create();
+        positions.addAll(this.getSphere(this.getPlayerPos(), (float) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(this::blockIsBed).collect(Collectors.toList()));
+
+        return positions;
+    }
+
     public List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y)
     {
         List<BlockPos> circleblocks = new ArrayList<>();
@@ -193,6 +204,9 @@ public class BedAura extends Module {
     }
     private boolean canPlaceBed(BlockPos blockPos){
         BlockPos boost = blockPos.add(0, 1, 0);
-        return (this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && WorldUtils.getNextSmartPos(boost.down()) != null);
+        return (this.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && WorldUtils.getNextSmartPos(boost.down()) != null && mc.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(boost)).isEmpty());
+    }
+    private boolean blockIsBed(BlockPos blockPos){
+        return (this.mc.world.getBlockState(blockPos).getBlock() == Blocks.BED);
     }
 }

@@ -41,22 +41,6 @@ public class DamageUtil {
         return false;
     }
 
-    private List<BlockPos> findCrystalBlocks1_12(double range)
-    {
-        NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(this.getSphere(this.getPlayerPos(), (float) range, (int) range, false, true, 0).stream().filter(this::canPlaceCrystal1_12).collect(Collectors.toList()));
-
-        return positions;
-    }
-
-    private List<BlockPos> findCrystalBlocks1_13(double range)
-    {
-        NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(this.getSphere(this.getPlayerPos(), (float) range, (int) range, false, true, 0).stream().filter(this::canPlaceCrystal1_13).collect(Collectors.toList()));
-
-        return positions;
-    }
-
     public BlockPos getPlayerPos()
     {
         return new BlockPos(Math.floor(this.mc.player.posX), Math.floor(this.mc.player.posY), Math.floor(this.mc.player.posZ));

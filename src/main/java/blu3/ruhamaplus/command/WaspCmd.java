@@ -35,7 +35,7 @@ WaspCmd extends CommandBase implements IClientCommand {
     {
         if (args.length != 1)
         {
-            ChatUtils.testError(this,"one word retard");
+            ChatUtils.error(this,"one word retard");
         } else
         {
             try
@@ -52,7 +52,7 @@ WaspCmd extends CommandBase implements IClientCommand {
 
             } catch (Exception e)
             {
-                ChatUtils.testError(this, "incorrect, /.aim [target]");
+                ChatUtils.error(this, "incorrect, /.aim [target]");
             }
         }
     }

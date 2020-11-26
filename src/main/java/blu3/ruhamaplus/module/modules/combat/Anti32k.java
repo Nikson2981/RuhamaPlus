@@ -27,10 +27,7 @@ public class Anti32k extends Module {
             new SettingMode("Mode: ", "Logout", "Counter")
     );
 
-    private boolean wasCAEnabled;
-    private boolean wasEMEnabled;
     private boolean wasHNEnabled;
-    private boolean wasSAEnabled;
 
     private final List<EntityPlayer> ezplayers = new ArrayList<>();
     @Override
@@ -69,21 +66,23 @@ public class Anti32k extends Module {
         if (!FriendManager.get().isFriend(e.getName().toLowerCase())) {
             if (is32k(e.getHeldItemMainhand())) {
 
+
+
                 switch (this.getMode("Mode: ")){
                     case 0: {
                         mc.player.sendChatMessage("> " + e.getName() + " Tried to 32k me! Disconnecting...");
                         logOut(e.getName() + " tried to 32k you!");
                     }
                     case 1: {
-                        wasCAEnabled = ModuleManager.getModuleByName("blu3CA").isToggled();
-                        wasEMEnabled = ModuleManager.getModuleByName("EnhancedMovement").isToggled();
+                        boolean wasCAEnabled = ModuleManager.getModuleByName("blu3CA").isToggled();
+                        boolean wasEMEnabled = ModuleManager.getModuleByName("EnhancedMovement").isToggled();
                         wasHNEnabled = ModuleManager.getModuleByName("HopperNuker").isToggled();
-                        wasSAEnabled = ModuleManager.getModuleByName("ShulkerAura").isToggled();
+                        boolean wasSAEnabled = ModuleManager.getModuleByName("ShulkerAura").isToggled();
 
-                        ModuleManager.getModuleByName("EnhancedMovement").disable();
+                        /*ModuleManager.getModuleByName("EnhancedMovement").disable();*/
                         ModuleManager.getModuleByName("blu3CA").enable();
-                        ModuleManager.getModuleByName("HopperNuker").enable();
-                        ModuleManager.getModuleByName("ShulkerAura").enable();
+                        /*ModuleManager.getModuleByName("HopperNuker").enable();
+                        ModuleManager.getModuleByName("ShulkerAura").enable();*/
                         mc.player.inventory.currentItem = 1;
                     }
                 }

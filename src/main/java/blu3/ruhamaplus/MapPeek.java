@@ -31,6 +31,7 @@ public class MapPeek
         List<String> pages = new ArrayList<>();
         NBTTagCompound nbt = item.getTagCompound();
 
+
         if (nbt != null && nbt.hasKey("pages"))
         {
             NBTTagList nbt2 = nbt.getTagList("pages", 8);

@@ -3,6 +3,7 @@ package blu3.ruhamaplus;
 import blu3.ruhamaplus.command.*;
 import blu3.ruhamaplus.gui.ruhama.*;
 import blu3.ruhamaplus.module.*;
+import blu3.ruhamaplus.module.modules.chat.ChatSuffix;
 import blu3.ruhamaplus.module.modules.gui.*;
 import blu3.ruhamaplus.settings.*;
 import blu3.ruhamaplus.utils.*;
@@ -11,7 +12,6 @@ import me.zero.alpine.fork.bus.EventBus;
 import me.zero.alpine.fork.bus.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -37,11 +37,10 @@ import java.util.Map.Entry;
 @Mod(
         modid = "ruhamaplus",
         name = "Ruhama+",
-        version = "1.0",
+        version = "1.1",
         acceptedMinecraftVersions = "[1.12.2]"
 )
-public class RuhamaPlus
-{
+public class RuhamaPlus {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static HashMap<BlockPos, Integer> friendBlocks = new HashMap<>();
 
@@ -53,31 +52,34 @@ public class RuhamaPlus
     public CapeUtils capeUtils;
 
 
-    private static FriendManager m_friendManager = new FriendManager();
-    //private static Discord m_Discord = new Discord();
+    private static final FriendManager m_friendManager = new FriendManager();
+   /* private static final Discord m_Discord = new Discord();
 
-    //public static Discord GetDiscord()
-   // {
-   //     return m_Discord;
-   // }
+    public static Discord GetDiscord() {
+        return m_Discord;
+    }*/
 
-    public static String version = "1.0";
+    public static String version = "1.1";
 
-    public static FriendManager GetFriendManager()
-    {
+    public static FriendManager GetFriendManager() {
         return m_friendManager;
     }
 
-    @Mod.Instance private static RuhamaPlus INSTANCE;
+    @Mod.Instance
+    private static RuhamaPlus INSTANCE;
 
-    public RuhamaPlus() { INSTANCE = this;}
+    public RuhamaPlus() {
+        INSTANCE = this;
+    }
 
-    public static RuhamaPlus getInstance(){
+    public static RuhamaPlus getInstance() {
         return INSTANCE;
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent event){
+    @SuppressWarnings("*")
+
+    public void init(FMLInitializationEvent event) {
         Display.setTitle("Ruhama+ initializing...");
         System.out.println("Initialization beginning...   ");
 
@@ -88,6 +90,7 @@ public class RuhamaPlus
         Friends.tryValidateHwid();
 
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new EventListeners());
         MinecraftForge.EVENT_BUS.register(new Rainbow());
 
         ClickGui.clickGui.initWindows();
@@ -95,6 +98,7 @@ public class RuhamaPlus
         FileMang.init();
 
         FileMang.createFile("FriendList.json");
+        FileMang.createFile("cleanchat.txt");
 
         FileMang.readModules();
         FileMang.readSettings();
@@ -102,15 +106,11 @@ public class RuhamaPlus
         FileMang.readBinds();
         FileMang.loadFriends();
 
-        for (Module m : ModuleManager.getModules())
-        {
-            for (SettingBase s : m.getSettings())
-            {
-                if (s instanceof SettingMode)
-                {
+        for (Module m : ModuleManager.getModules()) {
+            for (SettingBase s : m.getSettings()) {
+                if (s instanceof SettingMode) {
                     s.asMode().mode = MathHelper.clamp(s.asMode().mode, 0, s.asMode().modes.length - 1);
-                } else if (s instanceof SettingSlider)
-                {
+                } else if (s instanceof SettingSlider) {
                     s.asSlider().value = MathHelper.clamp(s.asSlider().value, s.asSlider().min, s.asSlider().max);
                 }
             }
@@ -121,8 +121,8 @@ public class RuhamaPlus
     }
 
     @EventHandler
-    public void postinit(FMLPostInitializationEvent event)
-    {
+    @SuppressWarnings("*")
+    public void postinit(FMLPostInitializationEvent event) {
         Display.setTitle("Ruhama+ Initializing commands...");
         System.out.println("Initializing commands...");
         addCommand(new PeekCmd.PeekCommand());
@@ -138,8 +138,10 @@ public class RuhamaPlus
         addCommand(new UnfriendCommand());
         addCommand(new ToggleCmd());
         addCommand(new FakePlayerCmd());
+        addCommand(new FixGuiCmd());
+        addCommand(new FOVCmd());
 
-        ChatUtils.loadWords();
+        ChatUtils.setWords();
 
         MinecraftForge.EVENT_BUS.register(new PeekCmd());
         System.out.println("Commands initialized!");
@@ -152,41 +154,31 @@ public class RuhamaPlus
         Display.setTitle("Ruhama+ " + version);
     }
 
-    public void addCommand (IClientCommand o) {
+    public void addCommand(IClientCommand o) {
         ClientCommandHandler.instance.registerCommand(o);
     }
 
     @SubscribeEvent
-    public void onWorldRender(RenderWorldLastEvent event)
-    {
-        if (mc.player != null && mc.world != null)
-        {
-            if (mc.world.isBlockLoaded(mc.player.getPosition()))
-            {
+    public void onWorldRender(RenderWorldLastEvent event) {
+        if (mc.player != null && mc.world != null) {
+            if (mc.world.isBlockLoaded(mc.player.getPosition())) {
                 ModuleManager.onRender();
             }
         }
     }
 
     @SubscribeEvent
-    public void onText(Text event)
-    {
-        if (event.getType().equals(ElementType.TEXT))
-        {
-            if (!(mc.currentScreen instanceof NewRuhamaGui))
-            {
+    public void onText(Text event) {
+        if (event.getType().equals(ElementType.TEXT)) {
+            if (!(mc.currentScreen instanceof NewRuhamaGui)) {
                 Iterator textIter = NewRuhamaGui.textWins.iterator();
-
 
                 label41:
 
-                while (true)
-                {
+                while (true) {
                     MutableTriple e;
-                    do
-                    {
-                        if (!textIter.hasNext())
-                        {
+                    do {
+                        if (!textIter.hasNext()) {
                             break label41;
                         }
 
@@ -195,18 +187,15 @@ public class RuhamaPlus
 
                     int h = 2;
 
-                    for (Iterator iter = ((TextWindow) e.right).getText().iterator(); iter.hasNext(); h += 10)
-                    {
+                    for (Iterator iter = ((TextWindow) e.right).getText().iterator(); iter.hasNext(); h += 10) {
                         AdvancedText s = (AdvancedText) iter.next();
                         ScaledResolution scale = new ScaledResolution(Minecraft.getMinecraft());
 
                         int x = (double) ((TextWindow) e.right).posX > (double) scale.getScaledWidth() / 1.5D ? ((TextWindow) e.right).posX + ((TextWindow) e.right).len - mc.fontRenderer.getStringWidth(s.text) - 2 : (((TextWindow) e.right).posX < scale.getScaledWidth() / 3 ? ((TextWindow) e.right).posX + 2 : ((TextWindow) e.right).posX + ((TextWindow) e.right).len / 2 - mc.fontRenderer.getStringWidth(s.text) / 2);
 
-                        if (s.shadow)
-                        {
+                        if (s.shadow) {
                             mc.fontRenderer.drawStringWithShadow(s.text, (float) x, (float) (((TextWindow) e.right).posY + h), s.color);
-                        } else
-                        {
+                        } else {
                             mc.fontRenderer.drawString(s.text, x, ((TextWindow) e.right).posY + h, s.color);
                         }
                     }
@@ -216,32 +205,17 @@ public class RuhamaPlus
         }
     }
 
-    @SubscribeEvent
-    public void onChat(ClientChatEvent event)
-    {
-        if (Objects.requireNonNull(ModuleManager.getModuleByName("ChatSuffix") ).isToggled() && !event.getMessage().contains("\u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+") && !event.getMessage().startsWith("/") && !event.getMessage().startsWith("!"))
-        {
-            event.setCanceled(true);
-
-            mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());
-            mc.player.sendChatMessage(event.getMessage() + " \u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+");
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState()) {
-            if(Keyboard.getEventKey() == 0 || Keyboard.getEventKey() == Keyboard.KEY_NONE) return;
-            //Module binds
+            if (Keyboard.getEventKey() == 0 || Keyboard.getEventKey() == Keyboard.KEY_NONE) return;
             ModuleManager.onBind(Keyboard.getEventKey());
         }
     }
 
     @SubscribeEvent
-    public void onTick(ClientTickEvent event)
-    {
-        if (System.currentTimeMillis() - 5000L > this.timer && this.timerStart)
-        {
+    public void onTick(ClientTickEvent event) {
+        if (System.currentTimeMillis() - 5000L > this.timer && this.timerStart) {
             this.timer = System.currentTimeMillis();
 
             FileMang.saveClickGui();
@@ -250,31 +224,26 @@ public class RuhamaPlus
             FileMang.saveBinds();
         }
 
-        if (event.phase == Phase.START && mc.player != null && mc.world != null)
-        {
-            if (mc.world.isBlockLoaded(new BlockPos(mc.player.posX, 0.0D, mc.player.posZ)))
-            {
+        if (event.phase == Phase.START && mc.player != null && mc.world != null) {
+            if (mc.world.isBlockLoaded(new BlockPos(mc.player.posX, 0.0D, mc.player.posZ))) {
                 ModuleManager.onUpdate();
                 ModuleManager.updateKeys();
 
                 Entry e;
 
-                try
-                {
-                    for (Iterator iter = friendBlocks.entrySet().iterator(); iter.hasNext(); friendBlocks.replace((BlockPos) e.getKey(), (Integer) e.getValue() - 1))
-                    {
+                try {
+                    for (Iterator iter = friendBlocks.entrySet().iterator(); iter.hasNext(); friendBlocks.replace((BlockPos) e.getKey(), (Integer) e.getValue() - 1)) {
                         e = (Entry) iter.next();
-                        if ((Integer) e.getValue() <= 0)
-                        {
+                        if ((Integer) e.getValue() <= 0) {
                             friendBlocks.remove(e.getKey());
                         }
                     }
-                } catch (Exception ignored)
-                {
+                } catch (Exception ignored) {
                 }
             }
         }
     }
+
     @SubscribeEvent
     public void onFrame(TickEvent event) {
         if (event.phase == Phase.START && mc.player != null && mc.world != null) {

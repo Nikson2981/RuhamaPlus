@@ -80,7 +80,7 @@ public class HoleFiller extends Module
                                     continue ferngayler;
                                 }
 
-                                v5 = (BlockPos) blockIter.next();
+                                v5 = blockIter.next();
                             } while (this.mc.player.getDistanceSqToCenter(v5) > this.getSetting(1).asSlider().getValue());
                         } while (!this.mc.world.getBlockState(v5).getMaterial().isReplaceable());
                     } while (!this.mc.world.getBlockState(v5.add(0, 1, 0)).getMaterial().isReplaceable());

@@ -1,6 +1,7 @@
 package blu3.ruhamaplus.mixin.mixins.minecraftforge;
 
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import org.spongepowered.asm.mixin.*;
 import net.minecraftforge.fml.common.eventhandler.*;
 import net.minecraftforge.fml.common.*;
@@ -17,10 +18,10 @@ public class MixinEventBus
             iEventListener.invoke(event);
         }
         catch (Throwable t3) {
-            final String msg = "The event bus encountered an error while invoking event " + event.getClass().getName() + "! Luckily, Ruhama+ is good enougn to prevent this.";
+            final String msg = "The event bus encountered an error while invoking event " + event.getClass().getName() + "! Luckily, Ruhama+ is good enough to prevent this.";
             FMLLog.log.warn(msg);
             try {
-                Minecraft.getMinecraft().player.sendMessage(new TextComponentString(msg));
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString(ChatFormatting.RED + msg));
             }
             catch (Throwable t2) {
                 t2.printStackTrace();

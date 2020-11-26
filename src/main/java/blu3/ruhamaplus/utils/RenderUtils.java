@@ -76,7 +76,7 @@ public class RenderUtils implements Util
         final float z = (float)player.posZ;
 
         GlStateManager.pushMatrix();
-        glBillboardDistanceScaled(x + 0.5f,  y + 0.5f, z + 0.5f, mc.player, 1.0f);
+        glBillboardDistanceScaled(x,  y + 0.5f, z, mc.player, 1.0f); // + 0.5f
         GlStateManager.disableDepth();
         GlStateManager.translate(-(mc.fontRenderer.getStringWidth(player.getName()) / 2.0), 0.0, 0.0);
         drawDetailedNametag(0.0f, 0.0f, player);

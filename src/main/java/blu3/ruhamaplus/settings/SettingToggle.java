@@ -10,4 +10,8 @@ public class SettingToggle extends SettingBase
         this.state = state;
         this.text = text;
     }
+
+    public boolean getValue(){
+        return state;
+    }
 }

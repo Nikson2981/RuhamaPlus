@@ -51,7 +51,7 @@ public class FakePlayerCmd extends CommandBase implements IClientCommand {
                 ChatUtils.log("FakePlayer set to " + args[0]);
             }
         } catch (Exception e){
-            ChatUtils.testError(this, "no");
+            ChatUtils.error(this, "no");
         }
 
 

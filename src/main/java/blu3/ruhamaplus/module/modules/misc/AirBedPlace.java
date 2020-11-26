@@ -28,6 +28,10 @@ public class AirBedPlace extends Module {
             }
         }
 
+        if (slot == -1) {
+            setToggled(false);
+            return;
+        }
         RayTraceResult ray = this.mc.player.rayTrace(5.0D, this.mc.getRenderPartialTicks());
         BlockPos pos = Objects.requireNonNull(ray).getBlockPos().up();
 

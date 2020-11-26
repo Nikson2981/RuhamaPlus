@@ -1,13 +1,17 @@
 package blu3.ruhamaplus.mixin.mixins;
 
+import blu3.ruhamaplus.RuhamaPlus;
+import blu3.ruhamaplus.event.events.EventReadPacket;
 import blu3.ruhamaplus.module.ModuleManager;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
+import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 
 @Mixin({NetworkManager.class})
 public class MixinPacketRead
@@ -23,5 +27,9 @@ public class MixinPacketRead
         {
             info.cancel();
         }
+        EventReadPacket event = new EventReadPacket(p_channelRead0_2_);
+        MinecraftForge.EVENT_BUS.post(event);
+        RuhamaPlus.EVENT_BUS.post(event);
+        if (event.isCanceled()) info.cancel();
     }
 }

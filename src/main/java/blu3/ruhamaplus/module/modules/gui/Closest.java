@@ -1,5 +1,6 @@
 package blu3.ruhamaplus.module.modules.gui;
 
+import blu3.ruhamaplus.event.events.TotemPopEvent;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.module.ModuleManager;
@@ -23,6 +24,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -46,6 +49,8 @@ public class Closest extends Module {
     List<Entity> players;
 
     private HashMap<String, Integer> popList = new HashMap();
+
+
 
     public void onUpdate(){
         if(mc.player == null) return;
@@ -237,26 +242,27 @@ public class Closest extends Module {
         if (this.getBoolean("RenderBox") && l_Player != null) RenderUtils.drawFilledBlockBox(l_Player.getEntityBoundingBox(), 1.0F, 0.0F, 0.0F, 0.3F);
     }
 
-    public static class EnchantEntry
+    public boolean onPacketRead(Packet<?> packet)
     {
-        private Enchantment enchant;
-        private String name;
-
-        public EnchantEntry(final Enchantment enchant, final String name) {
-            this.enchant = enchant;
-            this.name = name;
+        if (!(this.mc.player == null) && !(this.mc.world == null)){
+            if (packet instanceof SPacketEntityStatus){
+                SPacketEntityStatus racket = (SPacketEntityStatus) packet; // had to change the name LMAO
+                if (racket.getOpCode() == 35) {
+                    Entity entity = racket.getEntity(mc.world);
+                    TotemPopEvent event = new TotemPopEvent(entity);
+                    MinecraftForge.EVENT_BUS.post(event);
+                    return false;
+                }
+            }
         }
-
-        public Enchantment getEnchant() {
-            return this.enchant;
-        }
-
-        public String getName() {
-            return this.name;
-        }
+        return false;
     }
 
-    public void newPoppedTotem(Entity e) {
+    @SubscribeEvent
+    public void onTotemPop(TotemPopEvent event) {
+
+        Entity e = event.getEntity();
+
         if(popList == null) {
             popList = new HashMap<>();
         }
@@ -270,21 +276,6 @@ public class Closest extends Module {
 
             popList.put(e.getName(), newPopCounter);
         }
-    }
-
-    public boolean onPacketRead(Packet<?> packet)
-    {
-        if (!(this.mc.player == null) && !(this.mc.world == null)){
-            if (packet instanceof SPacketEntityStatus){
-                SPacketEntityStatus racket = (SPacketEntityStatus) packet; // had to change the name LMAO
-                if (racket.getOpCode() == 35) {
-                    Entity entity = racket.getEntity(mc.world);
-                    this.newPoppedTotem(entity);
-                    return false;
-                }
-            }
-        }
-        return false;
     }
 
 

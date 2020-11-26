@@ -8,46 +8,24 @@ import net.minecraft.network.play.server.SPacketChat;
 
 public class Annoyer extends Module {
     public Annoyer() {
-        super("Annoyer", 0, Category.CHAT, " \u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+  " +
-                "\u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+", null);
+        super("Annoyer", 0, Category.CHAT, "praise napoleon eh HON HON HON HON HON HON HON BAGUETTE HON HON HON", null);
         this.delay = new TimeUtils();
     }
 
     private final TimeUtils delay;
 
-    public boolean onPacketRead(Packet<?> packet)
-    {
-        if (this.delay.passedMs(5000)){
+    public boolean onPacketRead(Packet<?> packet) {
+        if (this.delay.passedS(5)) {
             if (!(this.mc.player == null) && !(this.mc.world == null)) {
                 if (packet instanceof SPacketChat) {
                     SPacketChat sPacketChat = (SPacketChat) packet;
                     String message = sPacketChat.getChatComponent().getUnformattedText();
 
-                    if (message.contains(" \u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+") && !(message.contains(this.mc.player.getName()))){
+                    if (message.contains(" \u23D0 \u0280\u1d1c\u029c\u1d00\u1d0d\u1d00+") && !(message.contains(this.mc.player.getName()))) {
 
                         String[] arr = message.split(" ", 2); // splits the message at " " into 2 parts
 
                         mc.player.sendChatMessage(arr[1]); // sends the second part, without the username
-
 
                         this.delay.reset();
                     }

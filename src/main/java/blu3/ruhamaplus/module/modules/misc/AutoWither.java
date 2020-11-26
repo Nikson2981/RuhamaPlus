@@ -147,7 +147,7 @@ public class AutoWither extends Module
                     return;
                 }
 
-                if (WorldUtils.placeBlock(blockPosIntegerEntry.getKey(), blockPosIntegerEntry.getValue(), this.getSetting(1).asToggle().state, blockPosIntegerEntry.equals(blocks.entrySet().toArray()[blocks.size() - 1]) && this.getSetting(1).asToggle().state))
+                if (WorldUtils.placeBlock(blockPosIntegerEntry.getKey(), blockPosIntegerEntry.getValue(), this.getSetting(1).asToggle().state, blockPosIntegerEntry.equals(blocks.entrySet().toArray()[blocks.size() - 1]) && this.getSetting(1).asToggle().state) == 1)
                 {
                     ++cap;
                 }

@@ -1,4 +1,4 @@
-package blu3.ruhamaplus.settings;
+package blu3.ruhamaplus.errors;
 
 public class NetworkError extends Error{
 

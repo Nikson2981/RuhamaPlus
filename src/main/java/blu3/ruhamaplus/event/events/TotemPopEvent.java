@@ -1,7 +1,8 @@
 package blu3.ruhamaplus.event.events;
 
-import blu3.ruhamaplus.event.Event;
+
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class TotemPopEvent extends Event {
 

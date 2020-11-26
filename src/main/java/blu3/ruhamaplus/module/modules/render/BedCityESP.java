@@ -22,16 +22,7 @@ public class BedCityESP extends Module {
 
     private EntityPlayer target;
 
-    private List <BlockPos> clearSpots = new ArrayList<>();
-
-    private BlockPos blockpos1;
-    private BlockPos blockpos2;
-    private BlockPos blockpos3;
-    private BlockPos blockpos4;
-    private BlockPos blockpos5;
-    private BlockPos blockpos6;
-    private BlockPos blockpos7;
-    private BlockPos blockpos8;
+    private final List <BlockPos> clearSpots = new ArrayList<>();
 
     public boolean isInBlockRange(Entity target) {
         return target.getDistance(this.mc.player) <= 15.0F;
@@ -48,9 +39,7 @@ public class BedCityESP extends Module {
                 this.updateTarget();
             }
 
-            List<Entity> entities = new ArrayList<>();
-
-            entities.addAll(this.mc.world.playerEntities);
+            List<Entity> entities = new ArrayList<>(this.mc.world.playerEntities);
             for (Object o : new ArrayList<>(entities)) {
                 Entity e = (EntityPlayer) o;
 
@@ -81,15 +70,11 @@ public class BedCityESP extends Module {
 
     private boolean inHole(EntityPlayer player){
         BlockPos pos = new BlockPos(player.posX, player.posY, player.posZ);
-        if (isBlockBlastResistant(pos.west()) && isBlockBlastResistant(pos.east()) && isBlockBlastResistant(pos.north()) && isBlockBlastResistant(pos.south()))
-            return true;
-
-        else return false;
+        return isBlockBlastResistant(pos.west()) && isBlockBlastResistant(pos.east()) && isBlockBlastResistant(pos.north()) && isBlockBlastResistant(pos.south());
     }
 
     private boolean isBlockBlastResistant(BlockPos pos){
-        if (this.mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN || this.mc.world.getBlockState(pos).getBlock() == Blocks.BEDROCK) return true;
-        else return false;
+        return this.mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN || this.mc.world.getBlockState(pos).getBlock() == Blocks.BEDROCK;
     }
 
     private void showClearSpots(EntityPlayer player) {
@@ -98,14 +83,22 @@ public class BedCityESP extends Module {
 
         List <BlockPos> poses = new ArrayList<>();
 
-        this.blockpos1 = new BlockPos(player.posX + 1, player.posY + 1.0D, player.posZ); poses.add(this.blockpos1);
-        this.blockpos2 = new BlockPos(player.posX - 1, player.posY + 1.0D, player.posZ); poses.add(this.blockpos2);
-        this.blockpos3 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ + 1); poses.add(this.blockpos3);
-        this.blockpos4 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ - 1); poses.add(this.blockpos4);
-        this.blockpos5 = new BlockPos(player.posX + 1, player.posY + 2.0D, player.posZ); poses.add(this.blockpos5);
-        this.blockpos6 = new BlockPos(player.posX - 1, player.posY + 2.0D, player.posZ); poses.add(this.blockpos6);
-        this.blockpos7 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ + 1); poses.add(this.blockpos7);
-        this.blockpos8 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ - 1); poses.add(this.blockpos8);
+        BlockPos blockpos1 = new BlockPos(player.posX + 1, player.posY + 1.0D, player.posZ);
+        poses.add(blockpos1);
+        BlockPos blockpos2 = new BlockPos(player.posX - 1, player.posY + 1.0D, player.posZ);
+        poses.add(blockpos2);
+        BlockPos blockpos3 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ + 1);
+        poses.add(blockpos3);
+        BlockPos blockpos4 = new BlockPos(player.posX, player.posY + 1.0D, player.posZ - 1);
+        poses.add(blockpos4);
+        BlockPos blockpos5 = new BlockPos(player.posX + 1, player.posY + 2.0D, player.posZ);
+        poses.add(blockpos5);
+        BlockPos blockpos6 = new BlockPos(player.posX - 1, player.posY + 2.0D, player.posZ);
+        poses.add(blockpos6);
+        BlockPos blockpos7 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ + 1);
+        poses.add(blockpos7);
+        BlockPos blockpos8 = new BlockPos(player.posX, player.posY + 2.0D, player.posZ - 1);
+        poses.add(blockpos8);
 
 
 

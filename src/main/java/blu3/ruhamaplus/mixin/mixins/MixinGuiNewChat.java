@@ -26,7 +26,7 @@ public abstract class MixinGuiNewChat {
 
     @Redirect(method = "drawChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V"))
     private void drawRectBackgroundClean(int left, int top, int right, int bottom, int color) {
-        if(!(Objects.requireNonNull(ModuleManager.getModuleByName("BetterChat").isToggled())) || !(Objects.requireNonNull(ModuleManager.getModuleByName("BetterChat"))).getBoolean("NoBackground")) {
+        if(!(Objects.requireNonNull(ModuleManager.getModuleByName("BetterChat")).isToggled()) || !(Objects.requireNonNull(ModuleManager.getModuleByName("BetterChat"))).getBoolean("NoBackground")) {
             Gui.drawRect(left, top, right, bottom, color);
         }
     }

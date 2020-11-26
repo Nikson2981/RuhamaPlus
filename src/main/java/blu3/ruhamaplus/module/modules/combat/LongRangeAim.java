@@ -12,10 +12,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- **  @author blu3
- **/
-
 public class LongRangeAim extends Module {
 
     private static final List<SettingBase> settings = Arrays.asList(new SettingSlider(0.0D, 150.0D, 150.0D, 2, "Range: "), new SettingMode("Mode: ", "Closest", "Command"));

@@ -25,6 +25,9 @@ public class FriendManager {
         return RuhamaPlus.GetFriendManager();
     }
 
+    /*if (FriendManager.get().isFriend(e.getName().toLowerCase())){
+        ezplayers.remove(e);
+    }*/
 
 
     public FriendManager()

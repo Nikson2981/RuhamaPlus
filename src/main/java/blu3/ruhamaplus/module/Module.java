@@ -1,13 +1,13 @@
 package blu3.ruhamaplus.module;
 
 import blu3.ruhamaplus.gui.ruhama.TextWindow;
-import blu3.ruhamaplus.settings.SettingBase;
-import blu3.ruhamaplus.settings.SettingMode;
-import blu3.ruhamaplus.settings.SettingSlider;
-import blu3.ruhamaplus.settings.SettingToggle;
+import blu3.ruhamaplus.settings.*;
+import blu3.ruhamaplus.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.Packet;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class Module
     public boolean keyActive = false;
     
     protected Minecraft mc = Minecraft.getMinecraft();
-    
+
     private final String name;
     private KeyBinding key;
 
@@ -38,10 +38,6 @@ public class Module
         this.registerBind(name, bind);
         this.category = cat;
         this.desc = desc;
-
-        //this.bind = Keyboard.KEY_NONE;
-
-        //bind = this.bind;
         
         if (settings != null)
         {
@@ -51,10 +47,27 @@ public class Module
         this.toggled = false;
     }
 
+    public Module(String name, Category cat, String desc, List<SettingBase> settings)
+    {
+        this.name = name;
+        this.registerBind(name, 0);
+        this.category = cat;
+        this.desc = desc;
+
+        if (settings != null)
+        {
+            this.settings = settings;
+        }
+
+        this.toggled = false;
+    }
+
+    public void log(String text) {
+        ChatUtils.log(text);
+    }
+
     public boolean nullCheck() {
         return (mc.player == null || mc.world == null);
-        //returns true if if the world is null or the player is null
-        //so use -> if(nullCheck()) return;
     }
 
     public int getBind(){
@@ -74,6 +87,7 @@ public class Module
             try
             {
                 this.onEnable();
+                MinecraftForge.EVENT_BUS.register(this);
             } catch (Exception e)
             {
                 e.printStackTrace();
@@ -83,6 +97,7 @@ public class Module
             try
             {
                 this.onDisable();
+                MinecraftForge.EVENT_BUS.unregister(this);
             } catch (Exception e)
             {
                 e.printStackTrace();
@@ -92,10 +107,12 @@ public class Module
 
     public void onEnable()
     {
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public void onDisable()
     {
+        MinecraftForge.EVENT_BUS.unregister(this);
     }
 
     public void onUpdate()

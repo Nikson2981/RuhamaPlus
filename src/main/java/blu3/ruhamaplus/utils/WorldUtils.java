@@ -58,10 +58,8 @@ public class WorldUtils {
         }
     }
 
-    public static boolean placeBlock(BlockPos pos, int slot, boolean rotate, boolean rotateBack) {
-        if (!isBlockEmpty(pos)) {
-            return false;
-        } else {
+    public static long placeBlock(BlockPos pos, int slot, boolean rotate, boolean rotateBack) {
+        if (isBlockEmpty(pos)) {
             if (slot != mc.player.inventory.currentItem) {
                 mc.player.inventory.currentItem = slot;
             }
@@ -92,18 +90,16 @@ public class WorldUtils {
                         mc.player.connection.sendPacket(new Rotation(rot[0], rot[1], mc.player.onGround));
                     }
 
-                    return true;
+                    return 1;
                 }
             }
 
-            return false;
         }
+        return 0;
     }
 
     public static boolean isBlockEmpty(BlockPos pos) {
-        if (!emptyBlocks.contains(mc.world.getBlockState(pos).getBlock())) {
-            return false;
-        } else {
+        if (emptyBlocks.contains(mc.world.getBlockState(pos).getBlock())) {
             AxisAlignedBB box = new AxisAlignedBB(pos);
             Iterator entityIter = mc.world.loadedEntityList.iterator();
 
@@ -117,14 +113,12 @@ public class WorldUtils {
                 e = (Entity) entityIter.next();
             } while (!(e instanceof EntityLivingBase) || !box.intersects(e.getEntityBoundingBox()));
 
-            return false;
         }
+        return false;
     }
 
     public static boolean canPlaceBlock(BlockPos pos) {
-        if (!isBlockEmpty(pos)) {
-            return false;
-        } else {
+        if (isBlockEmpty(pos)) {
             EnumFacing[] facings = EnumFacing.values();
 
             for (EnumFacing f : facings) {
@@ -133,12 +127,8 @@ public class WorldUtils {
                 }
             }
 
-            return false;
         }
-    }
-
-    public static EnumFacing getClosestFacing(BlockPos pos) {
-        return EnumFacing.DOWN;
+        return false;
     }
 
     public static void rotateClient(double x, double y, double z) {

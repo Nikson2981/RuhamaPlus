@@ -30,10 +30,10 @@ public class BetterChat extends Module {
             SPacketChat sPacketChat = (SPacketChat) packet;
             String message = sPacketChat.getChatComponent().getFormattedText();
 
-            String s = this.mc.player.getName();
+            String s = mc.player.getName();
 
             if (message.contains(s) && !message.startsWith("<" + s + ">")) {
-                this.mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.BOLD + message));
+                mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.BOLD + message));
                 return true;
             }
         }

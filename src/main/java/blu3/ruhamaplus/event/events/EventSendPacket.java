@@ -1,6 +1,6 @@
 package blu3.ruhamaplus.event.events;
 
-import blu3.ruhamaplus.event.Event;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraft.network.Packet;
 
 public class EventSendPacket extends Event {
@@ -17,4 +17,7 @@ public class EventSendPacket extends Event {
     public void setPacket(Packet<?> packet) {
         this.packet = packet;
     }
+    public boolean isCancelable() {
+        return true;
+    } // dont forget this lol
 }
