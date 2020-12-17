@@ -174,24 +174,24 @@ public class DamageUtil {
         if (item instanceof ItemSword) {
             return 600;
         }
-        if (item instanceof ItemPickaxe) {
+        else if (item instanceof ItemPickaxe) {
             return 850;
         }
-        if (item == Items.IRON_AXE) {
+        else if (item == Items.IRON_AXE) {
             return 1100;
         }
-        if (item == Items.STONE_HOE) {
+        else if (item == Items.STONE_HOE) {
             return 500;
         }
-        if (item == Items.IRON_HOE) {
+        else if (item == Items.IRON_HOE) {
             return 350;
         }
-        if (item == Items.WOODEN_AXE || item == Items.STONE_AXE) {
+        else if (item == Items.WOODEN_AXE || item == Items.STONE_AXE) {
             return 1250;
         }
-        if (item instanceof ItemSpade || item == Items.GOLDEN_AXE || item == Items.DIAMOND_AXE || item == Items.WOODEN_HOE || item == Items.GOLDEN_HOE) {
+        else if (item instanceof ItemSpade || item == Items.GOLDEN_AXE || item == Items.DIAMOND_AXE || item == Items.WOODEN_HOE || item == Items.GOLDEN_HOE) {
             return 1000;
         }
-        return 250;
+        else return 250;
     }
 }

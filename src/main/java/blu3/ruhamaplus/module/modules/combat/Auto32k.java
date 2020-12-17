@@ -55,23 +55,11 @@ public class Auto32k extends Module {
             new SettingSlider(500, 2000, 1000, 10, "Timeout After: ")
     );
 
-    private int stage;
-    private int obsidian;
-    private int dispenser;
-    private int redstone;
-    private int shulker;
-    private int hopper;
-    private int ticksEnabled;
+    private int stage, obsidian, dispenser, redstone, shulker, hopper, ticksEnabled, clicks;
+    private BlockPos target, targetFront;
+    private Material targetFrontBlock, targetBlock;
+    private boolean skippedStageOne = false, isAirPlacing = false;
 
-    private BlockPos target;
-    private BlockPos targetFront;
-    private Material targetFrontBlock;
-    private Material targetBlock;
-
-    private boolean skippedStageOne = false;
-    private boolean isAirPlacing = false;
-
-    private int clicks;
 
 
     public void fastUpdate() {

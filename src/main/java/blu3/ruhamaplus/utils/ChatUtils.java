@@ -11,7 +11,7 @@ public class ChatUtils implements Util
 {
 
     public static void setWords(){
-        sialydf.addAll(FileMang.readFileLines("cleanchat.txt"));
+        sialydf.addAll(FileMang.readFileLines("cleanchat.blu3"));
     }
     public static void log(String text)
     {
@@ -74,9 +74,9 @@ public class ChatUtils implements Util
                 }
                 cleanMessage.append(" ");
             } else {
-                cleanMessage.append(bruh + " ");
+                cleanMessage.append(bruh).append(" ");
             }
         }
-        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(cleanMessage.toString()));
+        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(cleanMessage.toString() + " (cleaned)"));
     }
 }

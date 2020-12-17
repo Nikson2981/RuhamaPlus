@@ -14,15 +14,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.List;
 import java.util.Objects;
 
-@Mixin(GuiNewChat.class)
+@Mixin(value = GuiNewChat.class, priority = 2147483647)
 public abstract class MixinGuiNewChat {
-
-    @Shadow
-    private int scrollPos;
-
-    @Shadow @Final private List<ChatLine> drawnChatLines;
-
-    @Shadow public abstract int getLineCount();
 
     @Redirect(method = "drawChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V"))
     private void drawRectBackgroundClean(int left, int top, int right, int bottom, int color) {

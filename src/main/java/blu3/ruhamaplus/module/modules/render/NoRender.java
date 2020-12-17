@@ -4,6 +4,7 @@ import blu3.ruhamaplus.event.events.EventEntityAdded;
 import blu3.ruhamaplus.module.Category;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
+import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingToggle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityWitherSkull;
@@ -32,6 +33,7 @@ public class NoRender extends Module {
 
     public static SettingToggle witherSkulls = new SettingToggle(true, "Wither Skulls");
     public static SettingToggle cameraClip = new SettingToggle(false, "CameraClip");
+    public static SettingMode witherSkullsMode = new SettingMode("WitherSkulls Mode", "");
 
     @SubscribeEvent
     public void onEntityAdded(EventEntityAdded event){

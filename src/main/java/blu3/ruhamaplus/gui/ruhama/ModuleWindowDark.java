@@ -1,11 +1,11 @@
 package blu3.ruhamaplus.gui.ruhama;
 
-import blu3.ruhamaplus.utils.Rainbow;
 import blu3.ruhamaplus.module.Module;
 import blu3.ruhamaplus.settings.SettingBase;
 import blu3.ruhamaplus.settings.SettingMode;
 import blu3.ruhamaplus.settings.SettingSlider;
 import blu3.ruhamaplus.settings.SettingToggle;
+import blu3.ruhamaplus.utils.Rainbow;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,7 +13,6 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -62,7 +61,7 @@ public class ModuleWindowDark extends ModuleWindow
 
         for (Object mods : (new LinkedHashMap<>(this.mods)).entrySet())
         {
-            Entry m = (Entry) mods;
+            Entry<?, ?> m = (Entry<?, ?>) mods;
 
             int c2;
 
@@ -105,24 +104,18 @@ public class ModuleWindowDark extends ModuleWindow
 
                 if ((Boolean) m.getValue())
                 {
-                    for (Iterator i = ((Module) m.getKey()).getSettings().listIterator(); i.hasNext();)
-                    {
-                        SettingBase s = (SettingBase) i.next();
-
+                    for (SettingBase s : ((Module) m.getKey()).getSettings()) {
                         ++count;
 
-                        if (s instanceof SettingMode)
-                        {
+                        if (s instanceof SettingMode) {
                             this.drawModeSetting(s.asMode(), this.posX, this.posY + count * 14);
                         }
 
-                        if (s instanceof SettingToggle)
-                        {
+                        if (s instanceof SettingToggle) {
                             this.drawToggleSetting(s.asToggle(), this.posX, this.posY + count * 14);
                         }
 
-                        if (s instanceof SettingSlider)
-                        {
+                        if (s instanceof SettingSlider) {
                             this.drawSliderSetting(s.asSlider(), this.posX, this.posY + count * 14);
                         }
                     }

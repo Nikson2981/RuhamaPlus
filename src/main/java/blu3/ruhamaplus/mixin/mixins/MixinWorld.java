@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = World.class)
+@Mixin(value = World.class, priority = 2147483647)
 public class MixinWorld {
 
     @Inject(method = "onEntityRemoved", at = @At("HEAD"), cancellable = true)

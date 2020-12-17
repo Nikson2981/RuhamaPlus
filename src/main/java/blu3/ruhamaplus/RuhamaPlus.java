@@ -3,20 +3,16 @@ package blu3.ruhamaplus;
 import blu3.ruhamaplus.command.*;
 import blu3.ruhamaplus.gui.ruhama.*;
 import blu3.ruhamaplus.module.*;
-import blu3.ruhamaplus.module.modules.chat.ChatSuffix;
 import blu3.ruhamaplus.module.modules.gui.*;
 import blu3.ruhamaplus.settings.*;
 import blu3.ruhamaplus.utils.*;
 import blu3.ruhamaplus.utils.friendutils.*;
-import me.zero.alpine.fork.bus.EventBus;
-import me.zero.alpine.fork.bus.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.IClientCommand;
-import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Text;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -37,32 +33,28 @@ import java.util.Map.Entry;
 @Mod(
         modid = "ruhamaplus",
         name = "Ruhama+",
-        version = "1.1",
+        version = "1.2",
         acceptedMinecraftVersions = "[1.12.2]"
 )
+
+/**
+ * retarded client, base by bleach and all the changes were made by me. this is stupid go fuck yourself
+ */
 public class RuhamaPlus {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static HashMap<BlockPos, Integer> friendBlocks = new HashMap<>();
-
-    public static final EventBus EVENT_BUS = new EventManager();
 
     private long timer = 0L;
     private boolean timerStart = false;
 
     public CapeUtils capeUtils;
 
+    private static final FriendManager friendManager = new FriendManager();
 
-    private static final FriendManager m_friendManager = new FriendManager();
-   /* private static final Discord m_Discord = new Discord();
+    public static String version = "1.2";
 
-    public static Discord GetDiscord() {
-        return m_Discord;
-    }*/
-
-    public static String version = "1.1";
-
-    public static FriendManager GetFriendManager() {
-        return m_friendManager;
+    public static FriendManager getFriendManager() {
+        return friendManager;
     }
 
     @Mod.Instance
@@ -77,8 +69,6 @@ public class RuhamaPlus {
     }
 
     @EventHandler
-    @SuppressWarnings("*")
-
     public void init(FMLInitializationEvent event) {
         Display.setTitle("Ruhama+ initializing...");
         System.out.println("Initialization beginning...   ");
@@ -87,7 +77,6 @@ public class RuhamaPlus {
                 "| \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ | | \\ |\n" +
                 "|  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\| |  \\|\n\n");
 
-        Friends.tryValidateHwid();
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new EventListeners());
@@ -98,7 +87,7 @@ public class RuhamaPlus {
         FileMang.init();
 
         FileMang.createFile("FriendList.json");
-        FileMang.createFile("cleanchat.txt");
+        FileMang.createFile("cleanchat.blu3");
 
         FileMang.readModules();
         FileMang.readSettings();
@@ -121,7 +110,6 @@ public class RuhamaPlus {
     }
 
     @EventHandler
-    @SuppressWarnings("*")
     public void postinit(FMLPostInitializationEvent event) {
         Display.setTitle("Ruhama+ Initializing commands...");
         System.out.println("Initializing commands...");
@@ -171,23 +159,23 @@ public class RuhamaPlus {
     public void onText(Text event) {
         if (event.getType().equals(ElementType.TEXT)) {
             if (!(mc.currentScreen instanceof NewRuhamaGui)) {
-                Iterator textIter = NewRuhamaGui.textWins.iterator();
+                Iterator<?> textIter = NewRuhamaGui.textWins.iterator();
 
                 label41:
 
                 while (true) {
-                    MutableTriple e;
+                    MutableTriple<?, ?, ?> e;
                     do {
                         if (!textIter.hasNext()) {
                             break label41;
                         }
 
-                        e = (MutableTriple) textIter.next();
+                        e = (MutableTriple<?, ?, ?> ) textIter.next();
                     } while (!Objects.requireNonNull(ModuleManager.getModuleByName(((Module) e.left).getName())).isToggled());
 
                     int h = 2;
 
-                    for (Iterator iter = ((TextWindow) e.right).getText().iterator(); iter.hasNext(); h += 10) {
+                    for (Iterator<?> iter = ((TextWindow) e.right).getText().iterator(); iter.hasNext(); h += 10) {
                         AdvancedText s = (AdvancedText) iter.next();
                         ScaledResolution scale = new ScaledResolution(Minecraft.getMinecraft());
 
@@ -208,7 +196,7 @@ public class RuhamaPlus {
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState()) {
-            if (Keyboard.getEventKey() == 0 || Keyboard.getEventKey() == Keyboard.KEY_NONE) return;
+            if (Keyboard.getEventKey() == 0 || Keyboard.getEventKey() == Keyboard.KEY_PAUSE) return;
             ModuleManager.onBind(Keyboard.getEventKey());
         }
     }
@@ -229,11 +217,11 @@ public class RuhamaPlus {
                 ModuleManager.onUpdate();
                 ModuleManager.updateKeys();
 
-                Entry e;
+                Entry<?, ?> e;
 
                 try {
-                    for (Iterator iter = friendBlocks.entrySet().iterator(); iter.hasNext(); friendBlocks.replace((BlockPos) e.getKey(), (Integer) e.getValue() - 1)) {
-                        e = (Entry) iter.next();
+                    for (Iterator<?> iter = friendBlocks.entrySet().iterator(); iter.hasNext(); friendBlocks.replace((BlockPos) e.getKey(), (Integer) e.getValue() - 1)) {
+                        e = (Entry<?, ?>) iter.next();
                         if ((Integer) e.getValue() <= 0) {
                             friendBlocks.remove(e.getKey());
                         }

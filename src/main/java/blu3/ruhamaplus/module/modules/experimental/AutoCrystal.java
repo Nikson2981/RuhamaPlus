@@ -7,6 +7,7 @@ import blu3.ruhamaplus.utils.*;
 import blu3.ruhamaplus.utils.friendutils.*;
 import com.mojang.realmsclient.gui.*;
 import net.minecraft.client.*;
+import net.minecraft.client.audio.ElytraSound;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.*;
 import net.minecraft.entity.monster.*;
@@ -19,7 +20,11 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraftforge.fml.common.eventhandler.*;
 
+import java.awt.*;
+import java.net.URI;
+import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.stream.*;
 
 /**
@@ -28,42 +33,50 @@ import java.util.stream.*;
 
 public class AutoCrystal extends Module {
 
-    public static SettingMode logic = new SettingMode("Logic: ", "BreakPlace", "PlaceBreak");
-    public static SettingMode rotate = new SettingMode("Rotate: ", "Never", "Place", "Break", "Always");
-    public static SettingMode breakHand = new SettingMode("BreakHand: ", "Mainhand", "Offhand", "BothHands");
-    public static SettingMode placeMode = new SettingMode("PlaceMode: ", "1.12", "1.13+");
-    public static SettingMode breakMode = new SettingMode("BreakMode: ", "All", "Smart");
+    public static String
+            breakPlace = "BreakPlace",
+            placeBreak = "PlaceBreak",
+            never = "Never",
+            placeS = "Place",
+            breakS = "Break",
+            always = "Always";
 
-    public static SettingSlider range = new SettingSlider(0.0D, 6.0D, 5.0D, 0, "Range: ");
-    public static SettingSlider hitDelay = new SettingSlider(0.0D, 20.0D, 0, 0, "Hit Delay: ");
-    public static SettingSlider placeDelay = new SettingSlider(0.0D, 20.0D, 0, 0, "Place Delay: ");
-    public static SettingSlider minDmgS = new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: ");
-    public static SettingSlider maxSelfDmg = new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: ");
-    public static SettingSlider facePlaceHp = new SettingSlider(1.0D, 36.0D, 10.0D, 0, "FacePlace HP: ");
+    public static SettingMode
+            logic = new SettingMode("Logic: ", breakPlace, placeBreak),
+            rotate = new SettingMode("Rotate: ", never, placeS, breakS, always),
+            breakHand = new SettingMode("BreakHand: ", "Mainhand", "Offhand", "BothHands"),
+            placeMode = new SettingMode("PlaceMode: ", "1.12", "1.13+"),
+            breakMode = new SettingMode("BreakMode: ", "All", "Smart");
 
-    public static SettingToggle multiplace = new SettingToggle(false, "Multiplace");
-    public static SettingToggle renderPlayer = new SettingToggle(false, "RenderTarget");
-    public static SettingToggle autoSwitch = new SettingToggle(true, "AutoSwitch");
-    public static SettingToggle chatAlert = new SettingToggle(true, "Chat Alert");
-    public static SettingToggle speedi = new SettingToggle(true, "speedi");
-    public static SettingToggle damageText = new SettingToggle(false, "DamageText");
-    public static SettingToggle place = new SettingToggle(true, "Place");
-    public static SettingToggle explode = new SettingToggle(true, "Explode");
+    public static SettingSlider
+            range = new SettingSlider(0.0D, 6.0D, 5.0D, 2, "Range: "),
+            hitDelay = new SettingSlider(0.0D, 20.0D, 0, 0, "Hit Delay: "),
+            placeDelay = new SettingSlider(0.0D, 20.0D, 0, 0, "Place Delay: "),
+            minDmgS = new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MinDMG: "),
+            maxSelfDmg = new SettingSlider(1.0D, 36.0D, 6.0D, 0, "MaxSelfDMG: "),
+            facePlaceHp = new SettingSlider(1.0D, 36.0D, 10.0D, 0, "FacePlace HP: ");
+
+    public static SettingToggle
+            multiplace = new SettingToggle(false, "Multiplace"),
+            renderPlayer = new SettingToggle(false, "RenderTarget"),
+            autoSwitch = new SettingToggle(true, "AutoSwitch"),
+            chatAlert = new SettingToggle(true, "Chat Alert"),
+            speedi = new SettingToggle(true, "Fast"),
+            damageText = new SettingToggle(false, "DamageText"),
+            place = new SettingToggle(true, "Place"),
+            explode = new SettingToggle(true, "Explode");
 
     private static final List<SettingBase> settings = Arrays.asList(
             logic, rotate, breakHand, placeMode, breakMode, range, hitDelay, placeDelay, minDmgS, maxSelfDmg, facePlaceHp, multiplace, renderPlayer, autoSwitch, chatAlert, speedi, damageText, place, explode
     );
-    private final TimeUtils placeTimer;
-    private final TimeUtils breakTimer;
+    private final TimeUtils placeTimer, breakTimer;
     private double renderDamage = 0;
-    private boolean isSpoofingAngles;
-    private boolean togglePitch;
 
-    private boolean switchCooldown = false;
+    private boolean isSpoofingAngles, togglePitch, switchCooldown = false;
+
     private BlockPos renderTarget = null;
-    private final List<EntityPlayer> ezplayers = new ArrayList<>();
-    private final List<EntityPlayer> targetPlayers = new ArrayList<>();
 
+    private final List<EntityPlayer> ezplayers = new ArrayList<>(), targetPlayers = new ArrayList<>();
 
     public AutoCrystal() {
         super("blu3CA", 0, Category.EXPERIMENTAL, "absolute shit i say", settings);
@@ -91,10 +104,9 @@ public class AutoCrystal extends Module {
     public void onUpdate() {
         if (nullCheck()) return;
         doStuff();
-        fuckWithRotations();
     }
 
-    public void fuckWithRotations() {
+    public void fastUpdate() {
         if (isSpoofingAngles) { // constantly sending packets so rotation spoofing works properly.
             if (togglePitch) {
                 mc.player.rotationPitch += (float) 4.0E-4;
@@ -107,28 +119,23 @@ public class AutoCrystal extends Module {
     }
 
     public void doStuff() {
-        switch (getMode("Logic: ")) {
-            case 0: {
-                if (breakTimer.passedDms(getSlider("Hit Delay: ") * 5)) {
-                    if (explode.state) breakCrystal();
-                    breakTimer.reset();
-                }
-                if (placeTimer.passedDms(getSlider("Place Delay: ") * 5)) {
-                    if (place.state) placeCrystal();
-                    placeTimer.reset();
-                }
-                break;
+        if (logic.is(breakPlace)) {
+            if (breakTimer.passedDms(getSlider("Hit Delay: ") * 5)) {
+                if (explode.state) breakCrystal();
+                breakTimer.reset();
             }
-            case 1: {
-                if (placeTimer.passedDms(getSlider("Place Delay: ") * 5)) {
-                    if (place.state) placeCrystal();
-                    placeTimer.reset();
-                }
-                if (breakTimer.passedDms(getSlider("Hit Delay: ") * 5)) {
-                    if (explode.state) breakCrystal();
-                    breakTimer.reset();
-                }
-                break;
+            if (placeTimer.passedDms(getSlider("Place Delay: ") * 5)) {
+                if (place.state) placeCrystal();
+                placeTimer.reset();
+            }
+        } else if (logic.is(placeBreak)) {
+            if (placeTimer.passedDms(getSlider("Place Delay: ") * 5)) {
+                if (place.state) placeCrystal();
+                placeTimer.reset();
+            }
+            if (breakTimer.passedDms(getSlider("Hit Delay: ") * 5)) {
+                if (explode.state) breakCrystal();
+                breakTimer.reset();
             }
         }
     }
@@ -145,7 +152,10 @@ public class AutoCrystal extends Module {
                 }
             }
         }
-        if (crystalSlot == -1) {
+        boolean offhand = false;
+        if (mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
+            offhand = true;
+        } else if (crystalSlot == -1) {
             return;
         }
         int minDmg;
@@ -177,7 +187,7 @@ public class AutoCrystal extends Module {
             break;
         }
         if (placeTarget != null) {
-            if (getBoolean("AutoSwitch") && mc.player.inventory.currentItem != crystalSlot && !eatingGap()) {
+            if (getBoolean("AutoSwitch") && mc.player.inventory.currentItem != crystalSlot && !eatingGap() && !offhand) {
                 mc.player.inventory.currentItem = crystalSlot;
                 switchCooldown = true;
                 return;
@@ -186,12 +196,9 @@ public class AutoCrystal extends Module {
                 switchCooldown = false;
                 return;
             }
-            if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal) {
-                if (getMode("Rotate: ") == 1 || getMode("Rotate: ") == 3)
-                    lookAtPacket(placeTarget.getX() + 0.5, placeTarget.getY() - 0.5, placeTarget.getZ() + 0.5, mc.player);
-                mc.playerController.processRightClickBlock(mc.player, mc.world, placeTarget, EnumFacing.UP, new Vec3d(placeTarget), EnumHand.MAIN_HAND);
-                // someone tell me the difference between processRightClickBlock and CPacketPlayerTryUseItemOnBlock
-            }
+            if (getMode("Rotate: ") == 1 || getMode("Rotate: ") == 3)
+                lookAtPacket(placeTarget.getX() + 0.5, placeTarget.getY() - 0.5, placeTarget.getZ() + 0.5, mc.player);
+            mc.playerController.processRightClickBlock(mc.player, mc.world, placeTarget, EnumFacing.UP, new Vec3d(placeTarget), offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
         } else resetRotation();
     }
 
@@ -382,20 +389,12 @@ public class AutoCrystal extends Module {
         }
     }
 
- /*   @SubscribeEvent
-    public void renderRotations(OnUpdateWalkingPlayerEvent event) {
-        if (isSpoofingAngles) {
-            event.rotation = new Vec2f((float) yaw, (float) pitch);
-        }
-    }*/
-
     private void lookAtPacket(final double px, final double py, final double pz, final EntityPlayer me) {
         final double[] v = calculateLookAt(px, py, pz, me);
         setYawAndPitch((float) v[0], (float) v[1]);
     }
 
-    private static double yaw;
-    private static double pitch;
+    private static double yaw, pitch;
 
     private void setYawAndPitch(final float yaw1, final float pitch1) {
         isSpoofingAngles = true;

@@ -15,12 +15,6 @@ public abstract class MixinEntity {
         super();
     }
 
-    @Shadow public double motionX;
-    @Shadow public double motionY;
-    @Shadow public double motionZ;
-
-    @Shadow public void move(MoverType type, double x, double y, double z) {}
-
     @Redirect(method = "applyEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;addVelocity(DDD)V"))
     public void velocity(Entity entity, double x, double y, double z) {
        if (((EnhancedMovement) Objects.requireNonNull(ModuleManager.getModuleByName("EnhancedMovement"))).collision(entity)) {

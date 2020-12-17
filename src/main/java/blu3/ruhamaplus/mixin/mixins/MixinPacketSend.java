@@ -36,7 +36,6 @@ public class MixinPacketSend {
 
         EventSendPacket event = new EventSendPacket(packetIn);
         MinecraftForge.EVENT_BUS.post(event);
-        RuhamaPlus.EVENT_BUS.post(event);
         if (event.isCanceled()) info.cancel();
 
         if (packetIn instanceof CPacketPlayerTryUseItemOnBlock) {

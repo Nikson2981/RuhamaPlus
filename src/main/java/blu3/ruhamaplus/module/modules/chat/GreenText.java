@@ -7,10 +7,5 @@ public class GreenText extends Module {
     public GreenText() {
         super("GreenText", 0, Category.CHAT, "praise napolean eh HONHONHONHON", null);
     }
-
-    public boolean isReady(){
-        return isToggled();
-    }
-
 }
 

@@ -22,7 +22,7 @@ public class FriendManager {
 
     public static FriendManager get()
     {
-        return RuhamaPlus.GetFriendManager();
+        return RuhamaPlus.getFriendManager();
     }
 
     /*if (FriendManager.get().isFriend(e.getName().toLowerCase())){
@@ -35,7 +35,7 @@ public class FriendManager {
     }
     public void loadFriends()
     {
-        File l_Exists = new File("blu3/ruhama+/Friendlist.json");
+        File l_Exists = new File("blu3/ruhama+/FriendList.json");
         if (!l_Exists.exists())
             return;
 

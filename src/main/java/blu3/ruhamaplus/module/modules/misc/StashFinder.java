@@ -117,8 +117,8 @@ public class StashFinder extends Module
             }
             if (content.length() > 0)
             {
-                FileMang.createFile("stashfinder.txt");
-                FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.txt");
+                FileMang.createFile("stashfinder.blu3");
+                FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.blu3");
             }
         }
 
@@ -178,8 +178,8 @@ public class StashFinder extends Module
                             {
                                 if (content.length() > 0)
                                 {
-                                    FileMang.createFile("stashfinder.txt");
-                                    FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.txt");
+                                    FileMang.createFile("stashfinder.blu3");
+                                    FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.blu3");
                                 }
 
                                 break bruhfernflower;
@@ -257,8 +257,8 @@ public class StashFinder extends Module
 
                 if (content.length() > 0)
                 {
-                    FileMang.createFile("stashfinder.txt");
-                    FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.txt");
+                    FileMang.createFile("stashfinder.blu3");
+                    FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.blu3");
                 }
             }
 
@@ -287,8 +287,8 @@ public class StashFinder extends Module
 
                 if (content.length() > 0)
                 {
-                    FileMang.createFile("stashfinder.txt");
-                    FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.txt");
+                    FileMang.createFile("stashfinder.blu3");
+                    FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.blu3");
                 }
             }
 
@@ -317,8 +317,8 @@ public class StashFinder extends Module
 
                 if (content.length() > 0)
                 {
-                    FileMang.createFile("stashfinder.txt");
-                    FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.txt");
+                    FileMang.createFile("stashfinder.blu3");
+                    FileMang.appendFile(StringUtils.chop(content.toString()), "stashfinder.blu3");
                 }
             }
 

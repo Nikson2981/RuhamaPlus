@@ -7,7 +7,6 @@ import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-
 /**
  * anything that would be useful to always listen for goes here. better than constant register/unregister shit
  */

@@ -1,5 +1,7 @@
 package blu3.ruhamaplus.settings;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
 

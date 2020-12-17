@@ -29,7 +29,6 @@ public class MixinPacketRead
         }
         EventReadPacket event = new EventReadPacket(p_channelRead0_2_);
         MinecraftForge.EVENT_BUS.post(event);
-        RuhamaPlus.EVENT_BUS.post(event);
         if (event.isCanceled()) info.cancel();
     }
 }

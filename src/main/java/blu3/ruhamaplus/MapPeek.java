@@ -146,7 +146,7 @@ public class MapPeek
 
                 int count = 0;
 
-                for (Iterator pagesIter = ((List) this.pages.get(0)).iterator(); pagesIter.hasNext(); ++count)
+                for (Iterator<?> pagesIter = ((List<?>) this.pages.get(0)).iterator(); pagesIter.hasNext(); ++count)
                 {
                     String s = (String) pagesIter.next();
                     this.mc.fontRenderer.drawStringWithShadow(s, (float) (mX + 12), (float) (mY - 18 - this.pages.get(0).size() * 10 + count * 10), 49344);

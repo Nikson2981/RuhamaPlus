@@ -33,10 +33,6 @@ public class FileMang {
         if (!dir.toFile().exists()) dir.toFile().mkdirs();
     }
 
-    public static Path getDir() {
-        return dir;
-    }
-
     public static void loadFriends() {
         FriendManager.get().load();
     }
@@ -102,16 +98,6 @@ public class FileMang {
         }
     }
 
-    public static void deleteFile(String... file) {
-        try {
-            Files.deleteIfExists(stringsToPath(file));
-        } catch (Exception e) {
-            System.out.println("Error Deleting File: " + Arrays.toString(file));
-
-            e.printStackTrace();
-        }
-    }
-
     public static Path stringsToPath(String... strings) {
         Path path = dir;
 
@@ -123,17 +109,17 @@ public class FileMang {
     }
 
     public static void saveSettings() {
-        createEmptyFile("settings.txt");
+        createEmptyFile("settings.blu3");
         String lines = "";
 
         StringBuilder line;
 
-        for (Iterator iter = ModuleManager.getModules().iterator(); iter.hasNext(); lines = lines + line + "\n") {
+        for (Iterator<?> iter = ModuleManager.getModules().iterator(); iter.hasNext(); lines = lines + line + "\n") {
             Module m = (Module) iter.next();
             line = new StringBuilder(m.getName());
             int count = 0;
 
-            for (Iterator settingsIter = m.getSettings().iterator(); settingsIter.hasNext(); ++count) {
+            for (Iterator<?> settingsIter = m.getSettings().iterator(); settingsIter.hasNext(); ++count) {
                 SettingBase set = (SettingBase) settingsIter.next();
                 if (set instanceof SettingSlider) {
                     line.append(":").append(m.getSettings().get(count).asSlider().getValue());
@@ -149,17 +135,17 @@ public class FileMang {
             }
         }
 
-        appendFile(lines, "settings.txt");
+        appendFile(lines, "settings.blu3");
     }
 
     public static void readSettings() {
-        List<String> lines = readFileLines("settings.txt");
-        Iterator modulesIter = ModuleManager.getModules().iterator();
+        List<String> lines = readFileLines("settings.blu3");
+        Iterator<?> modulesIter = ModuleManager.getModules().iterator();
 
         fern:
         while (modulesIter.hasNext()) {
             Module m = (Module) modulesIter.next();
-            Iterator linesIter = lines.iterator();
+            Iterator<?> linesIter = lines.iterator();
 
             while (true) {
                 String[] line;
@@ -175,7 +161,7 @@ public class FileMang {
 
                 int count = 0;
 
-                for (Iterator anotherIter = m.getSettings().iterator(); anotherIter.hasNext(); ++count) {
+                for (Iterator<?> anotherIter = m.getSettings().iterator(); anotherIter.hasNext(); ++count) {
                     SettingBase set = (SettingBase) anotherIter.next();
 
                     try {
@@ -198,49 +184,49 @@ public class FileMang {
     }
 
     public static void saveClickGui() {
-        createEmptyFile("clickgui.txt");
+        createEmptyFile("clickgui.blu3");
         String text = "";
 
         ModuleWindow w;
 
-        for (Iterator neverAgainFernFlower = ClickGui.clickGui.tabs.iterator(); neverAgainFernFlower.hasNext(); text = text + w.getPos()[0] + ":" + w.getPos()[1] + "\n") {
+        for (Iterator<?> neverAgainFernFlower = ClickGui.clickGui.tabs.iterator(); neverAgainFernFlower.hasNext(); text = text + w.getPos()[0] + ":" + w.getPos()[1] + "\n") {
             w = (ModuleWindow) neverAgainFernFlower.next();
         }
 
-        appendFile(text, "clickgui.txt");
-        createEmptyFile("clickguitext.txt");
+        appendFile(text, "clickgui.blu3");
+        createEmptyFile("clickguitext.blu3");
         String text2 = "";
 
-        MutableTriple e;
+        MutableTriple<?, ?, ?> e;
 
-        for (Iterator textIter = NewRuhamaGui.textWins.iterator(); textIter.hasNext(); text2 = text2 + ((Module) e.left).getName() + ":" + e.middle + ":" + ((TextWindow) e.getRight()).posX + ":" + ((TextWindow) e.getRight()).posY + "\n") {
-            e = (MutableTriple) textIter.next();
+        for (Iterator<?> textIter = NewRuhamaGui.textWins.iterator(); textIter.hasNext(); text2 = text2 + ((Module) e.left).getName() + ":" + e.middle + ":" + ((TextWindow) e.getRight()).posX + ":" + ((TextWindow) e.getRight()).posY + "\n") {
+            e = (MutableTriple<?, ?, ?>) textIter.next();
         }
 
-        appendFile(text2, "clickguitext.txt");
+        appendFile(text2, "clickguitext.blu3");
     }
 
     public static void readClickGui() {
-        List<String> lines = readFileLines("clickgui.txt");
+        List<String> lines = readFileLines("clickgui.blu3");
 
         try {
             int c = 0;
 
-            for (Iterator iter = ClickGui.clickGui.tabs.iterator(); iter.hasNext(); ++c) {
+            for (Iterator<?> iter = ClickGui.clickGui.tabs.iterator(); iter.hasNext(); ++c) {
                 ModuleWindow w = (ModuleWindow) iter.next();
                 w.setPos(Integer.parseInt((lines.get(c)).split(":")[0]), Integer.parseInt((lines.get(c)).split(":")[1]));
             }
         } catch (Exception ignored) {
         }
 
-        for (String s : readFileLines("clickguitext.txt")) {
+        for (String s : readFileLines("clickguitext.blu3")) {
             String[] split = s.split(":");
 
             for (MutableTriple<Module, Integer, TextWindow> moduleIntegerTextWindowMutableTriple : NewRuhamaGui.textWins) {
                 try {
-                    if (((Module) moduleIntegerTextWindowMutableTriple.left).getName().equals(split[0]) && moduleIntegerTextWindowMutableTriple.middle.equals(Integer.parseInt(split[1]))) {
-                        ((TextWindow) moduleIntegerTextWindowMutableTriple.right).posX = Integer.parseInt(split[2]);
-                        ((TextWindow) moduleIntegerTextWindowMutableTriple.right).posY = Integer.parseInt(split[3]);
+                    if (moduleIntegerTextWindowMutableTriple.left.getName().equals(split[0]) && moduleIntegerTextWindowMutableTriple.middle.equals(Integer.parseInt(split[1]))) {
+                        moduleIntegerTextWindowMutableTriple.right.posX = Integer.parseInt(split[2]);
+                        (moduleIntegerTextWindowMutableTriple.right).posY = Integer.parseInt(split[3]);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -250,21 +236,21 @@ public class FileMang {
     }
 
     public static void saveModules() {
-        createEmptyFile("modules.txt");
+        createEmptyFile("modules.blu3");
         StringBuilder lines = new StringBuilder();
 
         for (Module m : ModuleManager.getModules()) {
-            if (!m.getName().equals("ClickGui") && !m.getName().equals("Freecam")) {
+            if (!m.getName().equals("ClickGui")) {
                 lines.append(m.getName()).append(":").append(m.isToggled()).append("\n");
             }
         }
 
-        appendFile(lines.toString(), "modules.txt");
+        appendFile(lines.toString(), "modules.blu3");
     }
 
 
     public static void readModules() {
-        List<String> lines = readFileLines("modules.txt");
+        List<String> lines = readFileLines("modules.blu3");
 
         for (Module m : ModuleManager.getModules()) {
             for (String s : lines) {
@@ -283,20 +269,20 @@ public class FileMang {
 
 
     public static void saveBinds() {
-        createEmptyFile("binds.txt");
+        createEmptyFile("binds.blu3");
         String lines = "";
 
         Module m;
 
-        for (Iterator iter = ModuleManager.getModules().iterator(); iter.hasNext(); lines = lines + m.getName() + ":" + m.getKey().getKeyCode() + "\n") {
+        for (Iterator<?> iter = ModuleManager.getModules().iterator(); iter.hasNext(); lines = lines + m.getName() + ":" + m.getKey().getKeyCode() + "\n") {
             m = (Module) iter.next();
         }
 
-        appendFile(lines, "binds.txt");
+        appendFile(lines, "binds.blu3");
     }
 
     public static void readBinds() {
-        List<String> lines = readFileLines("binds.txt");
+        List<String> lines = readFileLines("binds.blu3");
 
         for (Module m : ModuleManager.getModules()) {
             for (String s : lines) {

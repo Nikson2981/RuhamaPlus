@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.client.renderer.entity.RenderManager;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,10 +23,10 @@ import java.util.Objects;
 public class RenderUtils implements Util
 {
 
-
     public static double[] rPos() {
         try {
             return new double[] {
+
                     (double)ReflectUtils.getField(RenderManager.class, "renderPosX", "field_78725_b").get(RenderUtils.mc.getRenderManager()),
                     (double)ReflectUtils.getField(RenderManager.class, "renderPosY", "field_78726_c").get(RenderUtils.mc.getRenderManager()),
                     (double)ReflectUtils.getField(RenderManager.class, "renderPosZ", "field_78723_d").get(RenderUtils.mc.getRenderManager())

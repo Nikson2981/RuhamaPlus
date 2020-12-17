@@ -1,6 +1,5 @@
 package blu3.ruhamaplus.mixin.mixins;
 
-import blu3.ruhamaplus.utils.friendutils.Friends;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.lwjgl.opengl.Display;
 import org.spongepowered.asm.launch.MixinBootstrap;
