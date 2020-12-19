@@ -24,7 +24,6 @@ public class ModuleManager
             new AntiChunkBan(),
             new AnvilFucker(),
             new Aura(),
-            new Auto32k(),
             new AutoCrystal(),
             new AutoLog(),
             new AutoWither(),
