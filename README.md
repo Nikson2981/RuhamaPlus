@@ -8,3 +8,6 @@ you may now take a real good look at some of what may genuinely be the worst cod
 don't even remember the main use of this client... who cares anyway i guess
 
 it's exactly what the title says it is... i took ruhama (a mid - late 2019 32k client) and expanded on it. contains a lot of useless garbage
+
+
+(1.12.2, it's old)
