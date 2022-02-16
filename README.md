@@ -1,3 +1,6 @@
+![](https://github.com/blu3-65b/RuhamaPlus/blob/master/image10.jpg)
+
+
 # Ruhama+ 
 
 you may now take a real good look at some of what may genuinely be the worst code i've ever written
