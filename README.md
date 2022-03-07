@@ -11,3 +11,5 @@ it's exactly what the title says it is... i took ruhama (a mid - late 2019 32k c
 
 
 (1.12.2, it's old)
+
+oh yeah and half the shit here doesn't work and none of it is marked as so have fun :trollface:
